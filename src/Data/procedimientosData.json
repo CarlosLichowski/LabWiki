@@ -1,0 +1,147 @@
+[
+  {
+    "area": "Hematología",
+    "analisis": [
+      {
+        "nombre": "Hemograma Completo",
+        "codigo": "HEM-001",
+        "descripcionCorta": "Recuento de glóbulos rojos, blancos, plaquetas y fórmula leucocitaria.",
+        "metodologia": "Citometría de flujo automatizada (ej. Sysmex XN-2000)",
+        "requerimientos": "Tubo tapa lila (EDTA K3), ayuno no requerido.",
+        "enlaceDocumento": "/documentos/hematologia/hemograma_procedimiento.pdf"
+      },
+      {
+        "nombre": "Coagulograma Básico",
+        "codigo": "HEM-002",
+        "descripcionCorta": "Tiempo de Protrombina (TP), KPTT y Fibrinógeno.",
+        "metodologia": "Método coagulométrico (ej. Stago STA Compact Max)",
+        "requerimientos": "Tubo tapa celeste (Citrato), muestra fresca sin hemólisis.",
+        "enlaceDocumento": "/documentos/hematologia/coagulograma_procedimiento.pdf"
+      },
+      {
+        "nombre": "Velocidad de Sedimentación Globular (VSG)",
+        "codigo": "HEM-003",
+        "descripcionCorta": "Mide la tasa de sedimentación de los eritrocitos en una hora.",
+        "metodologia": "Método Westergren (automatizado)",
+        "requerimientos": "Tubo tapa lila (EDTA) o tubo de citrato de sodio.",
+        "enlaceDocumento": "/documentos/hematologia/vsg_procedimiento.pdf"
+      },
+      {
+        "nombre": "Reticulocitos",
+        "codigo": "HEM-004",
+        "descripcionCorta": "Recuento absoluto y porcentaje de reticulocitos (glóbulos rojos inmaduros).",
+        "metodologia": "Tinción supravital y Citometría de Flujo",
+        "requerimientos": "Tubo tapa lila (EDTA K3).",
+        "enlaceDocumento": "/documentos/hematologia/reticulocitos_procedimiento.pdf"
+      }
+    ]
+  },
+  {
+    "area": "Química Clínica",
+    "analisis": [
+      {
+        "nombre": "Perfil Hepático",
+        "codigo": "QUI-005",
+        "descripcionCorta": "Determinación de bilirrubina, transaminasas (GOT/GPT) y fosfatasa alcalina.",
+        "metodologia": "Fotometría de absorbancia (ej. Cobas c503)",
+        "requerimientos": "Tubo tapa roja/amarilla (sin/con gel separador), ayuno de 8 a 12 horas.",
+        "enlaceDocumento": "/documentos/quimica/perfil_hepatico_procedimiento.pdf"
+      },
+      {
+        "nombre": "Glucemia Basal",
+        "codigo": "QUI-001",
+        "descripcionCorta": "Concentración de glucosa en sangre.",
+        "metodologia": "Método enzimático de hexoquinasa",
+        "requerimientos": "Tubo tapa gris (Fluoruro de Sodio), ayuno estricto de 8 horas.",
+        "enlaceDocumento": "/documentos/quimica/glucemia_procedimiento.pdf"
+      },
+      {
+        "nombre": "Uricemia",
+        "codigo": "QUI-002",
+        "descripcionCorta": "Nivel de ácido úrico en sangre para evaluar la gota y función renal.",
+        "metodologia": "Método enzimático de Uricasa",
+        "requerimientos": "Tubo tapa roja/amarilla, ayuno de 8 a 12 horas.",
+        "enlaceDocumento": "/documentos/quimica/uricemia_procedimiento.pdf"
+      },
+      {
+        "nombre": "Creatinina en Suero",
+        "codigo": "QUI-003",
+        "descripcionCorta": "Evaluación de la función renal.",
+        "metodologia": "Método colorimétrico (Jaffe cinético) o enzimático",
+        "requerimientos": "Tubo tapa roja/amarilla.",
+        "enlaceDocumento": "/documentos/quimica/creatinina_suero_procedimiento.pdf"
+      }
+    ]
+  },
+  {
+    "area": "Inmunología",
+    "analisis": [
+      {
+        "nombre": "Hormonas Tiroideas (TSH, T4L)",
+        "codigo": "INM-010",
+        "descripcionCorta": "Medición de los niveles de TSH y T4 Libre.",
+        "metodologia": "Electroquimioluminiscencia (ECL) (ej. Cobas e411)",
+        "requerimientos": "Tubo tapa roja/amarilla.",
+        "enlaceDocumento": "/documentos/inmunologia/tiroideas_procedimiento.pdf"
+      },
+      {
+        "nombre": "Antígeno Prostático Específico (PSA)",
+        "codigo": "INM-011",
+        "descripcionCorta": "Medición de PSA total y libre.",
+        "metodologia": "Electroquimioluminiscencia (ECL) o ELISA (ej. Cobas e411 / VIDAS)",
+        "requerimientos": "Tubo tapa roja/amarilla. Muestra antes de tacto rectal o biopsia.",
+        "enlaceDocumento": "/documentos/inmunologia/psa_procedimiento.pdf"
+      },
+      {
+        "nombre": "Vitamina D (25-OH)",
+        "codigo": "INM-012",
+        "descripcionCorta": "Determinación de los niveles de 25-hidroxivitamina D.",
+        "metodologia": "Quimioluminiscencia o Cromatografía Líquida de Alta Resolución (HPLC)",
+        "requerimientos": "Tubo tapa roja/amarilla.",
+        "enlaceDocumento": "/documentos/inmunologia/vitd_procedimiento.pdf"
+      }
+    ]
+  },
+  {
+    "area": "Uroanálisis",
+    "analisis": [
+      {
+        "nombre": "Examen Completo de Orina (EGO)",
+        "codigo": "URO-001",
+        "descripcionCorta": "Análisis físico, químico (tira reactiva) y microscópico del sedimento urinario.",
+        "metodologia": "Química de reflectancia y Citometría de Flujo Digital (ej. IRIS iQ200)",
+        "requerimientos": "Muestra de orina de la primera micción matinal, recipiente estéril.",
+        "enlaceDocumento": "/documentos/uroanalisis/ego_procedimiento.pdf"
+      },
+      {
+        "nombre": "Urocultivo",
+        "codigo": "URO-002",
+        "descripcionCorta": "Aislamiento e identificación de microorganismos patógenos en orina.",
+        "metodologia": "Siembra cuantitativa en placas de agar",
+        "requerimientos": "Orina del chorro medio, recipiente estéril. Procesamiento inmediato o refrigeración.",
+        "enlaceDocumento": "/documentos/uroanalisis/urocultivo_procedimiento.pdf"
+      }
+    ]
+  },
+  {
+    "area": "Microbiología",
+    "analisis": [
+      {
+        "nombre": "Hemocultivo",
+        "codigo": "MIC-001",
+        "descripcionCorta": "Detección de bacterias y/o levaduras en sangre.",
+        "metodologia": "Sistema automatizado de detección de crecimiento (ej. BACTEC o BacT/ALERT)",
+        "requerimientos": "Frascos de hemocultivo Aeróbico y Anaeróbico. Desinfección rigurosa de la piel.",
+        "enlaceDocumento": "/documentos/micro/hemocultivo_procedimiento.pdf"
+      },
+      {
+        "nombre": "Coprocultivo",
+        "codigo": "MIC-002",
+        "descripcionCorta": "Aislamiento e identificación de patógenos entéricos comunes (Salmonella, Shigella, Campylobacter).",
+        "metodologia": "Siembra selectiva e identificación bioquímica o MALDI-TOF",
+        "requerimientos": "Muestra de heces fresca en recipiente estéril.",
+        "enlaceDocumento": "/documentos/micro/coprocultivo_procedimiento.pdf"
+      }
+    ]
+  }
+]
