@@ -13,7 +13,7 @@ Clinical laboratories often face challenges with information fragmentation:
  -Rea-Time Synchronization: Powered by Firebase, ensuring all staff members see the latest updates instantly.
  -secure Authentication: Role-based access to protect sensitive laboratoy procedures.
 
- ## 🔮 Tech Stack
+ ## 🛠 Tech Stack
  -Frontend: React + TypesScript
  -Styling: TailwindCss + Bootstrap
  -Backend as a Service: Firebase(Firestore & Authentication)
@@ -21,7 +21,7 @@ Clinical laboratories often face challenges with information fragmentation:
 
 
 
-#Future Roadmap
+# 🔮 Future Roadmap
 -Notifications for new protocol uploads
 -image gallery for specific laboratory findings(microscopy)
 -DarkMode
