@@ -1,141 +1,104 @@
-import React, { useState, useEffect } from 'react';
-import { useAuth } from '../Context/AuthContext'; // Asegúrate que la ruta sea correcta
-import { doc, getDoc } from 'firebase/firestore'; 
-import type { DocumentData } from 'firebase/firestore';
+//Favoritos.tsx
 
-interface FavoriteItem extends DocumentData {
-    id: string;
-    type: string; // Ejemplo: 'ateneo', 'manual', 'caso_clinico'
-    title: string;
-    // Agrega aquí más campos necesarios para mostrar en la lista
+import React, { useState, useEffect } from 'react';
+import { doc, getDoc } from 'firebase/firestore'; 
+import { db, auth } from '../Credenciales';
+
+interface FavoriteItem {
+  id: string;
+  type: string;
+  titulo: string;
+  url: string;
+  autor?: string;
 }
 
 const Favoritos: React.FC = () => {
-    // Asumimos que useAuth proporciona las instancias de Firebase y el usuario
-    const { user, db } = useAuth();
-    const [favoritosList, setFavoritosList] = useState<FavoriteItem[]>([]);
-    const [loading, setLoading] = useState(true);
-    const [error, setError] = useState<string | null>(null);
+  const [favoritosList, setFavoritosList] = useState<FavoriteItem[]>([]);
+  const [loading, setLoading] = useState(true);
+  const user = auth.currentUser;
 
-    const userId = user?.uid;
+  useEffect(() => {
+    const loadFavoritos = async () => {
+      if (!user) return;
+      setLoading(true);
+      try {
+        const userRef = doc(db, 'usuarios', user.uid);
+        const userSnap = await getDoc(userRef);
 
-    // 🟢 FUNCIÓN CLAVE: Cargar la lista de IDs de favoritos del perfil del usuario
-    const fetchFavoriteIds = async (): Promise<Record<string, string> | null> => {
-        if (!userId || !db) return null;
+        if (userSnap.exists()) {
+          const favsMap = userSnap.data().favoritos || {};
+          const details: FavoriteItem[] = [];
 
-        try {
-            // Asume que tienes una colección 'usuarios' donde guardas el perfil
-            const userRef = doc(db, 'usuarios', userId);
-            const userSnap = await getDoc(userRef);
-
-            if (userSnap.exists()) {
-                // Asume que el mapa de favoritos se guarda bajo el campo 'favoritos'
-                // Formato: { 'ateneos:id1': 'ateneo', 'manuales:id2': 'manual' }
-                return userSnap.data().favoritos || {};
-            }
-            return null;
-        } catch (e) {
-            console.error("Error al obtener IDs de favoritos:", e);
-            setError("No se pudo cargar la lista de favoritos.");
-            return null;
-        }
-    };
-
-    // 🟢 FUNCIÓN CLAVE: Cargar los detalles del contenido usando los IDs
-    const fetchFavoriteDetails = async (favoriteIdsMap: Record<string, string>) => {
-        if (Object.keys(favoriteIdsMap).length === 0) {
-            setLoading(false);
-            return;
-        }
-
-        const details: FavoriteItem[] = [];
-        
-        // El mapa contiene claves como 'ateneos:ID_DOCUMENTO'
-        for (const key in favoriteIdsMap) {
+          for (const key in favsMap) {
             const [collectionName, docId] = key.split(':');
-            
-            try {
-                // ⚠️ NOTA: Si necesitas acceder a más de 10 colecciones, considera un índice de búsqueda central
-                const docRef = doc(db!, collectionName, docId);
-                const docSnap = await getDoc(docRef);
+            const docRef = doc(db, collectionName, docId);
+            const docSnap = await getDoc(docRef);
 
-                if (docSnap.exists()) {
-                    details.push({
-                        id: docId,
-                        type: collectionName,
-                        title: docSnap.data().title || `Elemento sin título (${collectionName})`,
-                        ...docSnap.data()
-                    } as FavoriteItem);
-                }
-            } catch (e) {
-                console.warn(`No se pudo cargar detalle para el ID: ${key}`, e);
+            if (docSnap.exists()) {
+              const data = docSnap.data();
+              details.push({
+                id: docId,
+                type: collectionName,
+                titulo: data.titulo || "Sin título",
+                url: data.url || "#",
+                autor: data.autor
+              });
             }
+          }
+          setFavoritosList(details);
         }
-        
-        setFavoritosList(details);
+      } catch (e) {
+        console.error("Error cargando favoritos:", e);
+      } finally {
         setLoading(false);
+      }
     };
 
+    loadFavoritos();
+  }, [user]);
 
-    useEffect(() => {
-        setLoading(true);
-        const loadFavoritos = async () => {
-            const idsMap = await fetchFavoriteIds();
-            if (idsMap) {
-                await fetchFavoriteDetails(idsMap);
-            } else {
-                setLoading(false);
-            }
-        };
+  if (loading) return <div className="p-10 text-center">Cargando tus favoritos...</div>;
 
-        loadFavoritos();
-    }, [userId, db]); // Se ejecuta al cargar el componente o si cambia el usuario/DB
-
-    // ----------------------------------------------------
-    // ⬇️ RENDERIZADO ⬇️
-    // ----------------------------------------------------
-
-    if (loading) {
-        return (
-            <div className="text-center p-5">
-                <div className="spinner-border text-primary" role="status">
-                    <span className="visually-hidden">Cargando...</span>
-                </div>
-                <p className="mt-2">Cargando tus elementos guardados...</p>
-            </div>
-        );
-    }
-
-    if (error) {
-        return <div className="alert alert-danger">{error}</div>;
-    }
-
-    return (
-        <div>
-            <h2 className="mb-4 text-primary">⭐ Mis Favoritos</h2>
-            
-            {favoritosList.length === 0 ? (
-                <div className="alert alert-info">
-                    Aún no has guardado ningún elemento como favorito.
-                </div>
-            ) : (
-                <div className="list-group">
-                    {favoritosList.map((item) => (
-                        <a 
-                            key={item.id + item.type}
-                            href={`/${item.type}/${item.id}`} // Enlaza a la página de detalle correcta
-                            className="list-group-item list-group-item-action d-flex justify-content-between align-items-center"
-                        >
-                            <span className="fw-bold">{item.title}</span>
-                            <span className={`badge bg-${item.type === 'ateneos' ? 'success' : item.type === 'manuales' ? 'warning' : 'secondary'}`}>
-                                {item.type.toUpperCase()}
-                            </span>
-                        </a>
-                    ))}
-                </div>
-            )}
+  return (
+    <div className="p-6 max-w-5xl mx-auto">
+      <h2 className="text-3xl font-bold mb-6 text-slate-800">⭐ Mis Favoritos</h2>
+      
+      {favoritosList.length === 0 ? (
+        <div className="bg-blue-50 p-6 rounded-xl text-blue-700 border border-blue-100 text-center">
+          Aún no tienes elementos guardados como favoritos.
         </div>
-    );
+      ) : (
+        <div className="bg-white shadow-md rounded-xl overflow-hidden border">
+          <table className="w-full text-left">
+            <thead className="bg-slate-50 border-b">
+              <tr>
+                <th className="p-4 text-slate-600">Material</th>
+                <th className="p-4 text-slate-600">Tipo</th>
+                <th className="p-4 text-center text-slate-600">Acceso</th>
+              </tr>
+            </thead>
+            <tbody className="divide-y">
+              {favoritosList.map((item) => (
+                <tr key={item.id} className="hover:bg-slate-50">
+                  <td className="p-4 font-semibold text-slate-800">{item.titulo}</td>
+                  <td className="p-4">
+                    <span className="text-xs font-bold px-2 py-1 rounded bg-slate-100 text-slate-500 uppercase">
+                      {item.type.replace('_', ' ')}
+                    </span>
+                  </td>
+                  <td className="p-4 text-center">
+                    <a href={item.url} target="_blank" rel="noreferrer" className="bg-blue-50 text-blue-600 px-4 py-2 rounded-lg font-bold hover:bg-blue-600 hover:text-white transition-all">
+                      Abrir
+                    </a>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      )}
+    </div>
+  );
 };
 
 export default Favoritos;

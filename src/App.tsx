@@ -9,6 +9,7 @@ import Header from './components/Header';
 // ✅ IMPORTACIONES SEPARADAS: Cada una a su archivo correspondiente
 import ProtectedRoute from './components/Routing/ProtectedRoute';
 import ProtectedDashboardLayout from './components/Routing/ProtectedDashboardLayout';
+import AreaPacientes from './Pages/Pacientes/AreaPacientes';
 
 function App() {
     return (
@@ -20,6 +21,7 @@ function App() {
 
                 {/* 🔑 RUTA PÚBLICA */}
                 <Route path="/login" element={<LoginPresentacional />} />
+                <Route path="/pacientes" element={<AreaPacientes />} />
                 
                 {/* 🔒 RUTAS PROTEGIDAS (Dashboard) */}
                 <Route 
@@ -33,6 +35,7 @@ function App() {
 
                 {/* 🚫 CAPTURA DE RUTAS NO EXISTENTES: Redirige a Home */}
                 <Route path="*" element={<Navigate to="/" replace />} />
+                
             </Routes>
         </AuthProvider>
     );

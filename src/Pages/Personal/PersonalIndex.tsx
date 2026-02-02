@@ -2,7 +2,7 @@
 
 import React, { useEffect, useState } from "react";
 import { collection, query, limit, onSnapshot, orderBy, Firestore } from "firebase/firestore";
-import { Loader2, Zap, ExternalLink, User, Calendar } from "lucide-react";
+import { Loader2, User, Calendar } from "lucide-react";
 
 const PersonalIndex: React.FC<{ db: Firestore }> = ({ db }) => {
     const [items, setItems] = useState<any[]>([]);
