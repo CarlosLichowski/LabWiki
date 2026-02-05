@@ -4,7 +4,7 @@ import {
   deleteDoc, doc, serverTimestamp, setDoc, deleteField 
 } from 'firebase/firestore';
 import { db, auth } from '../Credenciales'; 
-import { Search, Plus, Trash2, X, Star, Hash, Save } from 'lucide-react';
+import { Search, Plus, Trash2, X, Star, Phone, User, Home, Bed, Save } from 'lucide-react';
 
 interface Contacto {
   id: string;
@@ -77,13 +77,10 @@ const Contactos: React.FC = () => {
   };
 
   const handleBorrar = async (id: string) => {
-    if (window.confirm("¿Estás seguro de que deseas eliminar este contacto permanentemente?")) {
+    if (window.confirm("¿Estás seguro de que deseas eliminar este contacto?")) {
       try {
         await deleteDoc(doc(db, 'contactos_internos', id));
-      } catch (err) {
-        console.error("Error al borrar:", err);
-        alert("Error al intentar eliminar.");
-      }
+      } catch (err) { console.error(err); }
     }
   };
 
@@ -96,148 +93,172 @@ const Contactos: React.FC = () => {
   const listaFavoritos = filtrados.filter(c => !!misFavoritos[c.id]);
 
   return (
-    <div className="p-4 p-md-6 max-w-6xl mx-auto animate__animated animate__fadeIn">
-      {/* HEADER */}
-      <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-4 gap-4">
-        <div>
-          <h2 className="text-3xl font-bold text-slate-800">Guía Telefónica</h2>
-          <p className="text-slate-500 font-medium">Directorio de internos del servicio.</p>
+    <div className="container py-4 md:py-5 animate__animated animate__fadeIn min-vh-100">
+      
+      {/* CABECERA PRINCIPAL */}
+      <div className="row align-items-end mb-4 g-3">
+        <div className="col">
+          <h2 className="fw-bold text-dark mb-1">Guía Telefónica</h2>
+          <p className="text-secondary mb-0">Directorio de internos del servicio</p>
         </div>
 
-        <div className="flex gap-2 w-full md:w-auto">
-          <div className="relative flex-1" style={{ minWidth: '220px' }}>
-            <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" size={18} />
+        <div className="col-12 col-md-auto d-flex gap-2 align-items-center">
+          <div className="position-relative" style={{ minWidth: '240px' }}>
+            <Search className="position-absolute start-0 top-50 translate-middle-y ms-3 text-secondary" size={18} />
             <input 
-              className="pl-10 pr-4 py-2 border border-slate-200 rounded-xl w-full outline-none focus:ring-2 focus:ring-blue-500 shadow-sm"
+              className="form-control ps-5 border-0 shadow-sm rounded-3 py-2"
               placeholder="Buscar..."
               value={busqueda}
               onChange={e => setBusqueda(e.target.value)}
             />
           </div>
-          {/* BOTÓN AGREGAR CON MARGIN VERTICAL (my-4) PARA SEPARARLO */}
           <button 
             onClick={() => setMostrarForm(!mostrarForm)}
-            className="flex items-center gap-2 font-bold px-4 py-2 my-4 rounded-xl shadow-md border-0 text-white transition-all active:scale-95 hover:brightness-110"
-            style={{ backgroundColor: mostrarForm ? '#dc3545' : '#0d6efd' }}
+            className={`btn d-flex align-items-center gap-2 fw-bold px-4 py-2 rounded-3 shadow-sm ${mostrarForm ? 'btn-secondary' : 'btn-primary'}`}
           >
-            {mostrarForm ? <X size={20}/> : <Plus size={20}/>}
-            <span className="hidden sm:inline">{mostrarForm ? 'Cancelar' : 'Agregar Contacto'}</span>
+            {mostrarForm ? <X size={18}/> : <Plus size={18}/>}
+            <span>{mostrarForm ? 'Cerrar' : 'Nuevo'}</span>
           </button>
         </div>
       </div>
 
-      {/* FORMULARIO MEJORADO */}
+      <hr className="mb-5 opacity-10" />
+
+      {/* FORMULARIO DE REGISTRO */}
       {mostrarForm && (
-        <form onSubmit={handleGuardar} className="mb-10 bg-light p-4 p-md-5 rounded-4 border shadow-sm animate__animated animate__fadeInDown">
-          <h5 className="mb-4 fw-bold text-primary d-flex align-items-center gap-2">
-            <Plus size={18} /> Registrar Nuevo Interno
-          </h5>
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-3">
-            <div className="flex flex-col gap-1">
-                <label className="small fw-bold text-muted ps-1">Área / Sector</label>
-                <input placeholder="Ej: Hematología" className="form-control" value={nuevo.area} onChange={e => setNuevo({...nuevo, area: e.target.value})} required />
+        <div className="card border-0 shadow-lg p-4 rounded-4 mb-5 animate__animated animate__fadeInDown">
+          <h6 className="fw-bold text-uppercase text-primary mb-4">Registrar Nuevo Interno</h6>
+          <form onSubmit={handleGuardar} className="row g-3">
+            <div className="col-md-3">
+                <label className="form-label small fw-bold text-secondary">Área / Sector</label>
+                <input placeholder="Ej: Hematología" className="form-control rounded-3" value={nuevo.area} onChange={e => setNuevo({...nuevo, area: e.target.value})} required />
             </div>
-            <div className="flex flex-col gap-1">
-                <label className="small fw-bold text-muted ps-1">Nombre / Referencia</label>
-                <input placeholder="Ej: Mesada técnica" className="form-control" value={nuevo.nombre} onChange={e => setNuevo({...nuevo, nombre: e.target.value})} required />
+            <div className="col-md-3">
+                <label className="form-label small fw-bold text-secondary">Nombre / Referencia</label>
+                <input placeholder="Ej: Mesada técnica" className="form-control rounded-3" value={nuevo.nombre} onChange={e => setNuevo({...nuevo, nombre: e.target.value})} required />
             </div>
-            <div className="flex flex-col gap-1">
-                <label className="small fw-bold text-muted ps-1">N° de Interno</label>
-                <input placeholder="0000" className="form-control fw-bold" value={nuevo.interno} onChange={e => setNuevo({...nuevo, interno: e.target.value})} required />
+            <div className="col-md-2">
+                <label className="form-label small fw-bold text-secondary">N° Interno</label>
+                <input placeholder="0000" className="form-control rounded-3 fw-bold" value={nuevo.interno} onChange={e => setNuevo({...nuevo, interno: e.target.value})} required />
             </div>
-            <div className="flex flex-col gap-1">
-                <label className="small fw-bold text-muted ps-1">Categoría</label>
-                <select className="form-select" value={nuevo.tipo} onChange={e => setNuevo({...nuevo, tipo: e.target.value as any})}>
+            <div className="col-md-2">
+                <label className="form-label small fw-bold text-secondary">Categoría</label>
+                <select className="form-select rounded-3" value={nuevo.tipo} onChange={e => setNuevo({...nuevo, tipo: e.target.value as any})}>
                   <option value="sala">📞 Sala</option>
                   <option value="medico">👨‍⚕️ Médico</option>
                   <option value="cama">🛌 Cama</option>
                 </select>
             </div>
-            
-            {/* BOTÓN DE CONFIRMACIÓN LEGIBLE */}
-            <button 
-              type="submit" 
-              disabled={loading} 
-              className="md:col-span-4 btn btn-primary btn-lg rounded-pill mt-3 shadow-sm d-flex align-items-center justify-content-center gap-2 py-3 fw-bold"
-            >
-              {loading ? (
-                <>
-                  <span className="spinner-border spinner-border-sm"></span>
-                  Guardando registro...
-                </>
-              ) : (
-                <>
-                  <Save size={20} />
-                    Guardar Contacto
-                </>
-              )}
-            </button>
-          </div>
-        </form>
+            <div className="col-md-2 d-flex align-items-end">
+              <button type="submit" disabled={loading} className="btn btn-primary w-100 py-2 rounded-3 fw-bold shadow-sm">
+                {loading ? '...' : 'Guardar'}
+              </button>
+            </div>
+          </form>
+        </div>
       )}
 
       {/* LISTADO */}
       <div className="mt-4">
+        
+        {/* SECCIÓN DE FAVORITOS */}
         {listaFavoritos.length > 0 && !busqueda && (
-          <div className="mb-12">
-            <h3 className="text-xs font-black text-amber-500 uppercase mb-4 flex items-center gap-2 tracking-widest">
-              <Star size={14} fill="currentColor" /> Mis Frecuentes
+          <div className="mb-5">
+            <h3 className="h6 fw-bold text-warning text-uppercase mb-4 d-flex align-items-center gap-2">
+              <Star size={16} fill="currentColor" /> Mis Frecuentes
             </h3>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+            <div className="row row-cols-1 row-cols-sm-2 row-cols-lg-3 row-cols-xl-4 g-4">
               {listaFavoritos.map(c => (
-                <ContactCard key={c.id} contacto={c} esFav={true} onToggleFav={toggleFavorito} onBorrar={handleBorrar} />
+                <div className="col" key={c.id}>
+                  <ContactCard contacto={c} esFav={true} onToggleFav={toggleFavorito} onBorrar={handleBorrar} />
+                </div>
               ))}
             </div>
-            <hr className="mt-10 border-slate-100" />
           </div>
         )}
 
-        <h3 className="text-xs font-black text-slate-400 uppercase mb-4 tracking-widest">Todos los contactos</h3>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-          {filtrados.length > 0 ? (
-            filtrados.map(c => (
-              <ContactCard key={c.id} contacto={c} esFav={!!misFavoritos[c.id]} onToggleFav={toggleFavorito} onBorrar={handleBorrar} />
-            ))
-          ) : (
-            <p className="col-span-full text-center text-slate-400 py-10">No se encontraron contactos.</p>
-          )}
+        {/* LISTADO GENERAL */}
+        <div>
+          <h3 className="h6 fw-bold text-secondary text-uppercase mb-4">
+            Directorio General
+          </h3>
+          <div className="row row-cols-1 row-cols-sm-2 row-cols-lg-3 row-cols-xl-4 g-4">
+            {filtrados.length > 0 ? (
+              filtrados.map(c => (
+                <div className="col" key={c.id}>
+                  <ContactCard contacto={c} esFav={!!misFavoritos[c.id]} onToggleFav={toggleFavorito} onBorrar={handleBorrar} />
+                </div>
+              ))
+            ) : (
+              <div className="col-12 w-100 text-center py-5 bg-light rounded-4 border border-2 border-dashed">
+                <p className="text-secondary mb-0">No hay contactos registrados.</p>
+              </div>
+            )}
+          </div>
         </div>
       </div>
     </div>
   );
 };
 
+// COMPONENTE DE CARTA
 const ContactCard = ({ contacto, esFav, onToggleFav, onBorrar }: any) => {
+  const getConfig = () => {
+    switch(contacto.tipo) {
+      case 'medico': return { icon: <User size={14}/>, color: 'text-info', bg: 'bg-info-subtle' };
+      case 'cama': return { icon: <Bed size={14}/>, color: 'text-success', bg: 'bg-success-subtle' };
+      default: return { icon: <Home size={14}/>, color: 'text-primary', bg: 'bg-primary-subtle' };
+    }
+  };
+
+  const config = getConfig();
+
   return (
-    <div className="bg-white border border-slate-200 p-4 rounded-2xl shadow-sm hover:shadow-md transition-all flex items-center justify-between group">
-      <div className="flex flex-col gap-1">
-        <p className="text-[10px] font-bold text-blue-500 uppercase tracking-tight">{contacto.area}</p>
-        <h4 className="font-bold text-slate-800 leading-tight group-hover:text-blue-600 transition-colors">{contacto.nombre}</h4>
-        <div className="flex items-center gap-1 mt-1">
-          <Hash size={14} className="text-slate-400" />
-          <p className="text-2xl font-mono font-black text-slate-900 tracking-tighter">
-            {contacto.interno}
-          </p>
+    <div className="card h-100 border-0 shadow-sm rounded-4 transition-all group overflow-hidden">
+      <div className="card-body p-4 d-flex flex-column justify-content-between">
+        
+        <div className="d-flex justify-content-between align-items-start mb-3">
+          <span className={`badge ${config.bg} ${config.color} rounded-pill px-3 py-2 d-flex align-items-center gap-2 text-uppercase fw-bold`} style={{ fontSize: '10px' }}>
+            {config.icon} {contacto.area}
+          </span>
+          <button 
+            onClick={() => onToggleFav(contacto.id)} 
+            className={`btn btn-sm rounded-circle p-2 ${esFav ? 'text-warning bg-warning-subtle' : 'text-secondary'}`}
+          >
+            <Star size={18} fill={esFav ? "currentColor" : "none"} />
+          </button>
+        </div>
+
+        <h5 className="card-title fw-bold text-dark mb-4">{contacto.nombre}</h5>
+
+        <div className="d-flex align-items-end justify-content-between border-top pt-3 mt-auto">
+          <div>
+            <span className="d-block text-secondary text-uppercase fw-bold" style={{ fontSize: '9px' }}>Interno</span>
+            <div className="d-flex align-items-center gap-1">
+              <Phone size={14} className="text-primary" />
+              <span className="h2 fw-black font-monospace text-dark mb-0">
+                {contacto.interno}
+              </span>
+            </div>
+          </div>
+          
+          <button 
+            onClick={() => onBorrar(contacto.id)} 
+            className="btn btn-link text-danger p-0 opacity-0 group-hover-opacity-100 transition-all shadow-none"
+            title="Eliminar"
+          >
+            <Trash2 size={18} />
+          </button>
         </div>
       </div>
       
-      <div className="flex items-center gap-1">
-        <button 
-          onClick={() => onToggleFav(contacto.id)} 
-          className={`p-2 rounded-xl transition-all hover:bg-amber-50 ${esFav ? 'text-amber-400 scale-110' : 'text-slate-300 hover:text-slate-400'}`}
-          title="Favorito"
-        >
-          <Star size={22} fill={esFav ? "currentColor" : "none"} />
-        </button>
-
-        <button 
-          onClick={() => onBorrar(contacto.id)} 
-          className="p-2 text-slate-300 hover:text-red-500 hover:bg-red-50 rounded-xl transition-all"
-          title="Eliminar"
-        >
-          <Trash2 size={20} />
-        </button>
-      </div>
+      <style>{`
+        .group:hover .group-hover-opacity-100 { opacity: 1 !important; }
+        .font-monospace { font-family: 'JetBrains Mono', 'Roboto Mono', monospace; letter-spacing: -1px; }
+        .rounded-4 { border-radius: 1rem !important; }
+        .transition-all { transition: all 0.3s ease; }
+        .card:hover { transform: translateY(-3px); box-shadow: 0 .5rem 1rem rgba(0,0,0,.15)!important; }
+      `}</style>
     </div>
   );
 };
