@@ -1,3 +1,4 @@
+
 // src/components/AreaPersonalDashboard.tsx
 import React, { useState } from 'react';
 import { useAuth } from '../../Context/AuthContext';
@@ -5,7 +6,8 @@ import { Link, Navigate, useLocation } from 'react-router-dom';
 import { 
     Menu, Home, Folder, HardDrive, Microscope, LogOut, 
     ArrowLeft, Contact, Calendar, ChevronDown,
-    Target, ShieldCheck, Award, Beaker // <-- Icono Beaker para Derivaciones
+    Target, ShieldCheck, Award, Beaker, 
+    BarChart3, Zap // <-- Nuevos iconos para Calidad y Estadísticas
 } from 'lucide-react';
 
 const AreaPersonalDashboard: React.FC<{ children: React.ReactNode }> = ({ children }) => {
@@ -51,21 +53,14 @@ const AreaPersonalDashboard: React.FC<{ children: React.ReactNode }> = ({ childr
                 <Contact size={18} className="me-2"/> Contactos
             </Link>
 
-            {/* 2. SECCIÓN: PLANIFICACIÓN */}
-            <div className="fw-bold text-uppercase text-muted px-3 mt-3 mb-1 small" style={{ fontSize: '0.7rem' }}>Planificación</div>
+            {/* --- NUEVA SECCIÓN: CALIDAD Y GESTIÓN --- */}
+            <div className="fw-bold text-uppercase text-muted px-3 mt-3 mb-1 small" style={{ fontSize: '0.7rem' }}>Calidad y Gestión</div>
             
-            <Link to="/personal/proyectos" className={getLinkClass('/personal/proyectos')}>
-                <Target size={18} className="me-2 text-primary"/> Proyectos
+            <Link to="/personal/estadisticas" className={getLinkClass('/personal/estadisticas')}>
+                <BarChart3 size={18} className="me-2 text-success"/> Estadísticas
             </Link>
-
-            {/* 3. SECCIÓN: NORMATIVAS */}
-            <div className="fw-bold text-uppercase text-muted px-3 mt-3 mb-1 small" style={{ fontSize: '0.7rem' }}>Normativas</div>
-            
-            <Link to="/personal/bioseguridad" className={getLinkClass('/personal/bioseguridad')}>
-                <ShieldCheck size={18} className="me-2 text-success"/> Bioseguridad
-            </Link>
-            <Link to="/personal/normas" className={getLinkClass('/personal/normas')}>
-                <Award size={18} className="me-2 text-warning"/> Normas ISO
+            <Link to="/personal/control-calidad" className={getLinkClass('/personal/control-calidad')}>
+                <Zap size={18} className="me-2 text-warning"/> Control de Calidad
             </Link>
 
             {/* 4. SECCIÓN: ORGANIZACIÓN */}
@@ -90,6 +85,23 @@ const AreaPersonalDashboard: React.FC<{ children: React.ReactNode }> = ({ childr
                     </div>
                 )}
             </div>
+
+            {/* 2. SECCIÓN: PLANIFICACIÓN */}
+            <div className="fw-bold text-uppercase text-muted px-3 mt-3 mb-1 small" style={{ fontSize: '0.7rem' }}>Planificación</div>
+            
+            <Link to="/personal/proyectos" className={getLinkClass('/personal/proyectos')}>
+                <Target size={18} className="me-2 text-primary"/> Proyectos
+            </Link>
+
+            {/* 3. SECCIÓN: NORMATIVAS */}
+            <div className="fw-bold text-uppercase text-muted px-3 mt-3 mb-1 small" style={{ fontSize: '0.7rem' }}>Normativas</div>
+            
+            <Link to="/personal/bioseguridad" className={getLinkClass('/personal/bioseguridad')}>
+                <ShieldCheck size={18} className="me-2 text-success"/> Bioseguridad
+            </Link>
+            <Link to="/personal/normas" className={getLinkClass('/personal/normas')}>
+                <Award size={18} className="me-2 text-warning"/> Normas ISO
+            </Link>
         </div>
     );
 
@@ -139,8 +151,8 @@ const AreaPersonalDashboard: React.FC<{ children: React.ReactNode }> = ({ childr
                     </div>
                 </div>
 
-                <main className="flex-grow-1 p-3 p-lg-4 w-100">
-                    <div className="container-fluid" style={{ maxWidth: '1000px' }}> 
+                <main className="flex-grow-1 p-3 p-lg-4 w-100 overflow-x-hidden">
+                    <div className="container-fluid" style={{ maxWidth: '1200px' }}> 
                         <div className="card shadow-sm border-0 min-vh-75"> 
                             <div className="card-body p-3 p-lg-5"> 
                                 {children} 
@@ -155,6 +167,7 @@ const AreaPersonalDashboard: React.FC<{ children: React.ReactNode }> = ({ childr
                 .transition-transform { transition: transform 0.3s ease; }
                 .rotate-180 { transform: rotate(180deg); }
                 .min-vh-75 { min-height: 75vh; }
+                .active { border-right: 4px solid #198754; }
             `}</style>
         </div>
     );

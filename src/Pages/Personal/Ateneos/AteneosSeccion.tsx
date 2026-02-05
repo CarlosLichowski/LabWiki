@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import { getAuth, onAuthStateChanged } from "firebase/auth";
 import type { User } from "firebase/auth";
-import appFirebase, { db, storage } from "../../../Credenciales"; 
+import appFirebase, { db} from "../../../Credenciales"; 
 import Ateneos from "./Ateneos";
 
 // --- Componentes de soporte ---
@@ -58,8 +58,6 @@ const AteneosSeccion = () => {
             <Ateneos 
                 userId={user.uid} 
                 db={db} 
-                storage={storage} 
-                appId="labwiki"
                 displayName={nombreParaMostrar}
             />  
         </div>

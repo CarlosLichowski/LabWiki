@@ -5,6 +5,7 @@ import { AuthProvider } from './Context/AuthContext';
 import LoginPresentacional from './components/Login';
 import Home from './components/Home'; // Asegúrate de que esta ruta sea correcta
 import Header from './components/Header';
+import { Toaster } from 'react-hot-toast';
 
 // ✅ IMPORTACIONES SEPARADAS: Cada una a su archivo correspondiente
 import ProtectedRoute from './components/Routing/ProtectedRoute';
@@ -14,6 +15,7 @@ import AreaPacientes from './Pages/Pacientes/AreaPacientes';
 function App() {
     return (
         <AuthProvider>
+            <Toaster position="top-right" reverseOrder={false} />
             <Header /> 
             <Routes>
                 {/* 🏠 RUTA RAÍZ: Ahora Home se renderiza aquí */}

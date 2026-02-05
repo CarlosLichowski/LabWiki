@@ -4,7 +4,7 @@ import {
   deleteDoc, doc, serverTimestamp, setDoc, deleteField 
 } from 'firebase/firestore';
 import { db, auth } from '../Credenciales'; 
-import { Search, Plus, Trash2, X, Star, Hash } from 'lucide-react';
+import { Search, Plus, Trash2, X, Star, Hash, Save } from 'lucide-react';
 
 interface Contacto {
   id: string;
@@ -98,7 +98,7 @@ const Contactos: React.FC = () => {
   return (
     <div className="p-4 p-md-6 max-w-6xl mx-auto animate__animated animate__fadeIn">
       {/* HEADER */}
-      <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-8 gap-4">
+      <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-4 gap-4">
         <div>
           <h2 className="text-3xl font-bold text-slate-800">Guía Telefónica</h2>
           <p className="text-slate-500 font-medium">Directorio de internos del servicio.</p>
@@ -114,38 +114,70 @@ const Contactos: React.FC = () => {
               onChange={e => setBusqueda(e.target.value)}
             />
           </div>
+          {/* BOTÓN AGREGAR CON MARGIN VERTICAL (my-4) PARA SEPARARLO */}
           <button 
             onClick={() => setMostrarForm(!mostrarForm)}
-            className="flex items-center gap-2 font-bold px-4 py-2 rounded-xl shadow-md border-0 text-white transition-all active:scale-95"
-            style={{ backgroundColor: mostrarForm ? '#ef4444' : '#2563eb' }}
+            className="flex items-center gap-2 font-bold px-4 py-2 my-4 rounded-xl shadow-md border-0 text-white transition-all active:scale-95 hover:brightness-110"
+            style={{ backgroundColor: mostrarForm ? '#dc3545' : '#0d6efd' }}
           >
             {mostrarForm ? <X size={20}/> : <Plus size={20}/>}
-            <span className="hidden sm:inline">{mostrarForm ? 'Cerrar' : 'Agregar'}</span>
+            <span className="hidden sm:inline">{mostrarForm ? 'Cancelar' : 'Agregar Contacto'}</span>
           </button>
         </div>
       </div>
 
-      {/* FORMULARIO */}
+      {/* FORMULARIO MEJORADO */}
       {mostrarForm && (
-        <form onSubmit={handleGuardar} className="mb-10 bg-white p-6 rounded-2xl border border-blue-100 shadow-lg animate__animated animate__fadeInDown">
+        <form onSubmit={handleGuardar} className="mb-10 bg-light p-4 p-md-5 rounded-4 border shadow-sm animate__animated animate__fadeInDown">
+          <h5 className="mb-4 fw-bold text-primary d-flex align-items-center gap-2">
+            <Plus size={18} /> Registrar Nuevo Interno
+          </h5>
           <div className="grid grid-cols-1 md:grid-cols-4 gap-3">
-            <input placeholder="Área" className="form-control p-2 border border-slate-200 rounded-lg focus:border-blue-500 outline-none" value={nuevo.area} onChange={e => setNuevo({...nuevo, area: e.target.value})} required />
-            <input placeholder="Nombre" className="form-control p-2 border border-slate-200 rounded-lg focus:border-blue-500 outline-none" value={nuevo.nombre} onChange={e => setNuevo({...nuevo, nombre: e.target.value})} required />
-            <input placeholder="Interno" className="form-control p-2 border border-slate-200 rounded-lg focus:border-blue-500 outline-none font-bold" value={nuevo.interno} onChange={e => setNuevo({...nuevo, interno: e.target.value})} required />
-            <select className="form-select p-2 border border-slate-200 rounded-lg focus:border-blue-500 outline-none cursor-pointer" value={nuevo.tipo} onChange={e => setNuevo({...nuevo, tipo: e.target.value as any})}>
-              <option value="sala">📞 Sala</option>
-              <option value="medico">👨‍⚕️ Médico</option>
-              <option value="cama">🛌 Cama</option>
-            </select>
-            <button type="submit" disabled={loading} className="md:col-span-4 bg-blue-600 text-white py-3 rounded-lg font-bold hover:bg-blue-700 transition-colors shadow-sm disabled:bg-slate-400">
-              {loading ? 'Guardando...' : 'Confirmar Nuevo Contacto'}
+            <div className="flex flex-col gap-1">
+                <label className="small fw-bold text-muted ps-1">Área / Sector</label>
+                <input placeholder="Ej: Hematología" className="form-control" value={nuevo.area} onChange={e => setNuevo({...nuevo, area: e.target.value})} required />
+            </div>
+            <div className="flex flex-col gap-1">
+                <label className="small fw-bold text-muted ps-1">Nombre / Referencia</label>
+                <input placeholder="Ej: Mesada técnica" className="form-control" value={nuevo.nombre} onChange={e => setNuevo({...nuevo, nombre: e.target.value})} required />
+            </div>
+            <div className="flex flex-col gap-1">
+                <label className="small fw-bold text-muted ps-1">N° de Interno</label>
+                <input placeholder="0000" className="form-control fw-bold" value={nuevo.interno} onChange={e => setNuevo({...nuevo, interno: e.target.value})} required />
+            </div>
+            <div className="flex flex-col gap-1">
+                <label className="small fw-bold text-muted ps-1">Categoría</label>
+                <select className="form-select" value={nuevo.tipo} onChange={e => setNuevo({...nuevo, tipo: e.target.value as any})}>
+                  <option value="sala">📞 Sala</option>
+                  <option value="medico">👨‍⚕️ Médico</option>
+                  <option value="cama">🛌 Cama</option>
+                </select>
+            </div>
+            
+            {/* BOTÓN DE CONFIRMACIÓN LEGIBLE */}
+            <button 
+              type="submit" 
+              disabled={loading} 
+              className="md:col-span-4 btn btn-primary btn-lg rounded-pill mt-3 shadow-sm d-flex align-items-center justify-content-center gap-2 py-3 fw-bold"
+            >
+              {loading ? (
+                <>
+                  <span className="spinner-border spinner-border-sm"></span>
+                  Guardando registro...
+                </>
+              ) : (
+                <>
+                  <Save size={20} />
+                    Guardar Contacto
+                </>
+              )}
             </button>
           </div>
         </form>
       )}
 
-      {/* LISTADO CON ESPACIADO SUPERIOR (mt-10) */}
-      <div className="mt-10">
+      {/* LISTADO */}
+      <div className="mt-4">
         {listaFavoritos.length > 0 && !busqueda && (
           <div className="mb-12">
             <h3 className="text-xs font-black text-amber-500 uppercase mb-4 flex items-center gap-2 tracking-widest">
@@ -178,7 +210,6 @@ const Contactos: React.FC = () => {
 const ContactCard = ({ contacto, esFav, onToggleFav, onBorrar }: any) => {
   return (
     <div className="bg-white border border-slate-200 p-4 rounded-2xl shadow-sm hover:shadow-md transition-all flex items-center justify-between group">
-      {/* LADO IZQUIERDO: INFORMACIÓN */}
       <div className="flex flex-col gap-1">
         <p className="text-[10px] font-bold text-blue-500 uppercase tracking-tight">{contacto.area}</p>
         <h4 className="font-bold text-slate-800 leading-tight group-hover:text-blue-600 transition-colors">{contacto.nombre}</h4>
@@ -190,7 +221,6 @@ const ContactCard = ({ contacto, esFav, onToggleFav, onBorrar }: any) => {
         </div>
       </div>
       
-      {/* LADO DERECHO: ACCIONES (Corregido: Siempre visibles) */}
       <div className="flex items-center gap-1">
         <button 
           onClick={() => onToggleFav(contacto.id)} 
