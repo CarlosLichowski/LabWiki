@@ -93,9 +93,9 @@ const Contactos: React.FC = () => {
   const listaFavoritos = filtrados.filter(c => !!misFavoritos[c.id]);
 
   return (
-    <div className="container py-4 md:py-5 animate__animated animate__fadeIn min-vh-100">
+    <div className="container py-5 animate__animated animate__fadeIn min-vh-100">
       
-      {/* CABECERA PRINCIPAL */}
+      {/* CABECERA */}
       <div className="row align-items-end mb-4 g-3">
         <div className="col">
           <h2 className="fw-bold text-dark mb-1">Guía Telefónica</h2>
@@ -124,7 +124,7 @@ const Contactos: React.FC = () => {
 
       <hr className="mb-5 opacity-10" />
 
-      {/* FORMULARIO DE REGISTRO */}
+      {/* FORMULARIO */}
       {mostrarForm && (
         <div className="card border-0 shadow-lg p-4 rounded-4 mb-5 animate__animated animate__fadeInDown">
           <h6 className="fw-bold text-uppercase text-primary mb-4">Registrar Nuevo Interno</h6>
@@ -150,7 +150,7 @@ const Contactos: React.FC = () => {
                 </select>
             </div>
             <div className="col-md-2 d-flex align-items-end">
-              <button type="submit" disabled={loading} className="btn btn-primary w-100 py-2 rounded-3 fw-bold shadow-sm">
+              <button type="submit" disabled={loading} className="btn btn-primary w-100 py-2 rounded-3 fw-bold">
                 {loading ? '...' : 'Guardar'}
               </button>
             </div>
@@ -159,9 +159,8 @@ const Contactos: React.FC = () => {
       )}
 
       {/* LISTADO */}
-      <div className="mt-4">
-        
-        {/* SECCIÓN DE FAVORITOS */}
+      <div className="mt-5">
+        {/* FAVORITOS */}
         {listaFavoritos.length > 0 && !busqueda && (
           <div className="mb-5">
             <h3 className="h6 fw-bold text-warning text-uppercase mb-4 d-flex align-items-center gap-2">
@@ -177,31 +176,36 @@ const Contactos: React.FC = () => {
           </div>
         )}
 
-        {/* LISTADO GENERAL */}
-        <div>
-          <h3 className="h6 fw-bold text-secondary text-uppercase mb-4">
-            Directorio General
-          </h3>
-          <div className="row row-cols-1 row-cols-sm-2 row-cols-lg-3 row-cols-xl-4 g-4">
-            {filtrados.length > 0 ? (
-              filtrados.map(c => (
-                <div className="col" key={c.id}>
-                  <ContactCard contacto={c} esFav={!!misFavoritos[c.id]} onToggleFav={toggleFavorito} onBorrar={handleBorrar} />
-                </div>
-              ))
-            ) : (
-              <div className="col-12 w-100 text-center py-5 bg-light rounded-4 border border-2 border-dashed">
-                <p className="text-secondary mb-0">No hay contactos registrados.</p>
+        {/* GENERAL */}
+        <h3 className="h6 fw-bold text-secondary text-uppercase mb-4">Directorio General</h3>
+        <div className="row row-cols-1 row-cols-sm-2 row-cols-lg-3 row-cols-xl-4 g-4">
+          {filtrados.length > 0 ? (
+            filtrados.map(c => (
+              <div className="col" key={c.id}>
+                <ContactCard contacto={c} esFav={!!misFavoritos[c.id]} onToggleFav={toggleFavorito} onBorrar={handleBorrar} />
               </div>
-            )}
-          </div>
+            ))
+          ) : (
+            <div className="col-12 w-100 text-center py-5 bg-light rounded-4 border border-2 border-dashed">
+              <p className="text-secondary mb-0">No se encontraron contactos.</p>
+            </div>
+          )}
         </div>
       </div>
+
+      <style>{`
+        .rounded-4 { border-radius: 1rem !important; }
+        .font-monospace { font-family: 'JetBrains Mono', 'Roboto Mono', monospace; letter-spacing: -1px; }
+        .group:hover .group-hover-visible { opacity: 1 !important; }
+        .group-hover-visible { opacity: 0; transition: opacity 0.2s; }
+        .contact-card { transition: transform 0.2s, box-shadow 0.2s; }
+        .contact-card:hover { transform: translateY(-4px); box-shadow: 0 1rem 3rem rgba(0,0,0,.1) !important; }
+      `}</style>
     </div>
   );
 };
 
-// COMPONENTE DE CARTA
+// COMPONENTE TARJETA
 const ContactCard = ({ contacto, esFav, onToggleFav, onBorrar }: any) => {
   const getConfig = () => {
     switch(contacto.tipo) {
@@ -214,8 +218,8 @@ const ContactCard = ({ contacto, esFav, onToggleFav, onBorrar }: any) => {
   const config = getConfig();
 
   return (
-    <div className="card h-100 border-0 shadow-sm rounded-4 transition-all group overflow-hidden">
-      <div className="card-body p-4 d-flex flex-column justify-content-between">
+    <div className="card h-100 border-0 shadow-sm rounded-4 group contact-card">
+      <div className="card-body p-4 d-flex flex-column">
         
         <div className="d-flex justify-content-between align-items-start mb-3">
           <span className={`badge ${config.bg} ${config.color} rounded-pill px-3 py-2 d-flex align-items-center gap-2 text-uppercase fw-bold`} style={{ fontSize: '10px' }}>
@@ -223,7 +227,7 @@ const ContactCard = ({ contacto, esFav, onToggleFav, onBorrar }: any) => {
           </span>
           <button 
             onClick={() => onToggleFav(contacto.id)} 
-            className={`btn btn-sm rounded-circle p-2 ${esFav ? 'text-warning bg-warning-subtle' : 'text-secondary'}`}
+            className={`btn btn-sm rounded-circle p-2 ${esFav ? 'text-warning bg-warning-subtle' : 'text-light-emphasis'}`}
           >
             <Star size={18} fill={esFav ? "currentColor" : "none"} />
           </button>
@@ -236,29 +240,19 @@ const ContactCard = ({ contacto, esFav, onToggleFav, onBorrar }: any) => {
             <span className="d-block text-secondary text-uppercase fw-bold" style={{ fontSize: '9px' }}>Interno</span>
             <div className="d-flex align-items-center gap-1">
               <Phone size={14} className="text-primary" />
-              <span className="h2 fw-black font-monospace text-dark mb-0">
-                {contacto.interno}
-              </span>
+              <span className="h2 fw-black font-monospace text-dark mb-0">{contacto.interno}</span>
             </div>
           </div>
           
           <button 
             onClick={() => onBorrar(contacto.id)} 
-            className="btn btn-link text-danger p-0 opacity-0 group-hover-opacity-100 transition-all shadow-none"
+            className="btn btn-link text-danger p-0 group-hover-visible text-decoration-none"
             title="Eliminar"
           >
             <Trash2 size={18} />
           </button>
         </div>
       </div>
-      
-      <style>{`
-        .group:hover .group-hover-opacity-100 { opacity: 1 !important; }
-        .font-monospace { font-family: 'JetBrains Mono', 'Roboto Mono', monospace; letter-spacing: -1px; }
-        .rounded-4 { border-radius: 1rem !important; }
-        .transition-all { transition: all 0.3s ease; }
-        .card:hover { transform: translateY(-3px); box-shadow: 0 .5rem 1rem rgba(0,0,0,.15)!important; }
-      `}</style>
     </div>
   );
 };

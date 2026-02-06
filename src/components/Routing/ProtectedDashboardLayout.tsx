@@ -1,5 +1,5 @@
 // src/components/Routing/ProtectedDashboardLayout.tsx
-// src/components/Routing/ProtectedDashboardLayout.tsx
+
 import React from 'react';
 import { Routes, Route, Navigate } from 'react-router-dom';
 import { useAuth } from '../../Context/AuthContext'; 
@@ -18,12 +18,12 @@ import Derivaciones from '../../Pages/Derivaciones/Derivacion';
 import CalendarioVacaciones from '../../Pages/Personal/Calendario/CalendarioVacaciones';
 import CalendarioGuardias from '../../Pages/Personal/Calendario/CalendarioGuardias';
 
-// --- NUEVAS IMPORTACIONES CORREGIDAS ---
-// Dado que mencionaste que la carpeta se llama "Estadisticas"
-import Estadisticas from '../../Pages/Estadisticas/Estadisticas';
-import ControlCalidadInterno from '../../Pages/Estadisticas/ControlCalidadInterno';
+// --- NUEVA IMPORTACIÓN ---
+import Entretenimiento from '../../Pages/Personal/Entretenimiento/Entretenimiento';// Ajusta la ruta si el archivo está en otra carpeta
 
 // Detalles de equipos...
+import Estadisticas from '../../Pages/Estadisticas/Estadisticas';
+import ControlCalidadInterno from '../../Pages/Estadisticas/ControlCalidadInterno';
 import Cobas411Detail from '../../Pages/Personal/ManualDeEquipos/Cobas411Detail';
 import Cobas503Detail from '../../Pages/Personal/ManualDeEquipos/Cobas503Detail';
 import VidasDetail from '../../Pages/Personal/ManualDeEquipos/VidasDetail';
@@ -49,6 +49,9 @@ const ProtectedDashboardLayout: React.FC = () => {
                 <Route path="analisis" element={<AnalisisProcedimientos />} />
                 <Route path="contactos" element={<Contactos />} />
                 <Route path="derivaciones" element={<Derivaciones />} />
+                
+                {/* NUEVA RUTA DE ENTRETENIMIENTO */}
+                <Route path="entretenimiento" element={<Entretenimiento />} />
 
                 {/* CALIDAD Y ESTADÍSTICA */}
                 <Route path="estadisticas" element={<Estadisticas />} />
