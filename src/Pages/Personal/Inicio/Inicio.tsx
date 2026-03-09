@@ -1,13 +1,12 @@
-
-
-// src/Pages/Personal/Inicio/Inicio.tsx
 // src/Pages/Personal/Inicio/Inicio.tsx
 import React, { useEffect, useState } from 'react';
 import { useAuth } from '../../../Context/AuthContext';
-// Importación corregida añadiendo onSnapshot
 import { collection, query, orderBy, limit, onSnapshot } from 'firebase/firestore'; 
 import { Link } from 'react-router-dom';
-import { Folder, Contact, Clock, ArrowRight, Calendar, User } from 'lucide-react';
+import { 
+    Folder, Contact, Clock, User, 
+    Beaker, Microscope, Database, BarChart3 
+} from 'lucide-react';
 
 interface Actividad {
     id: string;
@@ -24,36 +23,32 @@ const Inicio: React.FC = () => {
 
     const displayName = user?.displayName || user?.email?.split('@')[0] || "Colega";
 
+    // Configuración de los 6 botones (5 pedidos + Guía)
+    const atajosRapidos = [
+        { label: 'Ateneos', icon: <Folder size={24} />, path: '/personal/ateneos', color: 'text-primary', bg: 'bg-primary-subtle' },
+        { label: 'Derivaciones', icon: <Beaker size={24} />, path: '/personal/derivaciones', color: 'text-warning', bg: 'bg-warning-subtle' },
+        { label: 'Análisis', icon: <Microscope size={24} />, path: '/personal/analisis', color: 'text-danger', bg: 'bg-danger-subtle' },
+        { label: 'Stock', icon: <Database size={24} />, path: '/personal/stock', color: 'text-info', bg: 'bg-info-subtle' },
+        { label: 'Estadísticas', icon: <BarChart3 size={24} />, path: '/personal/estadisticas', color: 'text-success', bg: 'bg-success-subtle' },
+        { label: 'Guía', icon: <Contact size={24} />, path: '/personal/contactos', color: 'text-secondary', bg: 'bg-light' },
+    ];
+
     useEffect(() => {
         setLoading(true);
+        const qAteneos = query(collection(db, 'ateneos_biblioteca'), orderBy('createdAt', 'desc'), limit(5));
+        const qContactos = query(collection(db, 'contactos_internos'), orderBy('createdAt', 'desc'), limit(5));
 
-        // 1. Referencias de consulta
-        const qAteneos = query(
-            collection(db, 'ateneos_biblioteca'), 
-            orderBy('createdAt', 'desc'), 
-            limit(5)
-        );
-
-        const qContactos = query(
-            collection(db, 'contactos_internos'), 
-            orderBy('createdAt', 'desc'), 
-            limit(5)
-        );
-
-        // Variables locales para almacenar los resultados de cada colección
         let ateneosData: Actividad[] = [];
         let contactosData: Actividad[] = [];
 
-        // Función para mezclar, ordenar y actualizar el estado
         const actualizarEstado = () => {
             const mezclados = [...ateneosData, ...contactosData]
                 .sort((a, b) => b.fecha.getTime() - a.fecha.getTime())
-                .slice(0, 6);
+                .slice(0, 8); // Aumentado a 8 para aprovechar el espacio
             setActividad(mezclados);
             setLoading(false);
         };
 
-        // Escuchar Ateneos
         const unsubAteneos = onSnapshot(qAteneos, (snap) => {
             ateneosData = snap.docs.map(doc => ({
                 id: doc.id,
@@ -63,12 +58,8 @@ const Inicio: React.FC = () => {
                 fecha: doc.data().createdAt?.toDate() || new Date()
             }));
             actualizarEstado();
-        }, (error) => {
-            console.error("Error en snapshot ateneos:", error);
-            setLoading(false);
         });
 
-        // Escuchar Contactos
         const unsubContactos = onSnapshot(qContactos, (snap) => {
             contactosData = snap.docs.map(doc => ({
                 id: doc.id,
@@ -78,29 +69,46 @@ const Inicio: React.FC = () => {
                 fecha: doc.data().createdAt?.toDate() || new Date()
             }));
             actualizarEstado();
-        }, (error) => {
-            console.error("Error en snapshot contactos:", error);
-            setLoading(false);
         });
 
-        // Limpieza de suscripciones
-        return () => {
-            unsubAteneos();
-            unsubContactos();
-        };
+        return () => { unsubAteneos(); unsubContactos(); };
     }, [db]);
 
     return (
         <div className="animate__animated animate__fadeIn">
             {/* Header de Bienvenida */}
-            <div className="mb-4 p-4 bg-white rounded-3 shadow-sm border-start border-4 border-success">
+            <div className="mb-4 p-4 bg-white rounded-4 shadow-sm border-start border-4 border-success">
                 <h3 className="fw-bold text-dark mb-1">¡Hola, {displayName}! 👋</h3>
                 <p className="text-muted mb-0">Bienvenido al Panel Personal de LabWiki.</p>
             </div>
 
+            {/* --- SECCIÓN DE ACCESOS DIRECTOS --- */}
+            <div className="mb-5">
+                <h5 className="fw-bold mb-3 d-flex align-items-center">
+                    <span className="bg-success rounded-circle p-1 me-2 d-flex align-items-center justify-content-center" style={{width: '24px', height: '24px'}}>
+                        <div className="bg-white rounded-circle" style={{width: '8px', height: '8px'}}></div>
+                    </span>
+                    Accesos Directos
+                </h5>
+                <div className="row g-2 g-md-3">
+                    {atajosRapidos.map((atajo, index) => (
+                        <div key={index} className="col-4 col-md-2">
+                            <Link to={atajo.path} className="text-decoration-none">
+                                <div className={`card border-0 ${atajo.bg} h-100 shadow-sm rounded-4 transition-all hover-up p-2 p-md-3 text-center`}>
+                                    <div className={`${atajo.color} mb-2`}>
+                                        {atajo.icon}
+                                    </div>
+                                    <span className="fw-bold text-dark" style={{ fontSize: '0.75rem' }}>{atajo.label}</span>
+                                </div>
+                            </Link>
+                        </div>
+                    ))}
+                </div>
+            </div>
+
             <div className="row g-4">
-                {/* LISTA DE ACTIVIDAD */}
-                <div className="col-lg-8">
+                {/* LISTA DE ACTIVIDAD (Ocupando todo el ancho disponible) */}
+                <div className="col-12">
                     <div className="d-flex align-items-center justify-content-between mb-3">
                         <h5 className="fw-bold m-0 d-flex align-items-center">
                             <Clock size={20} className="me-2 text-success"/> Lo último subido
@@ -142,36 +150,20 @@ const Inicio: React.FC = () => {
                         </div>
                     </div>
                 </div>
-
-                {/* ACCESOS RÁPIDOS */}
-                <div className="col-lg-4">
-                    <h5 className="fw-bold mb-3">Accesos Directos</h5>
-                    <div className="card border-0 shadow-sm rounded-4 p-3 mb-3">
-                        <Link to="/personal/ateneos" className="btn btn-light border-0 text-start py-3 px-3 rounded-3 mb-2 d-flex align-items-center justify-content-between">
-                            <div className="d-flex align-items-center">
-                                <Folder className="text-primary me-3" size={20} />
-                                <span className="fw-bold text-dark">Ateneos</span>
-                            </div>
-                            <ArrowRight size={16} className="text-muted" />
-                        </Link>
-                        <Link to="/personal/contactos" className="btn btn-light border-0 text-start py-3 px-3 rounded-3 d-flex align-items-center justify-content-between">
-                            <div className="d-flex align-items-center">
-                                <Contact className="text-success me-3" size={20} />
-                                <span className="fw-bold text-dark">Guía Interna</span>
-                            </div>
-                            <ArrowRight size={16} className="text-muted" />
-                        </Link>
-                    </div>
-
-                    <div className="card bg-success text-white border-0 shadow-sm rounded-4 p-4">
-                        <div className="d-flex align-items-center mb-3">
-                            <Calendar size={24} className="me-2" />
-                            <h6 className="m-0 fw-bold">Guardias</h6>
-                        </div>
-                        <p className="small opacity-75 mb-0">No olvides revisar el calendario de guardias mensual actualizado.</p>
-                    </div>
-                </div>
             </div>
+
+            <style>{`
+                .hover-up:hover {
+                    transform: translateY(-5px);
+                    box-shadow: 0 8px 15px rgba(0,0,0,0.1) !important;
+                }
+                .transition-all {
+                    transition: all 0.3s ease;
+                }
+                .list-group-item-action:hover {
+                    background-color: #f8f9fa;
+                }
+            `}</style>
         </div>
     );
 };
