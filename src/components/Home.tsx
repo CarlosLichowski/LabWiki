@@ -9,7 +9,7 @@ const Home: React.FC = () => {
         <div className="container my-5">
             <header className="text-center mb-5">
                 <h1 className="display-4 fw-bold text-primary">
-                    Bienvenido a LabWiki
+                    Bienvenido a LabRamos
                 </h1>
                 <p className="lead text-secondary">
                      accede a recursos y gestión interna.

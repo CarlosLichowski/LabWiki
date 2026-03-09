@@ -1,0 +1,3 @@
+A la media agregar los desvios estandares
+
+Para la media usars la formula igual promedio: CC

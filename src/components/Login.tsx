@@ -1,106 +1,136 @@
-// src/Components/LoginPresentacional.tsx - CÓDIGO CORREGIDO
-
+// src/Components/LoginPresentacional.tsx
 import React, { useState } from 'react';
 import appFirebase from '../Credenciales';
-// Solo necesitamos signInWithEmailAndPassword, eliminamos createUserWithEmailAndPassword
 import { getAuth, signInWithEmailAndPassword } from 'firebase/auth'; 
 import { useNavigate } from 'react-router-dom';
-// Eliminamos la importación de useAuth (ya que quitamos Google)
 
 const auth = getAuth(appFirebase);
 
 const LoginPresentacional: React.FC = () => {
     const navigate = useNavigate();
     
-    // Eliminamos el estado 'register'
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [error, setError] = useState('');
+    const [loading, setLoading] = useState(false);
 
-    // FUNCIÓN PRINCIPAL: Ahora solo maneja LOGIN
+    // FUNCIÓN PARA LOGIN MANUAL
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault(); 
         setError(''); 
+        setLoading(true);
         
         try {
-            // Modo LOGIN
             await signInWithEmailAndPassword(auth, email, password);
-            console.log("Sesión iniciada con éxito.");
-            
-            // Redirección después de éxito
             navigate("/personal", { replace: true });
-
         } catch (err: any) {
             console.error("Error de autenticación:", err);
-            
             let errorMessage = "Error al iniciar sesión. Verifica tus credenciales.";
+            
             if (err.code === 'auth/user-not-found' || err.code === 'auth/wrong-password') {
-                errorMessage = "Credenciales inválidas. Solo cuentas pre-registradas pueden acceder.";
+                errorMessage = "Credenciales inválidas. Solo cuentas autorizadas pueden acceder.";
+            } else if (err.code === 'auth/too-many-requests') {
+                errorMessage = "Demasiados intentos. Intenta más tarde.";
             }
             
             setError(errorMessage);
+        } finally {
+            setLoading(false);
         }
     };
-    
-    // Eliminamos la función handleGoogleLogin (si no usas Google)
+
+    // FUNCIÓN PARA ACCESO COMO INVITADO (DEMO)
+    const loginAsGuest = async () => {
+        setError('');
+        setLoading(true);
+        try {
+            // Asegurate de crear este usuario en Firebase Auth con esta contraseña
+            await signInWithEmailAndPassword(auth, "testuser@testuser.com", "password123");
+            navigate("/personal", { replace: true });
+        } catch (err: any) {
+            setError("El acceso de invitado no está disponible en este momento.");
+        } finally {
+            setLoading(false);
+        }
+    };
 
     return (
         <div
             className="d-flex justify-content-center align-items-center"
-            style={{ minHeight: '100vh' }}
+            style={{ 
+                minHeight: '100vh', 
+                backgroundColor: '#f8f9fa',
+                backgroundImage: 'linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%)' 
+            }}
         >
-            <div className="card shadow-lg p-4" style={{ maxWidth: '400px', width: '100%' }}>
-                <div className="p-3">
-                    {/* El título se simplifica a solo "Iniciar Sesión" */}
-                    <h3 className="text-center text-primary fw-bold mb-4">
-                        Iniciar Sesión
+            <div className="card shadow-lg p-4" style={{ maxWidth: '400px', width: '100%', borderRadius: '15px' }}>
+                <div className="p-2">
+                    <h3 className="text-center text-primary fw-bold mb-2">
+                        Lab Ramos Mejía
                     </h3>
+                    <p className="text-center text-muted small mb-4">Gestión Interna de Laboratorio</p>
 
-                    {/* Mostrar mensaje de error si existe */}
-                    {error && <div className="alert alert-danger text-center">{error}</div>}
+                    {error && (
+                        <div className="alert alert-danger py-2 text-center small" role="alert">
+                            {error}
+                        </div>
+                    )}
 
-                    {/* Formulario de Email/Password */}
                     <form onSubmit={handleSubmit}>
-                        {/* Inputs de email y password: no necesitan cambios */}
                         <div className="mb-3">
-                            <label className="form-label fw-bold">Email</label>
+                            <label className="form-label fw-bold small">Email Institucional</label>
                             <input
                                 type="email"
-                                className="form-control"
-                                placeholder='Ingresar Email'
+                                className="form-control shadow-sm"
+                                placeholder='ejemplo@correo.com'
                                 onChange={(e) => setEmail(e.target.value)}
                                 value={email}
                                 required
-                                id='email'
+                                disabled={loading}
                             />
                         </div>
                         <div className="mb-4">
-                            <label className="form-label fw-bold">Contraseña</label>
+                            <label className="form-label fw-bold small">Contraseña</label>
                             <input
                                 type="password"
-                                className="form-control"
-                                placeholder='Ingresar Contraseña'
+                                className="form-control shadow-sm"
+                                placeholder='••••••••'
                                 onChange={(e) => setPassword(e.target.value)}
                                 value={password}
                                 required
-                                id='password'
+                                disabled={loading}
                             />
                         </div>
 
-                        {/* Botón Principal: Siempre dice "Ingresar" */}
-                        <button type="submit" className="btn btn-primary w-100 fw-bold mb-3">
-                            Ingresar
+                        <button 
+                            type="submit" 
+                            className="btn btn-primary w-100 fw-bold mb-3 shadow-sm"
+                            disabled={loading}
+                        >
+                            {loading ? 'Cargando...' : 'Ingresar'}
                         </button>
                     </form>
 
-                    {/* ❌ Eliminamos toda la sección de "o" y Google Login (comentada) */}
-                    
-                    <hr />
+                    <div className="position-relative my-4">
+                        <hr />
+                        <span className="position-absolute top-50 start-50 translate-middle px-2 bg-white text-muted small">
+                            o
+                        </span>
+                    </div>
 
-                    {/* ❌ Eliminamos la lógica de alternar entre modos (Registro/Login) */}
-                    <div className="text-center">
-                        <p className="d-inline me-1 text-danger fw-bold">
-                            ⚠️ Acceso solo para personal autorizado.
+                    <button 
+                        type="button" 
+                        className="btn btn-outline-secondary w-100 fw-bold mb-4 shadow-sm"
+                        onClick={loginAsGuest}
+                        disabled={loading}
+                    >
+                        Acceso Visitante (Demo)
+                    </button>
+
+                    <div className="text-center border-top pt-3">
+                        <p className="text-danger fw-bold small mb-0">
+                            <i className="bi bi-exclamation-triangle-fill me-1"></i>
+                            Uso exclusivo personal del hospital.
                         </p>
                     </div>
                 </div>

@@ -39,7 +39,7 @@ const Header: React.FC = () => {
                     
                     {/* 🟢 Título Principal (Link a Home) */}
                     <Link to="/" className="text-white text-decoration-none">
-                        <h2 className="fw-bold mb-0">LabWiki</h2>
+                        <h2 className="fw-bold mb-0">LabRamos</h2>
                     </Link>
 
                     <div className="d-flex align-items-center">

@@ -9,10 +9,8 @@ import {
   AlertTriangle, 
   Info, 
   CheckCircle, 
-  Thermometer, 
   ExternalLink,
   Droplets,
-  Stethoscope
 } from 'lucide-react';
 
 const Bioseguridad: React.FC = () => {

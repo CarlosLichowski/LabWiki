@@ -6,7 +6,7 @@ import {
 } from 'firebase/firestore';
 import { db, auth } from '../../Credenciales';
 import { 
-  Plus, Heart, User, Trash2, Target, TrendingUp, Lightbulb, ChevronRight
+  Plus, Heart, User, Trash2, Lightbulb
 } from 'lucide-react';
 
 interface Proyecto {

@@ -1,5 +1,6 @@
 {
   "hosting": {
+    "target":"lab-pro",
     "public": "dist",
     "ignore": [
       "firebase.json",

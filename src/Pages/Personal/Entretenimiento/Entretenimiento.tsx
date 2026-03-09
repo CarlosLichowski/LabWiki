@@ -2,12 +2,12 @@
 import React, { useState, useEffect } from 'react';
 import { 
   collection, addDoc, onSnapshot, query, orderBy, serverTimestamp, 
-  deleteDoc, doc, updateDoc, increment, getDocs, where, limit 
+  deleteDoc, doc, updateDoc, increment, getDocs,  limit 
 } from 'firebase/firestore';
 import { db, auth } from '../../../Credenciales';
 import { 
   Trophy, Brain, ArrowRight, Plus, Trash2, Edit, X, Flame, Send, 
-  Medal, User, Target, BarChart3
+  Medal, User
 } from 'lucide-react';
 
 interface Pregunta {
@@ -157,7 +157,7 @@ const Entretenimiento: React.FC = () => {
                 </tr>
               </thead>
               <tbody>
-                {ranking.map((r, i) => (
+                {ranking.map((r) => (
                   <tr key={r.id}>
                     <td><div className="fw-bold"><User size={14} className="me-1"/>{r.userName}</div></td>
                     <td className="small text-muted">{r.quizTitle}</td>

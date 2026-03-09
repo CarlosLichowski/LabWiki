@@ -4,7 +4,7 @@ import {
   deleteDoc, doc, serverTimestamp, setDoc, deleteField 
 } from 'firebase/firestore';
 import { db, auth } from '../Credenciales'; 
-import { Search, Plus, Trash2, X, Star, Phone, User, Home, Bed, Save } from 'lucide-react';
+import { Search, Plus, Trash2, X, Star, Phone, User, Home, Bed } from 'lucide-react';
 
 interface Contacto {
   id: string;

@@ -1,5 +1,19 @@
 {
   "projects": {
     "default": "labwiki-80c41"
-  }
+  },
+  "targets": {
+    "labwiki-80c41": {
+      "hosting": {
+        "main-site": [
+          "labramosmejia",
+          "ramosmejia"
+        ],
+        "lab-pro": [
+          "labramos"
+        ]
+      }
+    }
+  },
+  "etags": {}
 }

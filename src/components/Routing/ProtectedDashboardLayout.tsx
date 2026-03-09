@@ -18,12 +18,13 @@ import Derivaciones from '../../Pages/Derivaciones/Derivacion';
 import CalendarioVacaciones from '../../Pages/Personal/Calendario/CalendarioVacaciones';
 import CalendarioGuardias from '../../Pages/Personal/Calendario/CalendarioGuardias';
 
-// --- NUEVA IMPORTACIÓN ---
-import Entretenimiento from '../../Pages/Personal/Entretenimiento/Entretenimiento';// Ajusta la ruta si el archivo está en otra carpeta
+// --- NUEVAS IMPORTACIONES ---
+import Entretenimiento from '../../Pages/Personal/Entretenimiento/Entretenimiento';
+import Stock from '../../Pages/Stock/Stock'; // Asegúrate que esta ruta sea correcta
 
-// Detalles de equipos...
+// Detalles de equipos
 import Estadisticas from '../../Pages/Estadisticas/Estadisticas';
-import ControlCalidadInterno from '../../Pages/Estadisticas/ControlCalidadInterno';
+
 import Cobas411Detail from '../../Pages/Personal/ManualDeEquipos/Cobas411Detail';
 import Cobas503Detail from '../../Pages/Personal/ManualDeEquipos/Cobas503Detail';
 import VidasDetail from '../../Pages/Personal/ManualDeEquipos/VidasDetail';
@@ -40,7 +41,7 @@ const ProtectedDashboardLayout: React.FC = () => {
                 {/* RUTA DE INICIO */}
                 <Route index element={<Inicio />} />
 
-                {/* RUTAS GENERALES */}
+                {/* RUTAS GENERALES Y LABORATORIO */}
                 <Route 
                     path="ateneos" 
                     element={<Ateneos userId={userId} db={db} storage={storage} appId={appId} />} 
@@ -50,12 +51,15 @@ const ProtectedDashboardLayout: React.FC = () => {
                 <Route path="contactos" element={<Contactos />} />
                 <Route path="derivaciones" element={<Derivaciones />} />
                 
-                {/* NUEVA RUTA DE ENTRETENIMIENTO */}
+                {/* --- RUTA DE STOCK --- */}
+                <Route path="stock" element={<Stock />} />
+
+                {/* RUTA DE ENTRETENIMIENTO */}
                 <Route path="entretenimiento" element={<Entretenimiento />} />
 
                 {/* CALIDAD Y ESTADÍSTICA */}
                 <Route path="estadisticas" element={<Estadisticas />} />
-                <Route path="control-calidad" element={<ControlCalidadInterno />} />
+
 
                 {/* PLANIFICACIÓN Y NORMATIVAS */}
                 <Route path="proyectos" element={<ProyectosYObjetivos />} />
@@ -73,10 +77,11 @@ const ProtectedDashboardLayout: React.FC = () => {
                     <Route path="vidas" element={<VidasDetail />} />
                     <Route path="iris" element={<IrisIQ200Detail />} />
                     <Route path="proteinograma" element={<ProteinogramaDetail />} />
-                    <Route path="*" element={<Navigate to="/personal/equipos" replace />} />
+                    {/* Redirección interna si no hay equipo seleccionado */}
+                    <Route path="*" element={<Navigate to="." replace />} />
                 </Route>
                 
-                {/* FALLBACK: Redirige a la raíz del dashboard si la ruta no existe */}
+                {/* FALLBACK: Redirige a la raíz del dashboard (/personal) si la ruta no existe */}
                 <Route path="*" element={<Navigate to="." replace />} />
             </Routes>
         </AreaPersonalDashboard>
