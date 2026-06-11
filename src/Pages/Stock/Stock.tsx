@@ -5,7 +5,8 @@ import {
 } from 'firebase/firestore';
 import appFirebase from '../../Credenciales';
 import { useAuth } from '../../Context/AuthContext';
-import { Plus, Minus, Trash2, Search, Beaker, Filter, Settings2 } from 'lucide-react';
+import { Plus, Minus, Trash2, Search, Beaker, Filter, Settings2, ArrowLeft } from 'lucide-react';
+import { Link } from 'react-router-dom';
 
 const db = getFirestore(appFirebase);
 
@@ -178,19 +179,28 @@ const Stock = () => {
                                             </td>
 
                                             <td className="text-end pe-4">
-                                                <div className="btn-group shadow-sm">
-                                                    <button onClick={() => ajustarCantidad(r.id, r.cantidad, -1)} className="btn btn-white border" disabled={isTestUser || r.cantidad === 0}>
-                                                        <Minus size={14} className="text-danger"/>
-                                                    </button>
-                                                    <button onClick={() => ajustarCantidad(r.id, r.cantidad, 1)} className="btn btn-white border" disabled={isTestUser}>
-                                                        <Plus size={14} className="text-success"/>
-                                                    </button>
+                                                {/* d-inline-flex asegura alineación perfecta en móviles */}
+                                                <div className="d-inline-flex align-items-center">
+                                                    <div className="btn-group shadow-sm">
+                                                        <button onClick={() => ajustarCantidad(r.id, r.cantidad, -1)} className="btn btn-white border" disabled={isTestUser || r.cantidad === 0}>
+                                                            <Minus size={14} className="text-danger"/>
+                                                        </button>
+                                                        <button onClick={() => ajustarCantidad(r.id, r.cantidad, 1)} className="btn btn-white border" disabled={isTestUser}>
+                                                            <Plus size={14} className="text-success"/>
+                                                        </button>
+                                                    </div>
+                                                    
+                                                    {/* 🌟 CORREGIDO: d-none oculta el tacho en responsive, d-md-inline-block lo muestra en pantallas medianas/grandes */}
+                                                    {!isTestUser && (
+                                                        <button 
+                                                            onClick={() => eliminarReactivo(r.id)} 
+                                                            className="btn btn-link text-muted ms-2 p-0 d-none d-md-inline-block"
+                                                            title="Eliminar reactivo"
+                                                        >
+                                                            <Trash2 size={18}/>
+                                                        </button>
+                                                    )}
                                                 </div>
-                                                {!isTestUser && (
-                                                    <button onClick={() => eliminarReactivo(r.id)} className="btn btn-link text-muted ms-2 p-0">
-                                                        <Trash2 size={18}/>
-                                                    </button>
-                                                )}
                                             </td>
                                         </tr>
                                     );
@@ -217,6 +227,18 @@ const Stock = () => {
                 .btn-white { background: white; border: 1px solid #dee2e6; }
                 .btn-white:hover:not(:disabled) { background: #f8f9fa; }
             `}</style>
+
+
+                  <div className="d-flex justify-content-center mt-5">
+        <Link 
+          to="/" 
+          className="btn bg-secondary-subtle text-dark border d-inline-flex align-items-center gap-2 px-4 py-2 rounded-3 fw-bold transition-all hover-bg-btn shadow-sm"
+          style={{ textDecoration: 'none' }}
+        >
+          <ArrowLeft size={16} className="text-primary" /> 
+          <span>Volver al Inicio</span>
+        </Link>
+      </div>
         </div>
     );
 };

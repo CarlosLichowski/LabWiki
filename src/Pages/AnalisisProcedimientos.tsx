@@ -10,8 +10,9 @@ import {
     doc, 
     orderBy 
 } from 'firebase/firestore';
-import { Search, Plus, FileText, Edit3, Trash2, Microscope, TestTube, Info, Tag } from 'lucide-react';
+import { Search, Plus, FileText, Edit3, Trash2, Microscope, TestTube, Info, Tag, ArrowLeft } from 'lucide-react';
 import toast from 'react-hot-toast';
+import { Link } from 'react-router-dom';
 
 interface Analisis {
     id?: string;
@@ -248,6 +249,18 @@ const AnalisisProcedimientos: React.FC = () => {
                     </div>
                 </div>
             )}
+
+                  <div className="d-flex justify-content-center mt-5">
+        <Link 
+          to="/" 
+          className="btn bg-secondary-subtle text-dark border d-inline-flex align-items-center gap-2 px-4 py-2 rounded-3 fw-bold transition-all hover-bg-btn shadow-sm"
+          style={{ textDecoration: 'none' }}
+        >
+          <ArrowLeft size={16} className="text-primary" /> 
+          <span>Volver al Inicio</span>
+        </Link>
+      </div>
+
         </div>
     );
 };

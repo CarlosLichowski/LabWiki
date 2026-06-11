@@ -1,5 +1,4 @@
-//Pages/Calendario/CalendarioVacaciones.tsx
-
+// src/Pages/Personal/Calendario/CalendarioVacaciones.tsx
 import CalendarioGeneral from './CalendarioGeneral';
 
 const CalendarioVacaciones = () => {

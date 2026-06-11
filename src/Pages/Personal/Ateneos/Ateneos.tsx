@@ -1,4 +1,3 @@
-
 // src/Pages/Personal/Ateneos/Ateneos.tsx
 import React, { useState, useEffect } from 'react';
 import {
@@ -7,8 +6,9 @@ import {
   Firestore
 } from 'firebase/firestore';
 import { auth } from '../../../Credenciales';
-import { FolderPlus, ExternalLink, Trash2, Star, Plus, User, Calendar } from 'lucide-react';
+import { FolderPlus, ExternalLink, Trash2, Star, Plus, User, Calendar, ArrowLeft } from 'lucide-react'; // 🌟 Importamos ArrowLeft
 import toast from 'react-hot-toast';
+import { Link } from 'react-router-dom';
 
 interface Ateneo {
   id: string;
@@ -33,7 +33,7 @@ const Ateneos: React.FC<AteneosProps> = ({ userId, db, displayName }) => {
   const [url, setUrl] = useState('');
   const [loading, setLoading] = useState(false);
   const [misFavoritos, setMisFavoritos] = useState<Record<string, any>>({});
-  const [showForm, setShowForm] = useState(false); // Para colapsar formulario en móvil
+  const [showForm, setShowForm] = useState(false); 
 
   const currentUser = auth.currentUser;
 
@@ -103,6 +103,9 @@ const Ateneos: React.FC<AteneosProps> = ({ userId, db, displayName }) => {
 
   return (
     <div className="container-fluid py-2 py-md-4 px-2 px-md-4 max-w-5xl mx-auto">
+      
+
+
       {/* HEADER */}
       <div className="d-flex justify-content-between align-items-center mb-4">
         <div>
@@ -253,7 +256,22 @@ const Ateneos: React.FC<AteneosProps> = ({ userId, db, displayName }) => {
       <style>{`
         .extra-small { font-size: 0.65rem; }
         .animate__animated { animation-duration: 0.3s; }
+        .hover-link-dark:hover { color: #212529 !important; }
       `}</style>
+
+
+      <div className="d-flex justify-content-center mt-5">
+        <Link 
+          to="/" 
+          className="btn bg-secondary-subtle text-dark border d-inline-flex align-items-center gap-2 px-4 py-2 rounded-3 fw-bold transition-all hover-bg-btn shadow-sm"
+          style={{ textDecoration: 'none' }}
+        >
+          <ArrowLeft size={16} className="text-primary" /> 
+          <span>Volver al Inicio</span>
+        </Link>
+      </div>
+
+      
     </div>
   );
 };

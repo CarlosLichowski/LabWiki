@@ -1,104 +1,99 @@
-// src/Pages/Personal/Inicio/Inicio.tsx
-import React, { useEffect, useState } from 'react';
-import { useAuth } from '../../../Context/AuthContext';
-import { collection, query, orderBy, limit, onSnapshot } from 'firebase/firestore'; 
+// src/pages/Inicio.tsx (o src/components/Inicio.tsx)
+import React from 'react';
 import { Link } from 'react-router-dom';
-import { 
-    Folder, Contact, Clock, User, 
-    Beaker, Microscope, Database, BarChart3 
-} from 'lucide-react';
-
-interface Actividad {
-    id: string;
-    tipo: 'ateneo' | 'contacto';
-    titulo: string;
-    subtitulo: string;
-    fecha: Date;
-}
+import { Users, Microscope, ClipboardList, HardDrive, Contact, Calendar, ArrowRight } from 'lucide-react';
 
 const Inicio: React.FC = () => {
-    const { user, db } = useAuth();
-    const [actividad, setActividad] = useState<Actividad[]>([]);
-    const [loading, setLoading] = useState(true);
-
-    const displayName = user?.displayName || user?.email?.split('@')[0] || "Colega";
-
-    // Configuración de los 6 botones (5 pedidos + Guía)
-    const atajosRapidos = [
-        { label: 'Ateneos', icon: <Folder size={24} />, path: '/personal/ateneos', color: 'text-primary', bg: 'bg-primary-subtle' },
-        { label: 'Derivaciones', icon: <Beaker size={24} />, path: '/personal/derivaciones', color: 'text-warning', bg: 'bg-warning-subtle' },
-        { label: 'Análisis', icon: <Microscope size={24} />, path: '/personal/analisis', color: 'text-danger', bg: 'bg-danger-subtle' },
-        { label: 'Stock', icon: <Database size={24} />, path: '/personal/stock', color: 'text-info', bg: 'bg-info-subtle' },
-        { label: 'Estadísticas', icon: <BarChart3 size={24} />, path: '/personal/estadisticas', color: 'text-success', bg: 'bg-success-subtle' },
-        { label: 'Guía', icon: <Contact size={24} />, path: '/personal/contactos', color: 'text-secondary', bg: 'bg-light' },
+    const modulos = [
+        {
+            title: 'Ateneos',
+            description: 'Gestión de sesiones clínicas y colaboración profesional.',
+            path: '/ateneos',
+            icon: <Users size={32} className="text-primary" />,
+            bgIcon: 'bg-primary-subtle',
+            actionText: 'Acceder'
+        },
+        {
+            title: 'Derivaciones',
+            description: 'Seguimiento y control de muestras externas.',
+            path: '/derivaciones',
+            icon: <Microscope size={32} className="text-success" />,
+            bgIcon: 'bg-success-subtle',
+            actionText: 'Acceder'
+        },
+        {
+            title: 'Inventario',
+            description: 'Control de stock y suministros del laboratorio.',
+            path: '/stock',
+            icon: <ClipboardList size={32} className="text-warning" />,
+            bgIcon: 'bg-warning-subtle',
+            actionText: 'Acceder'
+        },
+        {
+            title: 'Contactos',
+            description: 'Agenda centralizada de personal y entidades externas.',
+            path: '/contactos',
+            icon: <Contact size={32} className="text-danger" />,
+            bgIcon: 'bg-danger-subtle',
+            actionText: 'Ver agenda'
+        },
+        {
+            title: 'Calendarios',
+            description: 'Organización de guardias internas y vacaciones.',
+            path: '/calendario-guardias',
+            icon: <Calendar size={32} className="text-dark" />,
+            bgIcon: 'bg-secondary-subtle',
+            actionText: 'Ver turnos'
+        },
+        {
+            title: 'Manual de Equipos',
+            description: 'Documentación técnica, guías de uso y mantenimiento.',
+            path: '/equipos',
+            icon: <HardDrive size={32} className="text-indigo" style={{ color: '#6366f1' }} />, // Color índigo moderno
+            bgIcon: 'bg-indigo-subtle'
+        }
     ];
 
-    useEffect(() => {
-        setLoading(true);
-        const qAteneos = query(collection(db, 'ateneos_biblioteca'), orderBy('createdAt', 'desc'), limit(5));
-        const qContactos = query(collection(db, 'contactos_internos'), orderBy('createdAt', 'desc'), limit(5));
-
-        let ateneosData: Actividad[] = [];
-        let contactosData: Actividad[] = [];
-
-        const actualizarEstado = () => {
-            const mezclados = [...ateneosData, ...contactosData]
-                .sort((a, b) => b.fecha.getTime() - a.fecha.getTime())
-                .slice(0, 8); // Aumentado a 8 para aprovechar el espacio
-            setActividad(mezclados);
-            setLoading(false);
-        };
-
-        const unsubAteneos = onSnapshot(qAteneos, (snap) => {
-            ateneosData = snap.docs.map(doc => ({
-                id: doc.id,
-                tipo: 'ateneo',
-                titulo: doc.data().titulo || 'Sin título',
-                subtitulo: `Subido por ${doc.data().autor || 'Staff'}`,
-                fecha: doc.data().createdAt?.toDate() || new Date()
-            }));
-            actualizarEstado();
-        });
-
-        const unsubContactos = onSnapshot(qContactos, (snap) => {
-            contactosData = snap.docs.map(doc => ({
-                id: doc.id,
-                tipo: 'contacto',
-                titulo: doc.data().nombre || 'Sin nombre',
-                subtitulo: `Nuevo interno en ${doc.data().area || 'Servicio'}`,
-                fecha: doc.data().createdAt?.toDate() || new Date()
-            }));
-            actualizarEstado();
-        });
-
-        return () => { unsubAteneos(); unsubContactos(); };
-    }, [db]);
-
     return (
-        <div className="animate__animated animate__fadeIn">
-            {/* Header de Bienvenida */}
-            <div className="mb-4 p-4 bg-white rounded-4 shadow-sm border-start border-4 border-success">
-                <h3 className="fw-bold text-dark mb-1">¡Hola, {displayName}! 👋</h3>
-                <p className="text-muted mb-0">Bienvenido al Panel Personal de LabWiki.</p>
+        <div className="d-flex flex-column align-items-center justify-content-center min-vh-75 py-5 px-3" style={{ backgroundColor: '#f8f9fa' }}>
+            
+            {/* Título Estilizado */}
+            <div className="text-center mb-5">
+                <h1 className="fw-black text-dark position-relative d-inline-block pb-2 m-0" style={{ fontSize: '2.5rem', letterSpacing: '-0.5px' }}>
+                    Panel de Control
+                    <span className="position-absolute bottom-0 start-50 translate-middle-x bg-dark rounded" style={{ width: '60px', height: '4px' }}></span>
+                </h1>
             </div>
 
-            {/* --- SECCIÓN DE ACCESOS DIRECTOS --- */}
-            <div className="mb-5">
-                <h5 className="fw-bold mb-3 d-flex align-items-center">
-                    <span className="bg-success rounded-circle p-1 me-2 d-flex align-items-center justify-content-center" style={{width: '24px', height: '24px'}}>
-                        <div className="bg-white rounded-circle" style={{width: '8px', height: '8px'}}></div>
-                    </span>
-                    Accesos Directos
-                </h5>
-                <div className="row g-2 g-md-3">
-                    {atajosRapidos.map((atajo, index) => (
-                        <div key={index} className="col-4 col-md-2">
-                            <Link to={atajo.path} className="text-decoration-none">
-                                <div className={`card border-0 ${atajo.bg} h-100 shadow-sm rounded-4 transition-all hover-up p-2 p-md-3 text-center`}>
-                                    <div className={`${atajo.color} mb-2`}>
-                                        {atajo.icon}
+            {/* Grid de Cartas */}
+            <div className="container" style={{ maxWidth: '1200px' }}>
+                <div className="row g-4 justify-content-center">
+                    {modulos.map((modulo, index) => (
+                        <div key={index} className="col-12 col-md-6 col-lg-4">
+                            <Link to={modulo.path} className="text-decoration-none text-dark card-hover-effect d-block h-100">
+                                <div className="card h-100 border border-light-subtle shadow-sm rounded-4 p-4 bg-white d-flex flex-column justify-content-between position-relative overflow-hidden transition-all">
+                                    
+                                    <div>
+                                        {/* Contenedor del Icono Superior */}
+                                        <div className={`d-flex align-items-center justify-content-center rounded-3 mb-4 ${modulo.bgIcon}`} style={{ width: '60px', height: '60px' }}>
+                                            {modulo.icon}
+                                        </div>
+
+                                        {/* Textos principales */}
+                                        <h2 className="fw-bold text-dark mb-2" style={{ fontSize: '1.5rem', letterSpacing: '-0.3px' }}>
+                                            {modulo.title}
+                                        </h2>
+                                        <p className="text-muted mb-4 lh-base" style={{ fontSize: '0.9rem' }}>
+                                            {modulo.description}
+                                        </p>
                                     </div>
-                                    <span className="fw-bold text-dark" style={{ fontSize: '0.75rem' }}>{atajo.label}</span>
+
+                                    {/* Indicador de Acción Alineado a la Derecha */}
+                                    <div className="d-flex align-items-center justify-content-end text-success fw-bold small text-uppercase tracking-wider action-link mt-auto pt-2">
+                                        <span>{modulo.actionText || 'Acceder'}</span>
+                                        <ArrowRight size={16} className="ms-1 transition-transform arrow-icon" />
+                                    </div>
+
                                 </div>
                             </Link>
                         </div>
@@ -106,63 +101,48 @@ const Inicio: React.FC = () => {
                 </div>
             </div>
 
-            <div className="row g-4">
-                {/* LISTA DE ACTIVIDAD (Ocupando todo el ancho disponible) */}
-                <div className="col-12">
-                    <div className="d-flex align-items-center justify-content-between mb-3">
-                        <h5 className="fw-bold m-0 d-flex align-items-center">
-                            <Clock size={20} className="me-2 text-success"/> Lo último subido
-                        </h5>
-                    </div>
-
-                    <div className="card border-0 shadow-sm rounded-4 overflow-hidden">
-                        <div className="list-group list-group-flush">
-                            {loading ? (
-                                <div className="p-5 text-center">
-                                    <div className="spinner-border text-success spinner-border-sm me-2"></div> 
-                                    Cargando novedades...
-                                </div>
-                            ) : actividad.length > 0 ? (
-                                actividad.map((item) => (
-                                    <div key={item.id} className="list-group-item list-group-item-action border-0 border-bottom p-3">
-                                        <div className="d-flex align-items-center">
-                                            <div className={`p-3 rounded-3 me-3 ${item.tipo === 'ateneo' ? 'bg-primary-subtle text-primary' : 'bg-info-subtle text-info'}`}>
-                                                {item.tipo === 'ateneo' ? <Folder size={20}/> : <User size={20}/>}
-                                            </div>
-                                            <div className="flex-grow-1">
-                                                <div className="d-flex justify-content-between align-items-start">
-                                                    <h6 className="mb-0 fw-bold text-dark">{item.titulo}</h6>
-                                                    <small className="text-muted" style={{ fontSize: '0.7rem' }}>
-                                                        {item.fecha.toLocaleDateString()}
-                                                    </small>
-                                                </div>
-                                                <p className="mb-0 text-muted small">{item.subtitulo}</p>
-                                            </div>
-                                        </div>
-                                    </div>
-                                ))
-                            ) : (
-                                <div className="p-5 text-center text-muted">Aún no hay actividad registrada.</div>
-                            )}
-                        </div>
-                        <div className="card-footer bg-white border-0 py-3 text-center">
-                             <span className="text-muted small">Actualizado en tiempo real</span>
-                        </div>
-                    </div>
-                </div>
+            {/* Footer Técnico Inferior */}
+            <div className="mt-5 d-flex align-items-center gap-2 text-muted fw-medium" style={{ fontSize: '0.8rem', letterSpacing: '0.5px' }}>
+                <span className="d-inline-block bg-success rounded-circle animate-pulse" style={{ width: '8px', height: '8px' }}></span>
+                <span>Sistema Operativo</span>
+                <span className="text-secondary opacity-50">|</span>
+                <span>V 2.4.0</span>
+                <span className="text-secondary opacity-50">|</span>
+                <span>02:02</span>
             </div>
 
+            {/* Estilos CSS locales y clases personalizadas para Bootstrap */}
             <style>{`
-                .hover-up:hover {
-                    transform: translateY(-5px);
-                    box-shadow: 0 8px 15px rgba(0,0,0,0.1) !important;
+                .fw-black { font-weight: 800 !important; }
+                .card-hover-effect { transition: transform 0.2s cubic-bezier(0.4, 0, 0.2, 1); }
+                .card-hover-effect .card { transition: border-color 0.2s ease, box-shadow 0.2s ease; }
+                .arrow-icon { transition: transform 0.2s ease; }
+                
+                /* Clases para el color Indigo que Bootstrap no siempre incluye por defecto en bg-subtle */
+                .bg-indigo-subtle { background-color: #e0e7ff !important; }
+                
+                .card-hover-effect:hover {
+                    transform: translateY(-4px);
                 }
-                .transition-all {
-                    transition: all 0.3s ease;
+                .card-hover-effect:hover .card {
+                    border-color: #dee2e6 !important;
+                    box-shadow: 0 12px 24px rgba(0,0,0,0.06) !important;
                 }
-                .list-group-item-action:hover {
-                    background-color: #f8f9fa;
+                .card-hover-effect:hover .arrow-icon {
+                    transform: translateX(4px);
                 }
+                .card-hover-effect:active {
+                    transform: translateY(-1px);
+                }
+                
+                .tracking-wider { letter-spacing: 0.05em; }
+                
+                @keyframes pulse {
+                    0% { transform: scale(0.9); opacity: 0.6; }
+                    50% { transform: scale(1.1); opacity: 1; }
+                    100% { transform: scale(0.9); opacity: 0.6; }
+                }
+                .animate-pulse { animation: pulse 2s infinite ease-in-out; }
             `}</style>
         </div>
     );

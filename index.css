@@ -1,0 +1,44 @@
+/* Contenedor del Tooltip */
+.project-tooltip-container {
+    display: inline-block;
+}
+
+/* Caja de texto del Tooltip (Oculta por defecto) */
+.project-tooltip-container .project-tooltip-text {
+    visibility: hidden;
+    width: 250px;
+    background-color: #212529; /* Color oscuro tipo Bootstrap */
+    color: #ffffff;
+    text-align: center;
+    border-radius: 6px;
+    padding: 8px 12px;
+    position: absolute;
+    z-index: 100;
+    bottom: 130%; /* Se eleva por encima del botón */
+    left: 50%;
+    transform: translateX(-50%);
+    opacity: 0;
+    transition: opacity 0.2s ease-in-out, visibility 0.2s;
+    font-size: 0.75rem;
+    line-height: 1.4;
+    box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.15);
+    pointer-events: none; /* Previene parpadeos si el mouse entra al cartel */
+}
+
+/* Flechita del Tooltip */
+.project-tooltip-container .project-tooltip-text::after {
+    content: "";
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    margin-left: -5px;
+    border-width: 5px;
+    border-style: solid;
+    border-color: #212529 transparent transparent transparent;
+}
+
+/* Activación instantánea al pasar el mouse */
+.project-tooltip-container:hover .project-tooltip-text {
+    visibility: visible;
+    opacity: 1;
+}

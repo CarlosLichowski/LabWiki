@@ -1,8 +1,6 @@
 // src/useContext/AuthContext.tsx
-
 import React, { createContext, useContext, useState, useEffect } from 'react';
 import type { ReactNode } from 'react';
-// 🟢 CORRECCIÓN: Cambiar appId por APP_ID para que coincida con Credenciales.ts
 import appFirebase, { db, storage, APP_ID } from '../Credenciales'; 
 import { getAuth, onAuthStateChanged, signOut, GoogleAuthProvider, signInWithPopup } from 'firebase/auth';
 import type { User } from 'firebase/auth';
@@ -12,24 +10,18 @@ import type { FirebaseStorage } from 'firebase/storage';
 const auth = getAuth(appFirebase);
 const googleProvider = new GoogleAuthProvider();
 
-// 1. Definir los tipos
 interface AuthContextType {
     user: User | null;
     loading: boolean;
     logout: () => Promise<void>;
     loginWithGoogle: () => Promise<void>;
-    
     db: Firestore;
     storage: FirebaseStorage;
-    // 🟢 CORRECCIÓN: Usar APP_ID en la interfaz si es el nombre que se usará.
-    // Si quieres que la prop se llame appId, usa: appId: string; y renombra al crear el objeto value.
-    appId: string; // Dejamos 'appId' para el consumidor, pero importamos 'APP_ID'.
+    appId: string; 
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
-
-// 3. Crear el Provider
 interface AuthProviderProps {
     children: ReactNode;
 }
@@ -63,7 +55,6 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
         loginWithGoogle,
         db,
         storage,
-        // 🟢 CORRECCIÓN: Mapear la importación APP_ID al nombre de la prop appId
         appId: APP_ID, 
     };
 
@@ -74,7 +65,6 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 };
 
-// 4. Crear el Hook para usar el Contexto... (Sin cambios)
 export const useAuth = (): AuthContextType => {
     const context = useContext(AuthContext);
     if (context === undefined) {

@@ -1,5 +1,6 @@
 // src/pages/Personal/ManualDeEquipos/ManualEquipos.tsx
 
+import { ArrowLeft } from 'lucide-react';
 import React from 'react';
 import { Link, Outlet, useLocation } from 'react-router-dom';
 
@@ -27,8 +28,8 @@ const ManualEquipos: React.FC = () => {
         }`;
     };
 
-    // Si la ruta es exactamente /personal/equipos, mostramos un mensaje de bienvenida
-    const isIndex = location.pathname === '/personal/equipos';
+    // 🌟 CORREGIDO: Ahora verifica la nueva ruta limpia /equipos
+    const isIndex = location.pathname === '/equipos' || location.pathname === '/equipos/';
 
     return (
         <div className="flex-grow-1 p-0">
@@ -37,14 +38,13 @@ const ManualEquipos: React.FC = () => {
             </h2>
 
             {/* 🟢 A. Menú de Equipos (NAV TABS SUPERIOR) 🟢 */}
-            {/* Quitamos el div con d-flex flex-grow-1 que forzaba el layout lateral */}
             <div className="mb-4">
                 <ul className="nav nav-tabs border-bottom-0">
                     {equiposDisponibles.map((equipo) => (
                         <li className="nav-item" key={equipo.id}>
+                            {/* 🌟 CORREGIDO: Ahora apunta de manera absoluta a /equipos/... */}
                             <Link 
-                                to={`/personal/equipos/${equipo.id}`} 
-                                // Usamos las clases para simular una pestaña activa con la línea verde
+                                to={`/equipos/${equipo.id}`} 
                                 className={getLinkClass(equipo.id)}
                             >
                                 {equipo.icono} {equipo.nombre}
@@ -53,7 +53,6 @@ const ManualEquipos: React.FC = () => {
                     ))}
                 </ul>
             </div>
-
 
             {/* 🟢 B. Área de Contenido del Manual Seleccionado (Outlet) 🟢 */}
             <div className="flex-grow-1 p-3 border rounded shadow-sm bg-white">
@@ -68,6 +67,19 @@ const ManualEquipos: React.FC = () => {
                     <Outlet />
                 )}
             </div>
+
+                        
+
+      <div className="d-flex justify-content-center mt-5">
+        <Link 
+          to="/" 
+          className="btn bg-secondary-subtle text-dark border d-inline-flex align-items-center gap-2 px-4 py-2 rounded-3 fw-bold transition-all hover-bg-btn shadow-sm"
+          style={{ textDecoration: 'none' }}
+        >
+          <ArrowLeft size={16} className="text-primary" /> 
+          <span>Volver al Inicio</span>
+        </Link>
+      </div>
             
         </div>
     );

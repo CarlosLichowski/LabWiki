@@ -11,7 +11,9 @@ import {
   CheckCircle, 
   ExternalLink,
   Droplets,
+  ArrowLeft,
 } from 'lucide-react';
+import { Link } from 'react-router-dom';
 
 const Bioseguridad: React.FC = () => {
   const [tab, setTab] = useState<'normas' | 'residuos' | 'accidentes'>('normas');
@@ -167,6 +169,17 @@ const Bioseguridad: React.FC = () => {
           </div>
         </div>
       )}
+
+            <div className="d-flex justify-content-center mt-5">
+        <Link 
+          to="/" 
+          className="btn bg-secondary-subtle text-dark border d-inline-flex align-items-center gap-2 px-4 py-2 rounded-3 fw-bold transition-all hover-bg-btn shadow-sm"
+          style={{ textDecoration: 'none' }}
+        >
+          <ArrowLeft size={16} className="text-primary" /> 
+          <span>Volver al Inicio</span>
+        </Link>
+      </div>
     </div>
   );
 };

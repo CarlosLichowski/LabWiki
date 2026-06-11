@@ -4,7 +4,8 @@ import {
   deleteDoc, doc, serverTimestamp, setDoc, deleteField 
 } from 'firebase/firestore';
 import { db, auth } from '../Credenciales'; 
-import { Search, Plus, Trash2, X, Star, Phone, User, Home, Bed } from 'lucide-react';
+import { Search, Plus, Trash2, X, Star, Phone, User, Home, Bed, ArrowLeft } from 'lucide-react';
+import { Link } from 'react-router-dom';
 
 interface Contacto {
   id: string;
@@ -53,7 +54,7 @@ const Contactos: React.FC = () => {
     const esFavorito = !!misFavoritos[contactoId];
     try {
       await setDoc(userRef, {
-        favoritos_contactos: { [contactoId]: esFavorito ? deleteField() : true }
+        favorites_contactos: { [contactoId]: esFavorito ? deleteField() : true }
       }, { merge: true });
     } catch (err) { console.error(err); }
   };
@@ -193,6 +194,18 @@ const Contactos: React.FC = () => {
         </div>
       </div>
 
+    
+      <div className="d-flex justify-content-center mt-5">
+        <Link 
+          to="/" 
+          className="btn bg-secondary-subtle text-dark border d-inline-flex align-items-center gap-2 px-4 py-2 rounded-3 fw-bold transition-all hover-bg-btn shadow-sm"
+          style={{ textDecoration: 'none' }}
+        >
+          <ArrowLeft size={16} className="text-primary" /> 
+          <span>Volver al Inicio</span>
+        </Link>
+      </div>
+
       <style>{`
         .rounded-4 { border-radius: 1rem !important; }
         .font-monospace { font-family: 'JetBrains Mono', 'Roboto Mono', monospace; letter-spacing: -1px; }
@@ -200,12 +213,13 @@ const Contactos: React.FC = () => {
         .group-hover-visible { opacity: 0; transition: opacity 0.2s; }
         .contact-card { transition: transform 0.2s, box-shadow 0.2s; }
         .contact-card:hover { transform: translateY(-4px); box-shadow: 0 1rem 3rem rgba(0,0,0,.1) !important; }
+        .hover-bg-btn:hover { background-color: #e2e6ea !important; border-color: #dae0e5 !important; }
       `}</style>
     </div>
   );
 };
 
-// COMPONENTE TARJETA
+// COMPONENTE TARJETA (Limpio del botón de volver)
 const ContactCard = ({ contacto, esFav, onToggleFav, onBorrar }: any) => {
   const getConfig = () => {
     switch(contacto.tipo) {

@@ -1,6 +1,6 @@
 // src/components/Header.tsx
 
-import React, { useState } from 'react'; // 👈 Importamos useState
+import React, { useState } from 'react'; 
 import { Link } from "react-router-dom";
 import { useAuth } from "../Context/AuthContext"; 
 
@@ -37,9 +37,9 @@ const Header: React.FC = () => {
             <div className="container">
                 <div className="d-flex justify-content-between align-items-center">
                     
-                    {/* 🟢 Título Principal (Link a Home) */}
+                    {/* 🟢 Título Principal (Cambiado de LabRamos a LabWiki) */}
                     <Link to="/" className="text-white text-decoration-none">
-                        <h2 className="fw-bold mb-0">LabRamos</h2>
+                        LabRamos
                     </Link>
 
                     <div className="d-flex align-items-center">
@@ -61,12 +61,12 @@ const Header: React.FC = () => {
                                 {/* 2. Menú Desplegable (Las Opciones Personales) */}
                                 <ul 
                                     className={`dropdown-menu dropdown-menu-end ${isMenuOpen ? 'show' : ''}`}
-                                    style={{ position: 'absolute' }} // Necesario para la posición
+                                    style={{ position: 'absolute' }} 
                                 >
                                     <li className="dropdown-header">Hola, {displayName}</li>
                                     <li><hr className="dropdown-divider" /></li>
 
-                                    {/* OPCIÓN: Favoritos Guardados (NUEVA) */}
+                                    {/* OPCIÓN: Favoritos Guardados */}
                                     <li>
                                         <Link 
                                             to="/personal/favoritos" 
@@ -77,7 +77,7 @@ const Header: React.FC = () => {
                                         </Link>
                                     </li>
 
-                                    {/* OPCIÓN: Área Personal (Mantenemos tu link original) */}
+                                    {/* OPCIÓN: Área Personal */}
                                     <li>
                                         <Link 
                                             to="/personal" 
@@ -88,7 +88,7 @@ const Header: React.FC = () => {
                                         </Link>
                                     </li>
 
-                                    {/* OPCIÓN: Historial (NUEVA) */}
+                                    {/* OPCIÓN: Historial */}
                                     <li>
                                         <Link 
                                             to="/personal/historial" 
@@ -101,7 +101,7 @@ const Header: React.FC = () => {
                                     
                                     <li><hr className="dropdown-divider" /></li>
 
-                                    {/* OPCIÓN: Configuración (NUEVA) */}
+                                    {/* OPCIÓN: Configuración */}
                                     <li>
                                         <Link 
                                             to="/personal/configuracion" 
@@ -112,7 +112,7 @@ const Header: React.FC = () => {
                                         </Link>
                                     </li>
 
-                                    {/* OPCIÓN: Cerrar Sesión (Mantenemos tu función) */}
+                                    {/* OPCIÓN: Cerrar Sesión */}
                                     <li>
                                         <button 
                                             onClick={handleLogout} 
@@ -124,7 +124,7 @@ const Header: React.FC = () => {
                                 </ul>
                             </div>
                         ) : (
-                            // 🟢 Si NO hay un usuario logueado
+                            // Si NO hay un usuario logueado
                             <Link
                                 to="/login"
                                 className="btn btn-light fw-bold px-3"
