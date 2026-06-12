@@ -1,10 +1,13 @@
-// src/pages/ManualEquipos/Cobas411Detail.tsx
-
+//cobas411Detail.tsx
 import React from 'react';
+import { FileDown } from 'lucide-react';
 
 const Cobas411Detail: React.FC = () => {
+    // 🔗 URL provista para el Cobas e411
+    const manualUrl = "https://elabdoc-prod.roche.com/eLD/api/downloads/93994c68-df9d-ee11-2291-005056a71a5d?countryIsoCode=es";
+
     return (
-        <div className="p-4 border rounded shadow-sm bg-white">
+        <div className="p-4 border rounded shadow-sm bg-white animate__animated animate__fadeIn">
             <header className="mb-4">
                 <h2 className="fw-bold text-success mb-1">
                     Cobas e411 - Inmunoanalizador
@@ -12,7 +15,6 @@ const Cobas411Detail: React.FC = () => {
                 <p className="text-muted lead">
                     Plataforma compacta y totalmente automatizada para inmunoensayos basados en la tecnología ECL (Electroquimioluminiscencia).
                 </p>
-                
             </header>
             
             <hr />
@@ -24,20 +26,28 @@ const Cobas411Detail: React.FC = () => {
             <div className="row g-3 mb-5">
                 {/* Manual de Usuario */}
                 <div className="col-md-6">
-                    <div className="card bg-light p-3 border-start border-4 border-primary h-100">
+                    <div className="card bg-light p-3 border-start border-4 border-primary h-100 shadow-sm">
                         <h5 className="fw-bold text-primary">Manual de Usuario</h5>
-                        <p className="small text-muted mb-2">Versión 5.1 (Octubre 2024). Guía completa de operación y seguridad.</p>
-                        <button className="btn btn-sm btn-outline-primary mt-auto">
-                            Descargar PDF (12 MB)
-                        </button>
+                        <p className="small text-muted mb-3">Versión 5.1 (Octubre 2024). Guía completa de operación y seguridad.</p>
+                        
+                        {/* 🟢 BOTÓN IMPLEMENTADO: Abre el PDF oficial en pestaña nueva */}
+                        <a 
+                            href={manualUrl}
+                            target="_blank"
+                            rel="noreferrer"
+                            className="btn btn-sm btn-primary mt-auto d-inline-flex align-items-center justify-content-center gap-2 fw-medium shadow-sm py-2 rounded-3"
+                        >
+                            <FileDown size={16} />
+                            Ver / Descargar PDF (12 MB)
+                        </a>
                     </div>
                 </div>
                 {/* POE */}
                 <div className="col-md-6">
-                    <div className="card bg-light p-3 border-start border-4 border-success h-100">
+                    <div className="card bg-light p-3 border-start border-4 border-success h-100 shadow-sm">
                         <h5 className="fw-bold text-success">Procedimiento Operativo Estándar (POE)</h5>
-                        <p className="small text-muted mb-2">Instrucciones rápidas para el encendido, preparación de muestras y mantenimiento diario.</p>
-                        <button className="btn btn-sm btn-outline-success mt-auto">
+                        <p className="small text-muted mb-3">Instrucciones rápidas para el encendido, preparación de muestras y mantenimiento diario.</p>
+                        <button className="btn btn-sm btn-outline-success mt-auto py-2 rounded-3 fw-medium">
                             Ver POE en Línea
                         </button>
                     </div>
@@ -68,7 +78,7 @@ const Cobas411Detail: React.FC = () => {
                     </tr>
                     <tr>
                         <td className="fw-bold">Tamaño de la Muestra</td>
-                        <td>10 - 50 $\mu L$</td>
+                        <td>10 - 50 &mu;L</td>
                     </tr>
                 </tbody>
             </table>

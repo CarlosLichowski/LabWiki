@@ -21,9 +21,10 @@ import Estadisticas from '../../Pages/Estadisticas/Estadisticas';
 
 // Detalles de equipos
 import Cobas411Detail from '../../Pages/Personal/ManualDeEquipos/Cobas411Detail';
+import Cobas6000Detail from '../../Pages/Personal/ManualDeEquipos/Cobas6000Detail'
 import Cobas503Detail from '../../Pages/Personal/ManualDeEquipos/Cobas503Detail';
 import VidasDetail from '../../Pages/Personal/ManualDeEquipos/VidasDetail';
-import IrisIQ200Detail from '../../Pages/Personal/ManualDeEquipos/IrisIQ200';
+import LauraXLDetail from '../../Pages/Personal/ManualDeEquipos/LauraXL(Orina)';
 import ProteinogramaDetail from '../../Pages/Personal/ManualDeEquipos/ProteinogramasDetail';
 
 const ProtectedDashboardLayout: React.FC = () => {
@@ -64,9 +65,10 @@ const ProtectedDashboardLayout: React.FC = () => {
                     {/* MANUAL DE EQUIPOS */}
                     <Route path="equipos" element={<ManualEquipos />} />
                     <Route path="equipos/cobas411" element={<Cobas411Detail />} /> 
+                    <Route path="equipos/cobas6000" element={<Cobas6000Detail />} />
                     <Route path="equipos/cobas503" element={<Cobas503Detail />} />
                     <Route path="equipos/vidas" element={<VidasDetail />} />
-                    <Route path="equipos/iris" element={<IrisIQ200Detail />} />
+                    <Route path="equipos/lauraxl" element={<LauraXLDetail />} />
                     <Route path="equipos/proteinograma" element={<ProteinogramaDetail />} />
                     
                     {/* FALLBACK LOCAL */}
