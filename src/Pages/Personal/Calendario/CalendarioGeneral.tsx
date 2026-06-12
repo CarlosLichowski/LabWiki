@@ -1,4 +1,3 @@
-// src/Pages/Personal/Calendario/CalendarioGeneral.tsx
 import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom'; 
 import FullCalendar from '@fullcalendar/react';
@@ -6,7 +5,7 @@ import dayGridPlugin from '@fullcalendar/daygrid';
 import interactionPlugin from '@fullcalendar/interaction';
 import esLocale from '@fullcalendar/core/locales/es';
 import { collection, addDoc, onSnapshot, query, where, deleteDoc, doc, serverTimestamp, getDoc } from 'firebase/firestore';
-import { Calendar, Info, X, Check, ArrowLeft, Trash2, ChevronLeft, ChevronRight } from 'lucide-react'; 
+import { Info, X, Check, ArrowLeft, Trash2 } from 'lucide-react'; 
 import toast from 'react-hot-toast';
 import { db, auth } from '../../../Credenciales';
 
@@ -42,8 +41,10 @@ const CalendarioGeneral: React.FC<Props> = ({ tipo, titulo, defaultColor }) => {
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [eventoAEliminar, setEventoAEliminar] = useState<{ id: string; title: string } | null>(null);
 
+  // 🟢 EFECTO CORREGIDO CON CLÁUSULA DE GUARDA PARA LA AUTENTICACIÓN
   useEffect(() => {
     const verificarSector = async () => {
+      // Si la sesión de Firebase aún no determinó el usuario, evitamos la consulta
       if (!currentUser) {
         setEsAutorizado(false);
         setCargandoPermisos(false);
@@ -265,12 +266,12 @@ const CalendarioGeneral: React.FC<Props> = ({ tipo, titulo, defaultColor }) => {
           display: none !important; /* Lo manejamos con nuestro propio HTML arriba */
         }
 
-        /* Celda del día actual (Today) */
+        /* Celda del dia actual (Today) */
         .fc .fc-day-today {
-          background-color: #f0fdf4 !important; /* Verde pastel sutil o cambia a #eff6ff si preferís azul */
+          background-color: #f0fdf4 !important; 
         }
         .fc .fc-day-today .fc-daygrid-day-number {
-          color: #16a34a !important; /* Número destacado */
+          color: #16a34a !important; 
           font-weight: 700;
         }
       `}</style>

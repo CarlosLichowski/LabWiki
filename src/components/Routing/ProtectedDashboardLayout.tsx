@@ -1,4 +1,3 @@
-// src/components/Routing/ProtectedDashboardLayout.tsx
 import React from 'react';
 import { Routes, Route, Navigate } from 'react-router-dom';
 import { useAuth } from '../../Context/AuthContext'; 
@@ -8,7 +7,7 @@ import AreaPersonalDashboard from '../../Pages/Personal/AreaPersonalDashBoard';
 import Inicio from '../../Pages/Personal/Inicio/Inicio';
 import Contactos from '../../Pages/Contactos';
 import Ateneos from '../../Pages/Personal/Ateneos/Ateneos'; 
-import AnalisisProcedimientos from '../../Pages/AnalisisProcedimientos';
+import Insertos from '../../Pages/Personal/Insertos/Insertos'; // Importación renombrada y corregida
 import ManualEquipos from '../../Pages/Personal/ManualDeEquipos/ManualEquipos';
 import ProyectosYObjetivos from '../../Pages/ProyectosYObjetivos/ProyectosYObjetivos';
 import Bioseguridad from '../../Pages/Bioseguridad/Bioseguridad';
@@ -44,7 +43,9 @@ const ProtectedDashboardLayout: React.FC = () => {
                         element={<Ateneos userId={userId} db={db} storage={storage} appId={appId} />} 
                     /> 
                     
-                    <Route path="analisis" element={<AnalisisProcedimientos />} />
+                    {/* Cambiado de analisis a insertos */}
+                    <Route path="insertos" element={<Insertos />} />
+                    
                     <Route path="contactos" element={<Contactos />} />
                     <Route path="derivaciones" element={<Derivaciones />} />
                     <Route path="stock" element={<Stock />} />
@@ -60,7 +61,7 @@ const ProtectedDashboardLayout: React.FC = () => {
                     <Route path="calendario-guardias" element={<CalendarioGuardias/>} />
                     <Route path="calendario-vacaciones" element={<CalendarioVacaciones/>} />
 
-                    {/* MANUAL DE EQUIPOS (Corregidas de manera independiente) */}
+                    {/* MANUAL DE EQUIPOS */}
                     <Route path="equipos" element={<ManualEquipos />} />
                     <Route path="equipos/cobas411" element={<Cobas411Detail />} /> 
                     <Route path="equipos/cobas503" element={<Cobas503Detail />} />

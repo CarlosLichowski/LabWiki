@@ -1,11 +1,10 @@
-// src/components/AreaPersonalDashboard.tsx
 import React, { useState, useEffect } from 'react';
 import { useAuth } from '../../Context/AuthContext';
 import { Link, Navigate, useLocation } from 'react-router-dom';
 import { 
-    Menu, Home, Folder, HardDrive, Microscope, LogOut, 
+    Menu, Home, Folder, HardDrive, LogOut, 
     Contact, Calendar, ChevronDown, Target, ShieldCheck, 
-    Award, Beaker, BarChart3, Eye, Database 
+    Award, Beaker, BarChart3, Eye, Database, FileText 
 } from 'lucide-react';
 import * as bootstrap from 'bootstrap';
 
@@ -38,9 +37,12 @@ const NavigationLinks: React.FC<{
         <Link to="/equipos" className={getLinkClass('/equipos')}>
             <HardDrive size={18} className="me-2"/> Manual de Equipos
         </Link>
-        <Link to="/analisis" className={getLinkClass('/analisis')}>
-            <Microscope size={18} className="me-2"/> Análisis
+        
+        {/* 🟢 ACTUALIZADO: Sincronizado con Insertos Técnicos */}
+        <Link to="/insertos" className={getLinkClass('/insertos')}>
+            <FileText size={18} className="me-2"/>Determinaciones e Insertos 
         </Link>
+        
         <Link to="/contactos" className={getLinkClass('/contactos')}>
             <Contact size={18} className="me-2"/> Contactos
         </Link>
@@ -138,7 +140,7 @@ const AreaPersonalDashboard: React.FC<{ children: React.ReactNode }> = ({ childr
                         <Menu size={22} />
                     </button>
                     
-                    {/* 🟢 MODIFICACIÓN: Envoltura con Link para redirección a Inicio */}
+                    {/* Envoltura con Link para redirección a Inicio */}
                     <Link to="/" className="navbar-brand fw-bold text-success m-0 ps-1 text-decoration-none" style={{ fontSize: '1.25rem' }}>
                         LabWiki
                     </Link>

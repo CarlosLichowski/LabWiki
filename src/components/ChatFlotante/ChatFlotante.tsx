@@ -1,18 +1,19 @@
 // src/Components/ChatFlotante.tsx
 import React, { useState, useRef, useEffect } from 'react';
 import { useChat } from '../../Context/ChatContext.tsx';
-import { auth } from "../../Credenciales.ts";
+import { useAuth } from '../../Context/AuthContext.tsx'; // 🟢 Importamos tu hook de autenticación reactiva
 import { MessageSquare, X, Send } from 'lucide-react';
 
 const ChatFlotante: React.FC = () => {
+  const { user, loading } = useAuth(); // 🟢 Traemos el usuario y el loading reactivo
   const { isOpen, setIsOpen, mensajes, enviarMensaje } = useChat();
   const [texto, setTexto] = useState('');
   const mensajesEndRef = useRef<HTMLDivElement>(null);
 
   const LIMITE_CARACTERES = 1000;
 
-  // 🌟 CONTROL CRÍTICO: Si no hay usuario logueado (ej: pantalla de Login), no renderiza nada
-  if (!auth.currentUser) {
+  // 🌟 CONTROL CRÍTICO CORREGIDO: Escucha el estado reactivo del AuthContext para mobile
+  if (loading || !user) {
     return null;
   }
 
@@ -40,14 +41,14 @@ const ChatFlotante: React.FC = () => {
     return (
       <button 
         onClick={() => setIsOpen(true)}
-        className="btn btn-primary rounded-circle position-fixed shadow-lg d-flex align-items-center justify-content-center transition-all"
+        className="btn btn-primary rounded-circle position-fixed shadow-lg d-flex align-items-center justify-content-center active-scale"
         style={{ 
           bottom: '20px', 
           right: '20px', 
           width: '60px', 
           height: '60px', 
-          zIndex: 1050,
-          transform: 'scale(1)'
+          zIndex: 1090, // 🟢 Elevado para flotar arriba de sidebars móviles
+          transition: 'all 0.15s ease'
         }}
         title="Abrir chat del laboratorio"
       >
@@ -63,17 +64,17 @@ const ChatFlotante: React.FC = () => {
       style={{ 
         bottom: '20px', 
         right: '20px', 
-        width: '350px', 
+        width: window.innerWidth < 400 ? 'calc(100% - 40px)' : '350px', // 🟢 Adaptable si el celular es muy angosto
         maxHeight: '480px', 
         height: '100%', 
-        zIndex: 1050, 
+        zIndex: 1090, // 🟢 Elevado en concordancia con el botón
         display: 'flex', 
         flexDirection: 'column' 
       }}
     >
       {/* HEADER */}
       <div className="card-header bg-primary text-white d-flex justify-content-between align-items-center py-3 rounded-top-4 border-0">
-        <h6 className="fw-bold mb-0 d-flex align-items-center gap-2">
+        <h6 className="fw-bold mb-0 d-flex align-items-center gap-2" style={{ fontSize: '0.95rem' }}>
           <MessageSquare size={18} /> Novedades del Laboratorio
         </h6>
         <button 
@@ -87,7 +88,7 @@ const ChatFlotante: React.FC = () => {
       {/* CUERPO / MENSAJES */}
       <div className="card-body bg-light p-3 overflow-y-auto" style={{ flex: 1, fontSize: '0.9rem' }}>
         {mensajes.map((msg) => {
-          const esPropio = msg.userId === auth.currentUser?.uid;
+          const esPropio = msg.userId === user.uid; // 🟢 Corregido para usar la variable reactiva
           
           return (
             <div 
@@ -140,7 +141,7 @@ const ChatFlotante: React.FC = () => {
           </div>
           <button 
             type="submit" 
-            className="btn btn-primary rounded-3 p-2 d-flex align-items-center justify-content-center shadow-sm"
+            className="btn btn-primary rounded-3 p-2 d-flex align-items-center justify-content-center shadow-sm active-scale"
             style={{ height: '38px', width: '38px' }}
           >
             <Send size={14} />
@@ -158,6 +159,7 @@ const ChatFlotante: React.FC = () => {
         .extra-small { font-size: 0.65rem; }
         .rounded-top-4 { border-top-left-radius: 1rem !important; border-top-right-radius: 1rem !important; }
         .rounded-bottom-4 { border-bottom-left-radius: 1rem !important; border-bottom-right-radius: 1rem !important; }
+        .active-scale:active { transform: scale(0.92); }
       `}</style>
     </div>
   );

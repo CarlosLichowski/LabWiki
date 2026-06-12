@@ -1,25 +1,50 @@
 // src/pages/Inicio.tsx (o src/components/Inicio.tsx)
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { Users, Microscope, ClipboardList, HardDrive, Contact, Calendar, ArrowRight } from 'lucide-react';
+import { Users, Microscope, FileText, ClipboardList, HardDrive, Contact, Calendar, ArrowRight } from 'lucide-react';
 
 const Inicio: React.FC = () => {
     const modulos = [
         {
             title: 'Ateneos',
-            description: 'Gestión de sesiones clínicas y colaboración profesional.',
+            description: 'Sesiones clínicas y Cursos Tecnicos.',
             path: '/ateneos',
             icon: <Users size={32} className="text-primary" />,
             bgIcon: 'bg-primary-subtle',
             actionText: 'Acceder'
         },
         {
+            title: 'Determinaciones',
+            description: 'Biblioteca de metodologías y documentación .',
+            path: '/insertos',
+            icon: <FileText size={32} className="text-success" />,
+            bgIcon: 'bg-success-subtle',
+            actionText: 'Consultar'
+        },
+        {
             title: 'Derivaciones',
             description: 'Seguimiento y control de muestras externas.',
             path: '/derivaciones',
-            icon: <Microscope size={32} className="text-success" />,
-            bgIcon: 'bg-success-subtle',
+            icon: <Microscope size={32} className="text-info" />, // Cambiado a text-info para contrastar
+            bgIcon: 'bg-info-subtle',
             actionText: 'Acceder'
+        },
+
+                {
+            title: 'Manual de Equipos',
+            description: 'Documentación técnica, guías de uso y mantenimiento.',
+            path: '/equipos',
+            icon: <HardDrive size={32} style={{ color: '#6366f1' }} />, // Color índigo moderno
+            bgIcon: 'bg-indigo-subtle',
+            actionText: 'Acceder'
+        },
+            {
+            title: 'Contactos',
+            description: 'Agenda centralizada de personal y entidades externas.',
+            path: '/contactos',
+            icon: <Contact size={32} className="text-danger" />,
+            bgIcon: 'bg-danger-subtle',
+            actionText: 'Ver agenda'
         },
         {
             title: 'Inventario',
@@ -29,14 +54,7 @@ const Inicio: React.FC = () => {
             bgIcon: 'bg-warning-subtle',
             actionText: 'Acceder'
         },
-        {
-            title: 'Contactos',
-            description: 'Agenda centralizada de personal y entidades externas.',
-            path: '/contactos',
-            icon: <Contact size={32} className="text-danger" />,
-            bgIcon: 'bg-danger-subtle',
-            actionText: 'Ver agenda'
-        },
+
         {
             title: 'Calendarios',
             description: 'Organización de guardias internas y vacaciones.',
@@ -45,13 +63,7 @@ const Inicio: React.FC = () => {
             bgIcon: 'bg-secondary-subtle',
             actionText: 'Ver turnos'
         },
-        {
-            title: 'Manual de Equipos',
-            description: 'Documentación técnica, guías de uso y mantenimiento.',
-            path: '/equipos',
-            icon: <HardDrive size={32} className="text-indigo" style={{ color: '#6366f1' }} />, // Color índigo moderno
-            bgIcon: 'bg-indigo-subtle'
-        }
+
     ];
 
     return (
@@ -104,11 +116,8 @@ const Inicio: React.FC = () => {
             {/* Footer Técnico Inferior */}
             <div className="mt-5 d-flex align-items-center gap-2 text-muted fw-medium" style={{ fontSize: '0.8rem', letterSpacing: '0.5px' }}>
                 <span className="d-inline-block bg-success rounded-circle animate-pulse" style={{ width: '8px', height: '8px' }}></span>
-                <span>Sistema Operativo</span>
-                <span className="text-secondary opacity-50">|</span>
-                <span>V 2.4.0</span>
-                <span className="text-secondary opacity-50">|</span>
-                <span>02:02</span>
+                <span>Hospital Ramos Mejia</span>
+
             </div>
 
             {/* Estilos CSS locales y clases personalizadas para Bootstrap */}
@@ -118,8 +127,9 @@ const Inicio: React.FC = () => {
                 .card-hover-effect .card { transition: border-color 0.2s ease, box-shadow 0.2s ease; }
                 .arrow-icon { transition: transform 0.2s ease; }
                 
-                /* Clases para el color Indigo que Bootstrap no siempre incluye por defecto en bg-subtle */
+                /* Clases para el color Indigo e Info que Bootstrap no siempre incluye por defecto en bg-subtle */
                 .bg-indigo-subtle { background-color: #e0e7ff !important; }
+                .bg-info-subtle { background-color: #e0f2fe !important; }
                 
                 .card-hover-effect:hover {
                     transform: translateY(-4px);

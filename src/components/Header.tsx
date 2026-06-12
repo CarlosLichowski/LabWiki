@@ -1,5 +1,3 @@
-// src/components/Header.tsx
-
 import React, { useState } from 'react'; 
 import { Link } from "react-router-dom";
 import { useAuth } from "../Context/AuthContext"; 
@@ -31,14 +29,13 @@ const Header: React.FC = () => {
         </svg>
     );
 
-
     return (
         <header className="bg-primary text-white p-3 shadow-sm mb-4">
             <div className="container">
                 <div className="d-flex justify-content-between align-items-center">
                     
-                    {/* 🟢 Título Principal (Cambiado de LabRamos a LabWiki) */}
-                    <Link to="/" className="text-white text-decoration-none">
+                    {/* 🟢 Título Principal (Sincronizado a LabRamos) */}
+                    <Link to="/" className="text-white text-decoration-none fw-bold" style={{ fontSize: '1.2rem', letterSpacing: '-0.3px' }}>
                         LabRamos
                     </Link>
 
@@ -49,7 +46,7 @@ const Header: React.FC = () => {
                             <div className="dropdown">
                                 {/* 1. Botón (El ícono del perfil) */}
                                 <button 
-                                    className="btn btn-primary text-white dropdown-toggle d-flex align-items-center"
+                                    className="btn btn-primary text-white dropdown-toggle d-flex align-items-center shadow-none"
                                     type="button" 
                                     onClick={toggleMenu}
                                     aria-expanded={isMenuOpen}
@@ -61,10 +58,21 @@ const Header: React.FC = () => {
                                 {/* 2. Menú Desplegable (Las Opciones Personales) */}
                                 <ul 
                                     className={`dropdown-menu dropdown-menu-end ${isMenuOpen ? 'show' : ''}`}
-                                    style={{ position: 'absolute' }} 
+                                    style={{ position: 'absolute', zIndex: 1000 }} 
                                 >
                                     <li className="dropdown-header">Hola, {displayName}</li>
                                     <li><hr className="dropdown-divider" /></li>
+
+                                    {/* 🌟 NUEVA OPCIÓN DIRECTA: Insertos Técnicos (Antes Análisis) */}
+                                    <li>
+                                        <Link 
+                                            to="/insertos" 
+                                            className="dropdown-item fw-medium" 
+                                            onClick={() => setIsMenuOpen(false)}
+                                        >
+                                            📄 Insertos Técnicos
+                                        </Link>
+                                    </li>
 
                                     {/* OPCIÓN: Favoritos Guardados */}
                                     <li>
@@ -124,7 +132,6 @@ const Header: React.FC = () => {
                                 </ul>
                             </div>
                         ) : (
-                            // Si NO hay un usuario logueado
                             <Link
                                 to="/login"
                                 className="btn btn-light fw-bold px-3"

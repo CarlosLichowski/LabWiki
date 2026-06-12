@@ -30,6 +30,10 @@ const LoginPresentacional: React.FC = () => {
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault(); 
+        
+        // Si ya está cargando (por ejemplo por un doble envío desde el teclado del celular), frenamos el flujo de inmediato
+        if (loading) return; 
+
         setError(''); 
         setLoading(true);
         
@@ -88,12 +92,15 @@ const LoginPresentacional: React.FC = () => {
                 }
             }
             setError(errorMessage);
-        } finally {
-            setLoading(false);
+            // Solo devolvemos loading a false en el catch si falló, permitiendo corregir los campos.
+            setLoading(false); 
         }
+        // Quitamos el setLoading(false) del bloqe 'finally' global, dado que si la operación fue exitosa,
+        // el componente se desmonta al navegar y evitamos mutaciones de estado en un componente no montado.
     };
 
     const loginAsGuest = async () => {
+        if (loading) return;
         setError('');
         setLoading(true);
         try {
@@ -101,7 +108,6 @@ const LoginPresentacional: React.FC = () => {
             navigate("/", { replace: true });
         } catch (err: any) {
             setError("El acceso de invitado no está disponible en este momento.");
-        } finally {
             setLoading(false);
         }
     };
@@ -135,13 +141,13 @@ const LoginPresentacional: React.FC = () => {
                                     onChange={(e) => setNombre(e.target.value)}
                                     value={nombre}
                                     required={isRegistering}
-                                    disabled={loading}
+                                    disabled={loading} // Bloqueado en celular
                                 />
                             </div>
                         )}
 
                         <div className="mb-3">
-                            <label className="form-label fw-bold small">Email Institucional</label>
+                            <label className="form-label fw-bold small">Email</label>
                             <input
                                 type="email"
                                 className="form-control shadow-sm"
@@ -149,7 +155,7 @@ const LoginPresentacional: React.FC = () => {
                                 onChange={(e) => setEmail(e.target.value)}
                                 value={email}
                                 required
-                                disabled={loading}
+                                disabled={loading} // Bloqueado en celular
                             />
                         </div>
                         <div className="mb-3">
@@ -161,7 +167,7 @@ const LoginPresentacional: React.FC = () => {
                                 onChange={(e) => setPassword(e.target.value)}
                                 value={password}
                                 required
-                                disabled={loading}
+                                disabled={loading} // Bloqueado en celular
                             />
                         </div>
 
@@ -173,7 +179,7 @@ const LoginPresentacional: React.FC = () => {
                                     value={servicio}
                                     onChange={(e) => setServicio(e.target.value)}
                                     required={isRegistering}
-                                    disabled={loading}
+                                    disabled={loading} // Bloqueado en celular
                                 >
                                     <option value="" disabled>-- Selecciona un servicio --</option>
                                     {SERVICIOS_LAB.map((srv) => (
@@ -185,10 +191,19 @@ const LoginPresentacional: React.FC = () => {
 
                         <button 
                             type="submit" 
-                            className={`btn ${isRegistering ? 'btn-success' : 'btn-primary'} w-100 fw-bold mb-3 shadow-sm`}
+                            className={`btn ${isRegistering ? 'btn-success' : 'btn-primary'} w-100 fw-bold mb-3 shadow-sm d-flex align-items-center justify-content-center`}
                             disabled={loading}
                         >
-                            {loading ? 'Cargando...' : isRegistering ? 'Registrarse y Entrar' : 'Ingresar'}
+                            {loading ? (
+                                <>
+                                    <span className="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
+                                    Procesando...
+                                </>
+                            ) : isRegistering ? (
+                                'Registrarse y Entrar'
+                            ) : (
+                                'Ingresar'
+                            )}
                         </button>
                     </form>
 
@@ -224,10 +239,10 @@ const LoginPresentacional: React.FC = () => {
                         </div>
                     )}
 
-                    {/* SECCIÓN NUEVA: Estructura de Tooltips instantáneos */}
+                    {/* SECCIÓN DE TOOLTIPS */}
                     <div className="d-flex justify-content-center gap-3 mt-3 pt-2 border-top">
                         <div className="position-relative project-tooltip-container">
-                            <button type="button" className="btn btn-link p-0 text-decoration-none text-muted" style={{ fontSize: '0.75rem' }}>
+                            <button type="button" className="btn btn-link p-0 text-decoration-none text-muted" style={{ fontSize: '0.75rem' }} disabled={loading}>
                                 Términos y condiciones
                             </button>
                             <div className="project-tooltip-text">
@@ -238,7 +253,7 @@ const LoginPresentacional: React.FC = () => {
                         <span className="text-muted" style={{ fontSize: '0.75rem' }}>|</span>
 
                         <div className="position-relative project-tooltip-container">
-                            <button type="button" className="btn btn-link p-0 text-decoration-none text-muted" style={{ fontSize: '0.75rem' }}>
+                            <button type="button" className="btn btn-link p-0 text-decoration-none text-muted" style={{ fontSize: '0.75rem' }} disabled={loading}>
                                 Políticas de privacidad
                             </button>
                             <div className="project-tooltip-text">
@@ -249,6 +264,33 @@ const LoginPresentacional: React.FC = () => {
 
                 </div>
             </div>
+            
+            {/* Estilo CSS inyectado para asegurar la UI fluida de los Tooltips */}
+            <style>{`
+                .project-tooltip-container .project-tooltip-text {
+                    visibility: hidden;
+                    width: 240px;
+                    background-color: #333;
+                    color: #fff;
+                    text-align: center;
+                    border-radius: 6px;
+                    padding: 8px;
+                    position: absolute;
+                    z-index: 1050;
+                    bottom: 125%;
+                    left: 50%;
+                    transform: translateX(-50%);
+                    opacity: 0;
+                    transition: opacity 0.2s;
+                    font-size: 0.75rem;
+                    line-height: 1.3;
+                    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+                }
+                .project-tooltip-container:hover .project-tooltip-text {
+                    visibility: visible;
+                    opacity: 1;
+                }
+            `}</style>
         </div>
     );
 };
