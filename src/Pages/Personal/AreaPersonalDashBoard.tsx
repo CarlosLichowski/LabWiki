@@ -6,7 +6,6 @@ import {
     Contact, Calendar, ChevronDown, Target, ShieldCheck, 
     Award, Beaker, BarChart3, Eye, Database, FileText 
 } from 'lucide-react';
-import * as bootstrap from 'bootstrap';
 
 // --- 1. LINKS DE NAVEGACIÓN ---
 const NavigationLinks: React.FC<{ 
@@ -27,7 +26,7 @@ const NavigationLinks: React.FC<{
 
         <div className="fw-bold text-uppercase text-muted px-3 mt-3 mb-1 small" style={{ fontSize: '0.7rem' }}>Ateneos</div>
         <Link to="/ateneos" className={getLinkClass('/ateneos')}>
-            <Folder size={18} className="me-2"/> Ateneos
+            <Folder size={18} className="me-2"/> Ateneos y Cursos
         </Link>
 
         <div className="fw-bold text-uppercase text-muted px-3 mt-3 mb-1 small" style={{ fontSize: '0.7rem' }}>Laboratorio</div>
@@ -38,7 +37,6 @@ const NavigationLinks: React.FC<{
             <HardDrive size={18} className="me-2"/> Manual de Equipos
         </Link>
         
-        {/* 🟢 ACTUALIZADO: Sincronizado con Insertos Técnicos */}
         <Link to="/insertos" className={getLinkClass('/insertos')}>
             <FileText size={18} className="me-2"/>Determinaciones e Insertos 
         </Link>
@@ -98,13 +96,27 @@ const AreaPersonalDashboard: React.FC<{ children: React.ReactNode }> = ({ childr
 
     const isTestUser = user?.email === "testuser@testuser.com";
 
-    // Cierra el sidebar automáticamente al navegar
+    // 🟢 SOLUCIÓN DEFINITIVA: Cierre seguro simulando la acción nativa del botón de cierre
     useEffect(() => {
         const offcanvasElement = document.getElementById('sidebarUnified');
-        if (offcanvasElement) {
-            const bsOffcanvas = bootstrap.Offcanvas.getInstance(offcanvasElement);
-            if (bsOffcanvas) bsOffcanvas.hide();
+        if (offcanvasElement && offcanvasElement.classList.contains('show')) {
+            // Buscamos el botón "X" (close) dentro del offcanvas y simulamos su click nativo
+            const closeBtn = offcanvasElement.querySelector('.btn-close') as HTMLButtonElement | null;
+            if (closeBtn) {
+                closeBtn.click();
+            }
         }
+
+        // Limpieza de respaldo ultra segura por si la velocidad de renderizado de React interrumpe a Bootstrap
+        const cleanupBootstrap = () => {
+            const backdrops = document.querySelectorAll('.offcanvas-backdrop');
+            backdrops.forEach(backdrop => backdrop.remove());
+            document.body.style.overflow = '';
+            document.body.style.paddingRight = '';
+            document.body.removeAttribute('data-bs-overflow');
+        };
+
+        cleanupBootstrap();
     }, [location.pathname]);
 
     if (loading) return <div className="d-flex justify-content-center align-items-center vh-100">Cargando...</div>;
@@ -140,7 +152,6 @@ const AreaPersonalDashboard: React.FC<{ children: React.ReactNode }> = ({ childr
                         <Menu size={22} />
                     </button>
                     
-                    {/* Envoltura con Link para redirección a Inicio */}
                     <Link to="/" className="navbar-brand fw-bold text-success m-0 ps-1 text-decoration-none" style={{ fontSize: '1.25rem' }}>
                         LabWiki
                     </Link>
@@ -191,7 +202,6 @@ const AreaPersonalDashboard: React.FC<{ children: React.ReactNode }> = ({ childr
                 </main>
             </div>
 
-            {/* Estilos locales de comportamiento fluido */}
             <style>{`
                 .hover-bg-light:hover { background-color: #f8f9fa; }
                 .nav-link { transition: all 0.2s ease; cursor: pointer; text-decoration: none; }

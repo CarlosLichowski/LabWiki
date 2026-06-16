@@ -1,4 +1,4 @@
-//Pages/ProyectosYObjetivos/ProyectosYObjetivos.tsx
+// Pages/ProyectosYObjetivos/ProyectosYObjetivos.tsx
 import React, { useState, useEffect } from 'react';
 import { 
   collection, addDoc, onSnapshot, query, orderBy, 
@@ -7,9 +7,10 @@ import {
 import { db, auth } from '../../Credenciales';
 import { 
   Plus, Heart, User, Trash2, Lightbulb,
-  ArrowLeft
+  ArrowLeft, Edit3, X
 } from 'lucide-react';
 import { Link } from 'react-router-dom';
+import { useAuth } from '../../Context/AuthContext'; // 🟢 Importamos el hook de autenticación global
 
 interface Proyecto {
   id: string;
@@ -26,9 +27,18 @@ interface Proyecto {
 const ProyectosYObjetivos: React.FC = () => {
   const [proyectos, setProyectos] = useState<Proyecto[]>([]);
   const [showModal, setShowModal] = useState(false);
-  const [nuevoProy, setNuevoProy] = useState({ titulo: '', descripcion: '', categoria: 'Mejora de Procesos' });
+  const [editingId, setEditingId] = useState<string | null>(null);
   
-  const user = auth.currentUser;
+  const initialFormState = { 
+    titulo: '', 
+    descripcion: '', 
+    categoria: 'Mejora de Procesos',
+    estado: 'Propuesta' as 'Propuesta' | 'En Marcha' | 'Completado'
+  };
+  const [formProy, setFormProy] = useState(initialFormState);
+  
+  // 🟢 Usamos la información extendida del usuario desde tu AuthContext
+  const { user } = useAuth(); 
 
   useEffect(() => {
     const q = query(collection(db, 'proyectos'), orderBy('createdAt', 'desc'));
@@ -38,20 +48,60 @@ const ProyectosYObjetivos: React.FC = () => {
     return () => unsub();
   }, []);
 
-  const crearProyecto = async (e: React.FormEvent) => {
+  const guardarProyecto = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
-      await addDoc(collection(db, 'proyectos'), {
-        ...nuevoProy,
-        autor: user?.displayName || 'Colega',
-        autorId: user?.uid,
-        likes: [],
-        estado: 'Propuesta',
-        createdAt: serverTimestamp()
-      });
-      setShowModal(false);
-      setNuevoProy({ titulo: '', descripcion: '', categoria: 'Mejora de Procesos' });
-    } catch (err) { console.error(err); }
+      if (editingId) {
+        const docRef = doc(db, 'proyectos', editingId);
+        await updateDoc(docRef, {
+          titulo: formProy.titulo,
+          descripcion: formProy.descripcion,
+          categoria: formProy.categoria,
+          estado: formProy.estado
+        });
+      } else {
+        await addDoc(collection(db, 'proyectos'), {
+          titulo: formProy.titulo,
+          descripcion: formProy.descripcion,
+          categoria: formProy.categoria,
+          estado: 'Propuesta',
+          autor: user?.displayName || 'Colega',
+          autorId: user?.uid,
+          likes: [],
+          createdAt: serverTimestamp()
+        });
+      }
+      handleCloseModal();
+    } catch (err) { 
+      console.error("Error al guardar la propuesta: ", err); 
+    }
+  };
+
+  const handleEdit = (proyecto: Proyecto) => {
+    setFormProy({
+      titulo: proyecto.titulo,
+      descripcion: proyecto.descripcion,
+      categoria: proyecto.categoria,
+      estado: proyecto.estado
+    });
+    setEditingId(proyecto.id);
+    setShowModal(true);
+  };
+
+  const handleCloseModal = () => {
+    setShowModal(false);
+    setEditingId(null);
+    setFormProy(initialFormState);
+  };
+
+  const handleEliminar = async (id: string) => {
+    if (window.confirm("¿Estás seguro de que deseas eliminar esta propuesta de forma permanente?")) {
+      try {
+        await deleteDoc(doc(db, 'proyectos', id));
+      } catch (err) {
+        console.error("Error al eliminar la propuesta: ", err);
+      }
+    }
   };
 
   const toggleLike = async (proyectoId: string, yaTieneLike: boolean) => {
@@ -60,6 +110,14 @@ const ProyectosYObjetivos: React.FC = () => {
     await updateDoc(docRef, {
       likes: yaTieneLike ? arrayRemove(user.uid) : arrayUnion(user.uid)
     });
+  };
+
+  const getEstadoBadgeClass = (estado: string) => {
+    switch (estado) {
+      case 'Completado': return 'bg-success text-white';
+      case 'En Marcha': return 'bg-warning text-dark';
+      default: return 'bg-primary-subtle text-primary';
+    }
   };
 
   return (
@@ -77,23 +135,47 @@ const ProyectosYObjetivos: React.FC = () => {
       <div className="row g-3">
         {proyectos.map(p => {
           const yaTieneLike = p.likes?.includes(user?.uid || '');
+          
+          // 🟢 EVALUACIÓN DE PERMISOS: Es autor O pertenece a Laboratorio Central
+          const esAutor = user?.uid === p.autorId;
+          const esLaboratorioCentral = user?.laboratorio === "Laboratorio Central"; // Ajustar si el campo se llama distinto en tu DB
+          const tienePermisoEdicion = esAutor || esLaboratorioCentral;
+
           return (
             <div key={p.id} className="col-md-6 col-lg-4">
               <div className="card h-100 border-0 shadow-sm rounded-4 overflow-hidden border-top border-4 border-primary">
-                <div className="p-3">
-                  <div className="d-flex justify-content-between align-items-center mb-2">
-                    <span className={`badge rounded-pill ${p.estado === 'Completado' ? 'bg-success' : 'bg-primary-subtle text-primary'}`}>
-                      {p.estado}
-                    </span>
-                    {user?.uid === p.autorId && (
-                      <button className="btn btn-sm btn-light text-danger rounded-circle" onClick={() => { if(confirm("¿Eliminar propuesta?")) deleteDoc(doc(db, 'proyectos', p.id)) }}>
-                        <Trash2 size={14}/>
-                      </button>
-                    )}
+                <div className="p-3 d-flex flex-column justify-content-between h-100">
+                  <div>
+                    <div className="d-flex justify-content-between align-items-center mb-2">
+                      <span className={`badge rounded-pill fw-semibold ${getEstadoBadgeClass(p.estado)}`}>
+                        {p.estado}
+                      </span>
+                      
+                      {/* 🟢 BOTONES ACCESIBLES POR AUTOR O PERSONAL AUTORIZADO */}
+                      {tienePermisoEdicion && (
+                        <div className="d-flex gap-1">
+                          <button 
+                            className="btn btn-sm btn-light text-secondary rounded-circle p-1 d-flex align-items-center border-0" 
+                            onClick={() => handleEdit(p)}
+                            title="Editar propuesta"
+                          >
+                            <Edit3 size={14}/>
+                          </button>
+                          <button 
+                            className="btn btn-sm btn-light text-danger rounded-circle p-1 d-flex align-items-center border-0" 
+                            onClick={() => handleEliminar(p.id)}
+                            title="Eliminar propuesta"
+                          >
+                            <Trash2 size={14}/>
+                          </button>
+                        </div>
+                      )}
+                    </div>
+                    
+                    <h5 className="fw-bold text-dark mb-1">{p.titulo}</h5>
+                    <span className="text-muted d-block font-monospace mb-2" style={{ fontSize: '0.75rem' }}>{p.categoria}</span>
+                    <p className="text-secondary small" style={{ minHeight: '60px' }}>{p.descripcion}</p>
                   </div>
-                  
-                  <h5 className="fw-bold text-dark">{p.titulo}</h5>
-                  <p className="text-muted small" style={{minHeight: '60px'}}>{p.descripcion}</p>
 
                   <div className="d-flex align-items-center justify-content-between mt-3 pt-2 border-top">
                     <div className="d-flex align-items-center text-muted small">
@@ -116,33 +198,77 @@ const ProyectosYObjetivos: React.FC = () => {
         })}
       </div>
 
-      {/* MODAL MÁS LIMPIO */}
+      {/* MODAL UNIFICADO */}
       {showModal && (
-        <div className="modal d-block" style={{backgroundColor: 'rgba(0,0,0,0.5)', backdropFilter: 'blur(4px)'}}>
+        <div className="modal d-block" style={{ backgroundColor: 'rgba(15, 23, 42, 0.4)', backdropFilter: 'blur(4px)', zIndex: 1050 }}>
           <div className="modal-dialog modal-dialog-centered">
-            <div className="modal-content border-0 rounded-4 shadow-lg p-2">
-              <div className="modal-header border-0 pb-0">
-                <h5 className="fw-bold"><Lightbulb className="text-warning me-2"/>Nueva Idea</h5>
-                <button className="btn-close" onClick={() => setShowModal(false)}></button>
+            <div className="modal-content border-0 rounded-4 shadow-lg p-2 bg-white">
+              <div className="modal-header border-0 pb-0 d-flex justify-content-between align-items-center">
+                <h5 className="fw-bold m-0 d-flex align-items-center gap-1">
+                  <Lightbulb className="text-warning" size={20}/>
+                  {editingId ? 'Editar Propuesta de Mejora' : 'Nueva Propuesta'}
+                </h5>
+                <button className="btn-close shadow-none bg-light p-2 rounded-circle border-0 d-flex align-items-center justify-content-center" onClick={handleCloseModal}>
+                  <X size={14}/>
+                </button>
               </div>
-              <form onSubmit={crearProyecto}>
+              <form onSubmit={guardarProyecto}>
                 <div className="modal-body">
                   <label className="small fw-bold text-muted mb-1">¿Qué quieres mejorar?</label>
-                  <input className="form-control mb-3 shadow-sm" placeholder="Título breve" required onChange={e => setNuevoProy({...nuevoProy, titulo: e.target.value})} />
+                  <input 
+                    className="form-control mb-3 shadow-none bg-light border-0 py-2 rounded-3 text-dark" 
+                    placeholder="Título breve y conciso" 
+                    required 
+                    value={formProy.titulo}
+                    onChange={e => setFormProy({...formProy, titulo: e.target.value})} 
+                  />
                   
-                  <label className="small fw-bold text-muted mb-1">Categoría</label>
-                  <select className="form-select mb-3 shadow-sm" onChange={e => setNuevoProy({...nuevoProy, categoria: e.target.value})}>
-                    <option>Mejora de Procesos</option>
-                    <option>Infraestructura</option>
-                    <option>Investigación</option>
-                    <option>Bienestar Laboral</option>
-                  </select>
+                  <div className="row mb-3">
+                    <div className={editingId ? "col-md-6" : "col-12"}>
+                      <label className="small fw-bold text-muted mb-1">Categoría</label>
+                      <select 
+                        className="form-select shadow-none bg-light border-0 py-2 rounded-3 text-dark" 
+                        value={formProy.categoria}
+                        onChange={e => setFormProy({...formProy, categoria: e.target.value})}
+                      >
+                        <option>Mejora de Procesos</option>
+                        <option>Infraestructura</option>
+                        <option>Investigación</option>
+                        <option>Bienestar Laboral</option>
+                      </select>
+                    </div>
+                    
+                    {/* El estado se habilita si se está editando */}
+                    {editingId && (
+                      <div className="col-md-6">
+                        <label className="small fw-bold text-muted mb-1">Estado del Objetivo</label>
+                        <select 
+                          className="form-select shadow-none bg-light border-0 py-2 rounded-3 text-dark fw-semibold" 
+                          value={formProy.estado}
+                          onChange={e => setFormProy({...formProy, estado: e.target.value as any})}
+                        >
+                          <option value="Propuesta">Propuesta</option>
+                          <option value="En Marcha">En Marcha</option>
+                          <option value="Completado">Completado</option>
+                        </select>
+                      </div>
+                    )}
+                  </div>
 
                   <label className="small fw-bold text-muted mb-1">Detalles de la propuesta</label>
-                  <textarea className="form-control shadow-sm" rows={4} placeholder="Describe tu idea aquí..." required onChange={e => setNuevoProy({...nuevoProy, descripcion: e.target.value})}></textarea>
+                  <textarea 
+                    className="form-control shadow-none bg-light border-0 py-2 rounded-3 text-dark" 
+                    rows={4} 
+                    placeholder="Describe los alcances e ideas principales de tu propuesta aquí..." 
+                    required 
+                    value={formProy.descripcion}
+                    onChange={e => setFormProy({...formProy, descripcion: e.target.value})}
+                  ></textarea>
                 </div>
-                <div className="modal-footer border-0">
-                  <button type="submit" className="btn btn-primary w-100 rounded-pill fw-bold py-2">Subir Propuesta</button>
+                <div className="modal-footer border-0 pt-0">
+                  <button type="submit" className="btn btn-primary w-100 rounded-pill fw-bold py-2 shadow-none border-0">
+                    {editingId ? 'Actualizar Propuesta' : 'Subir Propuesta'}
+                  </button>
                 </div>
               </form>
             </div>
@@ -150,18 +276,16 @@ const ProyectosYObjetivos: React.FC = () => {
         </div>
       )}
 
-            <div className="d-flex justify-content-center mt-5">
+      <div className="d-flex justify-content-center mt-5">
         <Link 
           to="/" 
-          className="btn bg-secondary-subtle text-dark border d-inline-flex align-items-center gap-2 px-4 py-2 rounded-3 fw-bold transition-all hover-bg-btn shadow-sm"
+          className="btn bg-secondary-subtle text-dark border d-inline-flex align-items-center gap-2 px-4 py-2 rounded-3 fw-bold transition-all shadow-sm"
           style={{ textDecoration: 'none' }}
         >
-          <ArrowLeft size={16} className="text-primary" /> 
+          <ArrowLeft size={16} className="text-success" /> 
           <span>Volver al Inicio</span>
         </Link>
       </div>
-
-
     </div>
   );
 };

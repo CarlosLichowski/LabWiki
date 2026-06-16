@@ -6,7 +6,7 @@ import { Users, Microscope, FileText, ClipboardList, HardDrive, Contact, Calenda
 const Inicio: React.FC = () => {
     const modulos = [
         {
-            title: 'Ateneos',
+            title: 'Ateneos y Cursos',
             description: 'Sesiones clínicas y Cursos Tecnicos.',
             path: '/ateneos',
             icon: <Users size={32} className="text-primary" />,

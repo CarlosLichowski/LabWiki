@@ -11,7 +11,7 @@ import {
     doc, 
     orderBy 
 } from 'firebase/firestore';
-import { Search, Plus, FileText, Edit3, Trash2, Beaker, TestTube, Info, Tag, ArrowLeft, X, ChevronDown, ChevronUp } from 'lucide-react';
+import { Search, Plus, FileText, Edit3, Trash2, Beaker, TestTube, Info, Tag, ArrowLeft, X, ChevronDown } from 'lucide-react';
 import toast from 'react-hot-toast';
 import { Link } from 'react-router-dom';
 
