@@ -19,10 +19,7 @@ const NavigationLinks: React.FC<{
             <Home size={18} className="me-2"/> Inicio
         </Link>
         
-        <div className="fw-bold text-uppercase text-muted px-3 mt-3 mb-1 small" style={{ fontSize: '0.7rem' }}>Inventario</div>
-        <Link to="/stock" className={getLinkClass('/stock')}>
-            <Database size={18} className="me-2 text-primary"/> Stock de Reactivos
-        </Link>
+
 
         <div className="fw-bold text-uppercase text-muted px-3 mt-3 mb-1 small" style={{ fontSize: '0.7rem' }}>Ateneos</div>
         <Link to="/ateneos" className={getLinkClass('/ateneos')}>
@@ -45,12 +42,8 @@ const NavigationLinks: React.FC<{
             <Contact size={18} className="me-2"/> Contactos
         </Link>
 
-        <div className="fw-bold text-uppercase text-muted px-3 mt-3 mb-1 small" style={{ fontSize: '0.7rem' }}>Calidad y Gestión</div>
-        <Link to="/estadisticas" className={getLinkClass('/estadisticas')}>
-            <BarChart3 size={18} className="me-2 text-success"/> Estadísticas
-        </Link>
 
-        <div className="fw-bold text-uppercase text-muted px-3 mt-3 mb-1 small" style={{ fontSize: '0.7rem' }}>Organización</div>
+               <div className="fw-bold text-uppercase text-muted px-3 mt-3 mb-1 small" style={{ fontSize: '0.7rem' }}>Organización</div>
         <button 
             onClick={(e) => {
                 e.preventDefault();
@@ -72,6 +65,18 @@ const NavigationLinks: React.FC<{
                 </Link>
             </div>
         )}
+
+        <div className="fw-bold text-uppercase text-muted px-3 mt-3 mb-1 small" style={{ fontSize: '0.7rem' }}>Inventario</div>
+        <Link to="/stock" className={getLinkClass('/stock')}>
+            <Database size={18} className="me-2 text-primary"/> Stock de Reactivos
+        </Link>
+
+        <div className="fw-bold text-uppercase text-muted px-3 mt-3 mb-1 small" style={{ fontSize: '0.7rem' }}>Calidad y Gestión</div>
+        <Link to="/estadisticas" className={getLinkClass('/estadisticas')}>
+            <BarChart3 size={18} className="me-2 text-success"/> Estadísticas
+        </Link>
+
+ 
 
         <div className="fw-bold text-uppercase text-muted px-3 mt-3 mb-1 small" style={{ fontSize: '0.7rem' }}>Planificación</div>
         <Link to="/proyectos" className={getLinkClass('/proyectos')}>

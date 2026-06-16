@@ -1,5 +1,3 @@
-
-// src/Pages/Personal/Ateneos/Ateneos.tsx
 // src/Pages/Personal/Ateneos/Ateneos.tsx
 import React, { useState, useEffect } from 'react';
 import {
@@ -10,10 +8,13 @@ import {
 import { auth } from '../../../Credenciales';
 import { 
   FolderPlus, ExternalLink, Trash2, Star, Plus, 
-  User, Calendar, ArrowLeft, ArrowUpDown, Edit3, X 
+  User, Calendar, ArrowLeft, ArrowUpDown, Edit3, X, ShieldAlert 
 } from 'lucide-react';
 import toast from 'react-hot-toast';
 import { Link } from 'react-router-dom';
+
+// 🟢 Tu ID maestro exclusivo para control total
+const MI_UID_ADMIN = 'cwOunAUJq7fAvTLtuEVQrjjFoLP2';
 
 interface Ateneo {
   id: string;
@@ -33,16 +34,16 @@ interface AteneosProps {
   displayName?: string;
 }
 
-const Ateneos: React.FC<AteneosProps> = ({ userId, db, displayName }) => {
+const Ateneos: React.FC<AteneosProps> = ({  db, displayName }) => {
   const [ateneos, setAteneos] = useState<Ateneo[]>([]);
   const [loading, setLoading] = useState(false);
   const [misFavoritos, setMisFavoritos] = useState<Record<string, any>>({});
   const [showForm, setShowForm] = useState(false); 
   
-  // 🟢 Estados para control de Edición
+  // Estados para control de Edición
   const [editingId, setEditingId] = useState<string | null>(null);
 
-  // 🟢 Formulario Unificado
+  // Formulario Unificado
   const initialFormState = {
     titulo: '',
     url: '',
@@ -55,6 +56,9 @@ const Ateneos: React.FC<AteneosProps> = ({ userId, db, displayName }) => {
   const [ordenFecha, setOrdenFecha] = useState<'desc' | 'asc'>('desc');
 
   const currentUser = auth.currentUser;
+
+  // 🟢 Comprobación en tiempo de renderizado: ¿Sos Carlos?
+  const isAdmin = currentUser?.uid === MI_UID_ADMIN;
 
   useEffect(() => {
     const q = query(collection(db, 'ateneos_biblioteca'), orderBy('createdAt', 'desc'));
@@ -88,7 +92,6 @@ const Ateneos: React.FC<AteneosProps> = ({ userId, db, displayName }) => {
     }
   };
 
-  // 🟢 Guardar cambios (Crea o Modifica)
   const handleGuardarMaterial = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!formValues.titulo.trim() || !formValues.url.trim() || !currentUser) return;
@@ -99,7 +102,6 @@ const Ateneos: React.FC<AteneosProps> = ({ userId, db, displayName }) => {
 
     try {
       if (editingId) {
-        // 🟢 MODO EDICIÓN
         const docRef = doc(db, 'ateneos_biblioteca', editingId);
         await updateDoc(docRef, {
           titulo: formValues.titulo.trim(),
@@ -108,7 +110,6 @@ const Ateneos: React.FC<AteneosProps> = ({ userId, db, displayName }) => {
         });
         toast.success('Material actualizado', { id: loader });
       } else {
-        // 🟢 MODO ALTA
         await addDoc(collection(db, 'ateneos_biblioteca'), {
           titulo: formValues.titulo.trim(),
           url: formValues.url.trim(),
@@ -125,7 +126,6 @@ const Ateneos: React.FC<AteneosProps> = ({ userId, db, displayName }) => {
     } finally { setLoading(false); }
   };
 
-  // 🟢 Cargar datos en el formulario para editar
   const handleIniciarEdicion = (item: Ateneo) => {
     setFormValues({
       titulo: item.titulo,
@@ -134,10 +134,9 @@ const Ateneos: React.FC<AteneosProps> = ({ userId, db, displayName }) => {
     });
     setEditingId(item.id);
     setShowForm(true);
-    window.scrollTo({ top: 0, behavior: 'smooth' }); // Scrollea arriba para ver el formulario abierto
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
-  // 🟢 Limpiar y cerrar formulario
   const handleCerrarFormulario = () => {
     setShowForm(false);
     setEditingId(null);
@@ -176,7 +175,11 @@ const Ateneos: React.FC<AteneosProps> = ({ userId, db, displayName }) => {
           <h2 className="h4 fw-bold text-dark d-flex align-items-center gap-2 mb-1">
             <FolderPlus className="text-primary" size={24} /> Biblioteca Digital
           </h2>
-          <p className="text-muted small mb-0 d-none d-sm-block">Material académico, ateneos del servicio y cursos de formación.</p>
+          <p className="text-muted small mb-0 d-none d-sm-block">
+            Material académico, ateneos del servicio y cursos de formación.
+            {/* 🟢 Tag visual para avisarte que tenés los superpoderes activos en la interfaz */}
+            {isAdmin && <span className="badge bg-danger-subtle text-danger ms-2 fw-bold"><ShieldAlert size={12} className="me-1"/> Modo Admin Activo</span>}
+          </p>
         </div>
         <button 
           onClick={() => { if(showForm) { handleCerrarFormulario(); } else { setShowForm(true); } }} 
@@ -186,7 +189,7 @@ const Ateneos: React.FC<AteneosProps> = ({ userId, db, displayName }) => {
         </button>
       </div>
 
-      {/* FORMULARIO DINÁMICO (ALTA / MODIFICACIÓN) */}
+      {/* FORMULARIO DINÁMICO */}
       {showForm && (
         <form onSubmit={handleGuardarMaterial} className="mb-4 bg-white p-3 rounded-4 shadow-sm border animate__animated animate__fadeInDown">
           <div className="d-flex align-items-center gap-2 mb-2 border-bottom pb-2">
@@ -238,7 +241,7 @@ const Ateneos: React.FC<AteneosProps> = ({ userId, db, displayName }) => {
         </form>
       )}
 
-      {/* BARRA DE CONTROL (FILTROS Y ORDENAMIENTO) */}
+      {/* BARRA DE CONTROL */}
       <div className="d-flex flex-column flex-sm-row justify-content-between align-items-stretch align-items-sm-center gap-2 mb-3 bg-white p-2 rounded-3 border shadow-sm">
         <div className="nav p-1 bg-light rounded-3 d-flex gap-1">
           {(['Todos', 'Ateneo', 'Curso'] as const).map(t => (
@@ -317,8 +320,8 @@ const Ateneos: React.FC<AteneosProps> = ({ userId, db, displayName }) => {
                         <ExternalLink size={14} /> Abrir
                       </a>
                       
-                      {/* 🟢 ACCIONES DE AUTOR (ESCRITORIO) */}
-                      {currentUser?.uid === item.userId && (
+                      {/* 🟢 CONDICIÓN DE ACCIONES ACTUALIZADA (Dueño original O Carlos) */}
+                      {(currentUser?.uid === item.userId || isAdmin) && (
                         <div className="d-flex gap-1">
                           <button onClick={() => handleIniciarEdicion(item)} className="btn btn-sm btn-outline-secondary rounded-circle p-2" title="Editar">
                             <Edit3 size={14} />
@@ -360,8 +363,8 @@ const Ateneos: React.FC<AteneosProps> = ({ userId, db, displayName }) => {
                   </div>
                 </div>
 
-                {/* 🟢 ACCIONES DE AUTOR (MÓVIL) */}
-                {currentUser?.uid === item.userId && (
+                {/* 🟢 CONDICIÓN DE ACCIONES MÓVIL ACTUALIZADA (Dueño original O Carlos) */}
+                {(currentUser?.uid === item.userId || isAdmin) && (
                   <div className="d-flex gap-2">
                     <button onClick={() => handleIniciarEdicion(item)} className="btn btn-link text-secondary p-0 shadow-none">
                       <Edit3 size={18} />
@@ -406,6 +409,8 @@ const Ateneos: React.FC<AteneosProps> = ({ userId, db, displayName }) => {
         .text-info { color: #0369a1; }
         .bg-warning-subtle { background-color: #fffbeb; }
         .text-warning-dark { color: #b45309; }
+        .bg-danger-subtle { background-color: #fef2f2; }
+        .text-danger { color: #dc2626; }
         .transition-all { transition: all 0.2s ease-in-out; }
       `}</style>
 

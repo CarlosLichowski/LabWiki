@@ -1,12 +1,12 @@
-
 // src/Pages/Derivaciones/Derivaciones.tsx
 import React, { useState, useEffect } from 'react';
 import { db } from '../../Credenciales';
 import { collection, addDoc, updateDoc, deleteDoc, doc, onSnapshot } from 'firebase/firestore';
+import { getAuth } from 'firebase/auth'; // 🟢 Importamos Auth para saber quién escribe
 import { 
   Search, MapPin, Beaker, Clock, Plus, Edit2, 
   Trash2, Save, Phone, 
-  ArrowLeft
+  ArrowLeft, User
 } from 'lucide-react';
 import toast from 'react-hot-toast';
 import { Link } from 'react-router-dom';
@@ -19,9 +19,11 @@ interface PruebaDerivada {
   tiempoEntrega: string;
   categoria: string;
   telefono: string;
+  creadoPor?: string; // 🟢 Nuevo campo opcional para la trazabilidad
 }
 
 const Derivaciones = () => {
+  const auth = getAuth(); // 🟢 Instancia de autenticación
   const [pruebas, setPruebas] = useState<PruebaDerivada[]>([]);
   const [busqueda, setBusqueda] = useState('');
   const [loading, setLoading] = useState(true);
@@ -46,10 +48,17 @@ const Derivaciones = () => {
     const loader = toast.loading('Guardando...');
     try {
       if (editandoId) {
+        // Al actualizar, mantenemos los datos del formulario (no pisamos el 'creadoPor' original)
         await updateDoc(doc(db, 'derivaciones', editandoId), formData);
         toast.success('Actualizado', { id: loader });
       } else {
-        await addDoc(collection(db, 'derivaciones'), formData);
+        // 🟢 Al crear, inyectamos el nombre del usuario actual (o su email si no tiene nombre configurado)
+        const usuarioActual = auth.currentUser?.displayName || auth.currentUser?.email || 'Sistema';
+        const datosConUsuario = {
+          ...formData,
+          creadoPor: usuarioActual
+        };
+        await addDoc(collection(db, 'derivaciones'), datosConUsuario);
         toast.success('Agregado', { id: loader });
       }
       cerrarModal();
@@ -72,7 +81,15 @@ const Derivaciones = () => {
   const abrirModal = (prueba?: PruebaDerivada) => {
     if (prueba) {
       setEditandoId(prueba.id);
-      setFormData({ ...prueba });
+      // Evitamos pasar campos extraños como 'creadoPor' al formulario directo para mantenerlo limpio
+      setFormData({
+        nombre: prueba.nombre,
+        hospital: prueba.hospital,
+        condiciones: prueba.condiciones,
+        tiempoEntrega: prueba.tiempoEntrega,
+        categoria: prueba.categoria,
+        telefono: prueba.telefono
+      });
     } else {
       setEditandoId(null);
       setFormData({ nombre: '', hospital: '', condiciones: '', tiempoEntrega: '', categoria: 'Rutina', telefono: '' });
@@ -156,7 +173,15 @@ const Derivaciones = () => {
                   <tr key={prueba.id}>
                     <td className="ps-4">
                       <div className="fw-bold text-dark">{prueba.nombre}</div>
-                      <span className="badge bg-info-subtle text-info" style={{ fontSize: '0.65rem' }}>{prueba.categoria}</span>
+                      <div className="d-flex align-items-center gap-1 mt-1">
+                        <span className="badge bg-info-subtle text-info" style={{ fontSize: '0.65rem' }}>{prueba.categoria}</span>
+                        {/* 🟢 Renderizado del usuario en Escritorio */}
+                        {prueba.creadoPor && (
+                          <span className="text-muted d-inline-flex align-items-center extra-small" title="Agregado por">
+                            <User size={10} className="me-1" /> {prueba.creadoPor}
+                          </span>
+                        )}
+                      </div>
                     </td>
                     <td>
                       <div className="small fw-medium text-dark">
@@ -192,7 +217,15 @@ const Derivaciones = () => {
                   <div className="d-flex justify-content-between align-items-start mb-2">
                     <div style={{ maxWidth: '70%' }}>
                       <h6 className="fw-bold mb-0 text-dark" style={{ fontSize: '0.95rem' }}>{prueba.nombre}</h6>
-                      <span className="badge bg-primary-subtle text-primary mt-1" style={{fontSize: '0.65rem'}}>{prueba.categoria}</span>
+                      <div className="d-flex align-items-center gap-1 flex-wrap mt-1">
+                        <span className="badge bg-primary-subtle text-primary" style={{fontSize: '0.65rem'}}>{prueba.categoria}</span>
+                        {/* 🟢 Renderizado del usuario en Móvil */}
+                        {prueba.creadoPor && (
+                          <span className="text-muted d-inline-flex align-items-center extra-small">
+                            <User size={10} className="me-1" /> {prueba.creadoPor}
+                          </span>
+                        )}
+                      </div>
                     </div>
                     <div className="d-flex gap-1">
                       <button onClick={() => abrirModal(prueba)} className="btn btn-light btn-sm text-primary p-2 rounded-3 border">
@@ -288,9 +321,6 @@ const Derivaciones = () => {
         .extra-small { font-size: 0.7rem; }
       `}</style>
 
-
-
-
       <div className="d-flex justify-content-center mt-5">
         <Link 
           to="/" 
@@ -301,8 +331,6 @@ const Derivaciones = () => {
           <span>Volver al Inicio</span>
         </Link>
       </div>
-
-
       
     </div>
   );

@@ -4,7 +4,7 @@ import {
   collection, addDoc, onSnapshot, query, orderBy, 
   serverTimestamp, updateDoc, doc, arrayUnion, arrayRemove, deleteDoc 
 } from 'firebase/firestore';
-import { db, auth } from '../../Credenciales';
+import { db } from '../../Credenciales';
 import { 
   Plus, Heart, User, Trash2, Lightbulb,
   ArrowLeft, Edit3, X
@@ -37,19 +37,29 @@ const ProyectosYObjetivos: React.FC = () => {
   };
   const [formProy, setFormProy] = useState(initialFormState);
   
-  // 🟢 Usamos la información extendida del usuario desde tu AuthContext
-  const { user } = useAuth(); 
+  // 🟢 Extraemos 'user' y 'loading' para evitar llamadas asíncronas antes de tiempo
+  const { user, loading } = useAuth(); 
 
   useEffect(() => {
+    // Si la autenticación está cargando o no hay usuario activo, evitamos levantar el onSnapshot
+    if (loading || !user) return;
+
     const q = query(collection(db, 'proyectos'), orderBy('createdAt', 'desc'));
+    
     const unsub = onSnapshot(q, (snapshot) => {
       setProyectos(snapshot.docs.map(d => ({ id: d.id, ...d.data() } as Proyecto)));
+    }, (error) => {
+      // 🟢 Captura el error de permisos de Firebase evitando que rompa la UI de React
+      console.error("Firestore interceptado (Permisos insuficientes temporales):", error);
     });
+
     return () => unsub();
-  }, []);
+  }, [user, loading]);
 
   const guardarProyecto = async (e: React.FormEvent) => {
     e.preventDefault();
+    if (!user) return;
+    
     try {
       if (editingId) {
         const docRef = doc(db, 'proyectos', editingId);
@@ -65,8 +75,8 @@ const ProyectosYObjetivos: React.FC = () => {
           descripcion: formProy.descripcion,
           categoria: formProy.categoria,
           estado: 'Propuesta',
-          autor: user?.displayName || 'Colega',
-          autorId: user?.uid,
+          autor: user.displayName || 'Colega',
+          autorId: user.uid,
           likes: [],
           createdAt: serverTimestamp()
         });
@@ -120,6 +130,25 @@ const ProyectosYObjetivos: React.FC = () => {
     }
   };
 
+  // 🟢 Bloqueos preventivos de renderizado (Frenan los errores colaterales de React #310)
+  if (loading) {
+    return (
+      <div className="container py-5 text-center">
+        <div className="spinner-border text-primary" role="status"></div>
+        <p className="text-muted mt-2 small">Cargando entorno de objetivos...</p>
+      </div>
+    );
+  }
+
+  if (!user) {
+    return (
+      <div className="container py-5 text-center">
+        <p className="text-danger fw-bold">Acceso no autorizado.</p>
+        <p className="text-muted small">Por favor, inicia sesión para ver los proyectos de mejora.</p>
+      </div>
+    );
+  }
+
   return (
     <div className="container py-4">
       <div className="d-flex justify-content-between align-items-center mb-4">
@@ -134,11 +163,15 @@ const ProyectosYObjetivos: React.FC = () => {
 
       <div className="row g-3">
         {proyectos.map(p => {
-          const yaTieneLike = p.likes?.includes(user?.uid || '');
+          const yaTieneLike = p.likes?.includes(user.uid || '');
           
-          // 🟢 EVALUACIÓN DE PERMISOS: Es autor O pertenece a Laboratorio Central
-          const esAutor = user?.uid === p.autorId;
-          const esLaboratorioCentral = user?.laboratorio === "Laboratorio Central"; // Ajustar si el campo se llama distinto en tu DB
+          // EVALUACIÓN DE PERMISOS SEGURA: Es autor O pertenece a Laboratorio Central
+          const esAutor = user.uid === p.autorId;
+          
+          // Casteo seguro para que convivan dinámicamente propiedades alternativas si existieran
+          const userServicio = (user as any).servicio || (user as any).laboratorio || null;
+          const esLaboratorioCentral = userServicio === "Laboratorio Central";
+          
           const tienePermisoEdicion = esAutor || esLaboratorioCentral;
 
           return (
@@ -151,7 +184,7 @@ const ProyectosYObjetivos: React.FC = () => {
                         {p.estado}
                       </span>
                       
-                      {/* 🟢 BOTONES ACCESIBLES POR AUTOR O PERSONAL AUTORIZADO */}
+                      {/* BOTONES ACCESIBLES POR AUTOR O PERSONAL AUTORIZADO */}
                       {tienePermisoEdicion && (
                         <div className="d-flex gap-1">
                           <button 

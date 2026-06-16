@@ -31,7 +31,6 @@ const LoginPresentacional: React.FC = () => {
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault(); 
         
-        // Si ya está cargando (por ejemplo por un doble envío desde el teclado del celular), frenamos el flujo de inmediato
         if (loading) return; 
 
         setError(''); 
@@ -63,7 +62,7 @@ const LoginPresentacional: React.FC = () => {
                     nombre: nombre.trim(),
                     email: user.email,
                     servicio: servicio,
-                    role: "operador",
+                    role: "Operador",
                     createdAt: new Date()
                 });
 
@@ -92,11 +91,8 @@ const LoginPresentacional: React.FC = () => {
                 }
             }
             setError(errorMessage);
-            // Solo devolvemos loading a false en el catch si falló, permitiendo corregir los campos.
             setLoading(false); 
         }
-        // Quitamos el setLoading(false) del bloqe 'finally' global, dado que si la operación fue exitosa,
-        // el componente se desmonta al navegar y evitamos mutaciones de estado en un componente no montado.
     };
 
     const loginAsGuest = async () => {
@@ -137,11 +133,11 @@ const LoginPresentacional: React.FC = () => {
                                 <input
                                     type="text"
                                     className="form-control shadow-sm"
-                                    placeholder='Ej: Juan Pérez'
+                                    placeholder='Ej: Julian Alvarez'
                                     onChange={(e) => setNombre(e.target.value)}
                                     value={nombre}
                                     required={isRegistering}
-                                    disabled={loading} // Bloqueado en celular
+                                    disabled={loading}
                                 />
                             </div>
                         )}
@@ -149,13 +145,13 @@ const LoginPresentacional: React.FC = () => {
                         <div className="mb-3">
                             <label className="form-label fw-bold small">Email</label>
                             <input
-                                type="email"
+                                type="email" // 🟢 CORREGIDO: Se removió el duplicado type="type"
                                 className="form-control shadow-sm"
                                 placeholder='ejemplo@correo.com'
                                 onChange={(e) => setEmail(e.target.value)}
                                 value={email}
                                 required
-                                disabled={loading} // Bloqueado en celular
+                                disabled={loading}
                             />
                         </div>
                         <div className="mb-3">
@@ -163,11 +159,11 @@ const LoginPresentacional: React.FC = () => {
                             <input
                                 type="password"
                                 className="form-control shadow-sm"
-                                placeholder='••••••••'
+                                placeholder='Ingrese Contraseña'
                                 onChange={(e) => setPassword(e.target.value)}
                                 value={password}
                                 required
-                                disabled={loading} // Bloqueado en celular
+                                disabled={loading}
                             />
                         </div>
 
@@ -179,7 +175,7 @@ const LoginPresentacional: React.FC = () => {
                                     value={servicio}
                                     onChange={(e) => setServicio(e.target.value)}
                                     required={isRegistering}
-                                    disabled={loading} // Bloqueado en celular
+                                    disabled={loading}
                                 >
                                     <option value="" disabled>-- Selecciona un servicio --</option>
                                     {SERVICIOS_LAB.map((srv) => (
@@ -239,7 +235,6 @@ const LoginPresentacional: React.FC = () => {
                         </div>
                     )}
 
-                    {/* SECCIÓN DE TOOLTIPS */}
                     <div className="d-flex justify-content-center gap-3 mt-3 pt-2 border-top">
                         <div className="position-relative project-tooltip-container">
                             <button type="button" className="btn btn-link p-0 text-decoration-none text-muted" style={{ fontSize: '0.75rem' }} disabled={loading}>
@@ -265,7 +260,6 @@ const LoginPresentacional: React.FC = () => {
                 </div>
             </div>
             
-            {/* Estilo CSS inyectado para asegurar la UI fluida de los Tooltips */}
             <style>{`
                 .project-tooltip-container .project-tooltip-text {
                     visibility: hidden;
