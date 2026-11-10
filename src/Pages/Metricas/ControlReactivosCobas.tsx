@@ -112,7 +112,7 @@ export const ControlReactivosCobas: React.FC<{ tabInicial?: 'metricas' | 'carga'
   const [busquedaHistorico, setBusquedaHistorico] = useState<string>('');
   const [filtroMesHistorico, setFiltroMesHistorico] = useState<string>('todos');
 
-  const API_URL = (import.meta as any).env?.VITE_API_URL || 'http://localhost:3000/api';
+ const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:3000/api';
 
   // 1. Inicialización de la planilla a partir del catálogo
   useEffect(() => {

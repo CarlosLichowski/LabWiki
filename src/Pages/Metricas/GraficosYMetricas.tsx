@@ -17,17 +17,20 @@ export const GraficosYMetricas: React.FC = () => {
       }
     }, 3000);
 
-    // Simulación de verificación o pre-conexión al backend
+    // Obtención de URL base normalizada y comprobación del servidor
     const verificarConexionBackend = async () => {
       try {
         const getApiUrl = () => {
-          if (typeof import.meta !== 'undefined' && (import.meta as any).env) {
-            return (import.meta as any).env.VITE_API_URL || 'http://localhost:3000/api';
+          let baseUrl = 'http://localhost:3000';
+          if (typeof import.meta !== 'undefined' && (import.meta as any).env?.VITE_API_URL) {
+            baseUrl = (import.meta as any).env.VITE_API_URL;
           }
-          return 'http://localhost:3000/api';
+          // Normaliza quitando el sufijo /api sobrante si existiera y lo añade formalmente
+          const cleanUrl = baseUrl.replace(/\/+$/, '').replace(/\/api$/, '');
+          return `${cleanUrl}/api`;
         };
 
-        // Petición ligera de salud o métricas para despertar el servidor
+        // Petición ligera de salud o métricas para despertar el servidor en Render
         await fetch(`${getApiUrl()}/metricas/kpis?dias=7`);
       } catch (error) {
         console.warn('El servidor podría estar iniciando...', error);
