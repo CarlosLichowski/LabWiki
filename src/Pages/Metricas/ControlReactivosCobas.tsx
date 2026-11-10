@@ -1,4 +1,4 @@
-// ControlReactivosCobas.tsx
+// src/components/cobas/ControlReactivosCobas.tsx
 // Sistema de Control Analítico de Reactivos y Auditoría de Inventario Roche Cobas 6000 (c501 / ISE1)
 import React, { useState, useEffect, useMemo } from 'react';
 import {
@@ -27,6 +27,8 @@ import {
   BarChart3,
   ClipboardList,
   AlertCircle,
+  FileSpreadsheet,
+  UploadCloud,
 } from 'lucide-react';
 import { CATALAGO_PRUEBAS_PLANTA, type PruebaPlanta } from '../../../utils/reactivosCatalogos';
 import './ControlReactivosCobas.css';
@@ -105,6 +107,7 @@ export const ControlReactivosCobas: React.FC<{ tabInicial?: 'metricas' | 'carga'
   const [conexionBackend, setConexionBackend] = useState<boolean | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
   const [guardando, setGuardando] = useState<boolean>(false);
+  const [subiendoArchivo, setSubiendoArchivo] = useState<boolean>(false);
   const [alertaMensaje, setAlertaMensaje] = useState<{ tipo: 'success' | 'info' | 'error'; texto: string } | null>(null);
   const [busquedaHistorico, setBusquedaHistorico] = useState<string>('');
   const [filtroMesHistorico, setFiltroMesHistorico] = useState<string>('todos');
@@ -287,7 +290,53 @@ export const ControlReactivosCobas: React.FC<{ tabInicial?: 'metricas' | 'carga'
     }
   };
 
-  // 5. Guardar cierre mensual en MySQL
+  // 5. Carga por Pendrive (Importación CSV/TXT de Cobas)
+  const handleFileUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    const formData = new FormData();
+    formData.append('archivo', file);
+
+    setSubiendoArchivo(true);
+    setAlertaMensaje({
+      tipo: 'info',
+      texto: 'Procesando e importando reporte del pendrive Cobas c 501...',
+    });
+
+    try {
+      const response = await fetch(`${API_URL}/cierres-mensuales/importar-csv`, {
+        method: 'POST',
+        body: formData,
+      });
+
+      const result = await response.json();
+
+      if (response.ok && result.status === 'SUCCESS') {
+        setAlertaMensaje({
+          tipo: 'success',
+          texto: `¡Importación masiva exitosa! Se procesaron ${result.total_filas} filas del Cobas.`,
+        });
+        cargarDatosServidor();
+      } else {
+        setAlertaMensaje({
+          tipo: 'error',
+          texto: `Error al procesar el archivo: ${result.mensaje || 'Formato no soportado'}`,
+        });
+      }
+    } catch (error) {
+      console.error('Error al subir el archivo:', error);
+      setAlertaMensaje({
+        tipo: 'error',
+        texto: 'Error de red al intentar conectar con el servidor backend.',
+      });
+    } finally {
+      setSubiendoArchivo(false);
+      e.target.value = '';
+    }
+  };
+
+  // 6. Guardar cierre mensual en MySQL
   const guardarCierreMensual = async (e: React.FormEvent) => {
     e.preventDefault();
 
@@ -345,7 +394,7 @@ export const ControlReactivosCobas: React.FC<{ tabInicial?: 'metricas' | 'carga'
     }
   };
 
-  // 6. Exportar histórico a CSV
+  // 7. Exportar histórico a CSV
   const exportarHistoricoCSV = () => {
     if (historico.length === 0) {
       alert('No hay registros históricos en la base de datos para exportar.');
@@ -833,6 +882,35 @@ export const ControlReactivosCobas: React.FC<{ tabInicial?: 'metricas' | 'carga'
               </div>
             </div>
 
+            {/* SECCIÓN DE IMPORTACIÓN MASIVA POR PENDRIVE */}
+            <div className="p-4 mb-4 bg-slate-50 border border-slate-200 rounded-lg flex flex-col md:flex-row items-center justify-between gap-4">
+              <div className="flex items-center gap-3">
+                <div className="p-2.5 bg-blue-100 text-blue-700 rounded-lg">
+                  <UploadCloud size={24} />
+                </div>
+                <div>
+                  <h4 className="text-sm font-bold text-slate-800">
+                    Carga Masiva desde Pendrive (Cobas c 501)
+                  </h4>
+                  <p className="text-xs text-slate-500">
+                    Selecciona el archivo CSV/TXT exportado desde la workstation de Roche para omitir la carga manual.
+                  </p>
+                </div>
+              </div>
+
+              <label className={`btn-cobas-action ${subiendoArchivo ? 'bg-slate-400' : 'bg-blue-600 hover:bg-blue-700'} text-white cursor-pointer inline-flex items-center gap-2 px-4 py-2 rounded-md font-medium text-sm transition-colors`}>
+                <FileSpreadsheet size={16} />
+                <span>{subiendoArchivo ? 'Procesando File...' : 'Seleccionar Archivo USB'}</span>
+                <input
+                  type="file"
+                  accept=".csv, .txt"
+                  onChange={handleFileUpload}
+                  disabled={subiendoArchivo}
+                  className="hidden"
+                />
+              </label>
+            </div>
+
             <div className="carga-toolbar-banner">
               <button
                 type="button"
@@ -876,46 +954,45 @@ export const ControlReactivosCobas: React.FC<{ tabInicial?: 'metricas' | 'carga'
                         fila.recuentoActual !== '' && Number(fila.recuentoActual) > fila.recuentoAnterior;
 
                       return (
-                        <tr key={fila.prueba.codigo}>
-                          <td className="cell-test-name">
-                            {fila.prueba.codigo}
-                            <span className="test-sub-label">({fila.prueba.nombre})</span>
+                        <tr key={fila.prueba.codigo} className={esRecarga ? 'row-recarga-advertencia' : ''}>
+                          <td className="font-semibold text-slate-800">
+                            {fila.prueba.nombre}
+                            <span className="text-xs text-slate-400 block font-normal">{fila.prueba.codigo}</span>
                           </td>
-                          <td className="cell-acn">{fila.prueba.acn}</td>
-                          <td className="cell-unit">
-                            <span className={fila.prueba.unidad === 'c5-1' ? 'unit-c5' : 'unit-ise'}>
+                          <td className="text-center font-mono text-xs">{fila.prueba.acn}</td>
+                          <td className="text-center">
+                            <span className={`tag-unidad ${fila.prueba.unidad === 'ISE1' ? 'tag-ise' : 'tag-c501'}`}>
                               {fila.prueba.unidad}
                             </span>
                           </td>
-                          <td>
+                          <td className="text-right">
                             <input
                               type="number"
-                              value={fila.recuentoAnterior || ''}
+                              value={fila.recuentoAnterior}
                               onChange={(e) =>
                                 handleRecuentoAnteriorChange(
                                   indexGlobal !== -1 ? indexGlobal : index,
                                   e.target.value
                                 )
                               }
-                              className="input-counter-box"
-                              placeholder="Ej: 15774"
+                              className="input-table-num input-previo"
                             />
                           </td>
-                          <td>
+                          <td className="text-right">
                             <input
                               type="number"
                               value={fila.recuentoActual}
+                              placeholder="0"
                               onChange={(e) =>
                                 handleRecuentoActualChange(
                                   indexGlobal !== -1 ? indexGlobal : index,
                                   e.target.value
                                 )
                               }
-                              className="input-counter-box input-counter-actual"
-                              placeholder="Ej: 15234"
+                              className="input-table-num input-actual"
                             />
                           </td>
-                          <td className="cell-consumo-real">
+                          <td className="text-right font-bold text-emerald-700 bg-emerald-50">
                             {fila.recuentoActual === '' ? (
                               <span className="badge-consumo-cero">—</span>
                             ) : esRecarga ? (
@@ -928,10 +1005,11 @@ export const ControlReactivosCobas: React.FC<{ tabInicial?: 'metricas' | 'carga'
                               </span>
                             )}
                           </td>
-                          <td>
+                          <td className="text-right">
                             <input
                               type="number"
                               value={fila.rutina || ''}
+                              placeholder="0"
                               onChange={(e) =>
                                 handleCampoDetalleChange(
                                   indexGlobal !== -1 ? indexGlobal : index,
@@ -939,14 +1017,14 @@ export const ControlReactivosCobas: React.FC<{ tabInicial?: 'metricas' | 'carga'
                                   Number(e.target.value) || 0
                                 )
                               }
-                              className="input-counter-box"
-                              placeholder="0"
+                              className="input-table-num"
                             />
                           </td>
-                          <td>
+                          <td className="text-right">
                             <input
                               type="number"
                               value={fila.reproc || ''}
+                              placeholder="0"
                               onChange={(e) =>
                                 handleCampoDetalleChange(
                                   indexGlobal !== -1 ? indexGlobal : index,
@@ -954,14 +1032,14 @@ export const ControlReactivosCobas: React.FC<{ tabInicial?: 'metricas' | 'carga'
                                   Number(e.target.value) || 0
                                 )
                               }
-                              className="input-counter-box"
-                              placeholder="0"
+                              className="input-table-num input-amber"
                             />
                           </td>
-                          <td>
+                          <td className="text-right">
                             <input
                               type="number"
                               value={fila.urg || ''}
+                              placeholder="0"
                               onChange={(e) =>
                                 handleCampoDetalleChange(
                                   indexGlobal !== -1 ? indexGlobal : index,
@@ -969,14 +1047,14 @@ export const ControlReactivosCobas: React.FC<{ tabInicial?: 'metricas' | 'carga'
                                   Number(e.target.value) || 0
                                 )
                               }
-                              className="input-counter-box"
-                              placeholder="0"
+                              className="input-table-num"
                             />
                           </td>
-                          <td>
+                          <td className="text-right">
                             <input
                               type="number"
                               value={fila.calib || ''}
+                              placeholder="0"
                               onChange={(e) =>
                                 handleCampoDetalleChange(
                                   indexGlobal !== -1 ? indexGlobal : index,
@@ -984,14 +1062,14 @@ export const ControlReactivosCobas: React.FC<{ tabInicial?: 'metricas' | 'carga'
                                   Number(e.target.value) || 0
                                 )
                               }
-                              className="input-counter-box"
-                              placeholder="0"
+                              className="input-table-num"
                             />
                           </td>
-                          <td>
+                          <td className="text-right">
                             <input
                               type="number"
                               value={fila.cc || ''}
+                              placeholder="0"
                               onChange={(e) =>
                                 handleCampoDetalleChange(
                                   indexGlobal !== -1 ? indexGlobal : index,
@@ -999,14 +1077,14 @@ export const ControlReactivosCobas: React.FC<{ tabInicial?: 'metricas' | 'carga'
                                   Number(e.target.value) || 0
                                 )
                               }
-                              className="input-counter-box"
-                              placeholder="0"
+                              className="input-table-num"
                             />
                           </td>
-                          <td>
+                          <td className="text-center">
                             <input
                               type="text"
                               value={fila.loteReactivo}
+                              placeholder="LOT-XXXX"
                               onChange={(e) =>
                                 handleCampoDetalleChange(
                                   indexGlobal !== -1 ? indexGlobal : index,
@@ -1014,8 +1092,7 @@ export const ControlReactivosCobas: React.FC<{ tabInicial?: 'metricas' | 'carga'
                                   e.target.value
                                 )
                               }
-                              className="input-counter-box text-left fs-72"
-                              placeholder="LOT-XXXX"
+                              className="input-table-text text-left fs-72"
                             />
                           </td>
                         </tr>
