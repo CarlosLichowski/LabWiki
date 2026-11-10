@@ -1,0 +1,294 @@
+/* src/css/Login.css */
+
+/* --- Variables de Diseño MedTech --- */
+:root {
+  --primary-color: #0d6efd;
+  --primary-hover: #0b5ed7;
+  --success-color: #198754;
+  --success-hover: #157347;
+  --danger-color: #dc3545;
+  --light-bg: #f8f9fa;
+  --dark-color: #212529;
+  --muted-color: #6c757d;
+  --border-color: #dee2e6;
+  --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -4px rgba(0, 0, 0, 0.1);
+  --radius-lg: 15px;
+  --radius-md: 8px;
+  --transition: all 0.2s ease-in-out;
+}
+
+/* --- Contenedor Principal (Pantalla Completa) --- */
+.login-screen {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  /* 🟢 Corrección Mobile: Cambiamos a vh dinámico/mínimo para evitar desbordes en visores móviles */
+  min-height: 100dvh; 
+  background-color: var(--light-bg);
+  background-image: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+  font-family: system-ui, -apple-system, sans-serif;
+  padding: 1.5rem; /* 🟢 Más espacio de respiro en los bordes */
+  box-sizing: border-box;
+  width: 100%;
+  overflow-y: auto; /* 🟢 Permite scroll vertical si la pantalla es muy petisa */
+}
+
+/* --- Tarjeta del Formulario --- */
+.login-card {
+  background: white;
+  max-width: 400px;
+  width: 100%;
+  padding: 2.25rem 2rem;
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-lg);
+  box-sizing: border-box;
+  transition: var(--transition);
+}
+
+.login-card-content {
+  display: flex;
+  flex-direction: column;
+}
+
+/* --- Tipografía --- */
+.login-title {
+  text-align: center;
+  color: var(--primary-color);
+  font-weight: 700;
+  margin: 0 0 0.5rem 0;
+  font-size: 1.75rem;
+  letter-spacing: -0.02em;
+}
+
+.login-subtitle {
+  text-align: center;
+  color: var(--muted-color);
+  font-size: 0.875rem;
+  margin: 0 0 1.50rem 0;
+}
+
+/* --- Alertas --- */
+.alert-error {
+  background-color: #f8d7da;
+  color: var(--danger-color);
+  border: 1px solid #f5c2c7;
+  padding: 0.65rem 1rem;
+  border-radius: var(--radius-md);
+  text-align: center;
+  font-size: 0.875rem;
+  margin-bottom: 1.25rem;
+  font-weight: 500;
+}
+
+/* --- Grupos de Formulario --- */
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  margin-bottom: 1.25rem;
+}
+
+.form-label {
+  font-weight: 600;
+  font-size: 0.85rem;
+  color: var(--dark-color);
+}
+
+.form-input {
+  width: 100%;
+  padding: 0.75rem 0.85rem; /* 🟢 Un toque más cómodo para targets táctiles */
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+  font-size: 16px; /* 🟢 Mantenemos los 16px clave para evitar el zoom molesto de iOS */
+  transition: var(--transition);
+  box-sizing: border-box;
+  background-color: white;
+  -webkit-appearance: none; /* remueve estilos nativos raros en Safari Mobile */
+}
+
+.form-input:focus {
+  outline: none;
+  border-color: var(--primary-color);
+  box-shadow: 0 0 0 3px rgba(13, 110, 253, 0.15);
+}
+
+.form-input:disabled {
+  background-color: #e9ecef;
+  cursor: not-allowed;
+}
+
+/* --- Botones --- */
+.btn-submit {
+  width: 100%;
+  background-color: var(--primary-color);
+  color: white;
+  border: none;
+  padding: 0.85rem; /* 🟢 Botón más alto y fácil de presionar en celulares */
+  border-radius: var(--radius-md);
+  font-weight: 700;
+  font-size: 1rem;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  transition: var(--transition);
+  margin-bottom: 1rem;
+}
+
+.btn-submit:hover:not(:disabled) {
+  background-color: var(--primary-hover);
+}
+
+.btn-submit:disabled {
+  opacity: 0.625;
+  cursor: not-allowed;
+}
+
+.btn-link-demo {
+  background: none;
+  border: none;
+  color: var(--muted-color);
+  font-weight: 600;
+  font-size: 0.9rem;
+  cursor: pointer;
+  text-decoration: none;
+  padding: 0.5rem 1rem; /* 🟢 Mayor área de clic */
+  transition: var(--transition);
+}
+
+.btn-link-demo:hover:not(:disabled) {
+  color: var(--dark-color);
+}
+
+/* --- Separadores --- */
+.divider-container {
+  position: relative;
+  text-align: center;
+  margin: 1.5rem 0;
+}
+
+.divider-line {
+  border: 0;
+  border-top: 1px solid var(--border-color);
+  margin: 0;
+}
+
+.divider-text {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: white;
+  padding: 0 0.75rem;
+  color: var(--muted-color);
+  font-size: 0.85rem;
+}
+
+.center-wrapper {
+  text-align: center;
+  padding-top: 0.5rem;
+}
+
+/* --- Footer de Links y Tooltips --- */
+.login-footer {
+  display: flex;
+  justify-content: center;
+  gap: 0.75rem;
+  margin-top: 1.5rem;
+  padding-top: 1rem;
+  border-top: 1px solid #f1f3f5;
+  align-items: center;
+  flex-wrap: wrap; /* 🟢 Previene desbordes si los links son largos en pantallas chicas */
+}
+
+.footer-separator {
+  color: var(--border-color);
+  font-size: 0.75rem;
+}
+
+.btn-footer-link {
+  background: none;
+  border: none;
+  color: var(--muted-color);
+  font-size: 0.75rem;
+  cursor: pointer;
+  padding: 0.25rem;
+}
+
+.btn-footer-link:hover {
+  color: var(--dark-color);
+}
+
+/* Tooltips */
+.project-tooltip-container {
+  position: relative;
+}
+
+.project-tooltip-container .project-tooltip-text {
+  visibility: hidden;
+  width: 260px;
+  background-color: #1e293b; /* Color slate oscuro para combinar con MedTech */
+  color: #fff;
+  text-align: center;
+  border-radius: 6px;
+  padding: 10px;
+  position: absolute;
+  z-index: 1050;
+  bottom: 140%;
+  left: 50%;
+  transform: translateX(-50%);
+  opacity: 0;
+  transition: opacity 0.2s, transform 0.2s;
+  font-size: 0.75rem;
+  line-height: 1.4;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+  pointer-events: none; /* 🟢 Evita que rompa clicks del usuario */
+}
+
+.project-tooltip-container:hover .project-tooltip-text {
+  visibility: visible;
+  opacity: 1;
+}
+
+/* --- Spinner de Carga Tradicional --- */
+.spinner-inline {
+  width: 1.15rem;
+  height: 1.15rem;
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  border-radius: 50%;
+  border-top-color: white;
+  animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+/* 🟢 MEDIA QUERY CRUCIAL PARA SMARTPHONES EXTREMOS (< 440px) */
+@media (max-width: 440px) {
+  .login-screen {
+    padding: 0.75rem; /* Reducimos el padding exterior para ganar espacio */
+    background-image: linear-gradient(135deg, #f5f7fa 0%, #e4ecf7 100%); /* Fondo un poco más sutil en mobile */
+  }
+
+  .login-card {
+    padding: 1.75rem 1.25rem; /* Ajuste interno de la tarjeta para no comprimir inputs */
+    border-radius: 12px;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05); /* Sombra más suave en mobile */
+  }
+
+  .login-title {
+    font-size: 1.5rem; /* Tipografía ligeramente menor para que entre holgado */
+  }
+
+  /* 🟢 Ajuste adaptativo inteligente para los tooltips flotantes en celular */
+  .project-tooltip-container .project-tooltip-text {
+    width: 280px;
+    position: fixed; /* Se desengancha del flujo relativo */
+    bottom: 20px;    /* Se acomoda como un banner inferior */
+    left: 50%;
+    transform: translateX(-50%);
+  }
+}

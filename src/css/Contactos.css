@@ -1,0 +1,514 @@
+/* ==========================================================================
+   VARIABLES Y ESTILOS GENERALES
+   ========================================================================== */
+:root {
+  --cnt-bg-main: #f8fafc;
+  --cnt-card-bg: #ffffff;
+  --cnt-border: #f1f5f9;
+  --cnt-border-hover: #e2e8f0;
+  --cnt-text-dark: #0f172a;
+  --cnt-text-muted: #64748b;
+  --cnt-text-secondary: #475569;
+  --cnt-primary-dark: #1e293b;
+  --cnt-warning: #f59e0b;
+  --cnt-warning-text: #b45309;
+  --cnt-danger: #ef4444;
+}
+
+.contactos-page-container {
+  min-height: 100vh;
+  background-color: var(--cnt-bg-main);
+  padding: 1.5rem 1rem;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  box-sizing: border-box;
+}
+
+@media (min-width: 768px) {
+  .contactos-page-container {
+    padding: 1.5rem 2rem;
+  }
+}
+
+.font-monospace {
+  font-family: 'JetBrains Mono', monospace, Consolas, Monaco, monospace !important;
+  letter-spacing: -0.5px;
+}
+
+/* ==========================================================================
+   CABECERA
+   ========================================================================== */
+.contactos-header {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+  border-bottom: 1px solid var(--cnt-border-hover);
+  padding-bottom: 1rem;
+}
+
+@media (min-width: 768px) {
+  .contactos-header {
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+  }
+}
+
+.contactos-header-title {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: var(--cnt-text-dark);
+  margin: 0 0 0.25rem 0;
+  letter-spacing: -0.025em;
+}
+
+.contactos-header-subtitle {
+  color: var(--cnt-text-muted);
+  font-size: 0.85rem;
+  margin: 0;
+}
+
+.contactos-header-actions {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  width: 100%;
+}
+
+@media (min-width: 768px) {
+  .contactos-header-actions {
+    width: auto;
+  }
+}
+
+/* Búsqueda */
+.contactos-search-wrapper {
+  position: relative;
+  flex-grow: 1;
+  min-width: 200px;
+}
+
+@media (min-width: 768px) {
+  .contactos-search-wrapper {
+    flex-grow: 0;
+    min-width: 260px;
+  }
+}
+
+.contactos-search-icon {
+  position: absolute;
+  left: 0.75rem;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--cnt-text-muted);
+  opacity: 0.5;
+  pointer-events: none;
+}
+
+.contactos-search-input {
+  width: 100%;
+  padding: 0.5rem 0.75rem 0.5rem 2.25rem;
+  background-color: #ffffff;
+  border: 1px solid var(--cnt-border-hover);
+  border-radius: 0.5rem;
+  font-size: 0.85rem;
+  color: var(--cnt-text-dark);
+  outline: none;
+  box-sizing: border-box;
+}
+
+.contactos-search-input:focus {
+  border-color: var(--cnt-text-muted);
+}
+
+/* Botón alternar formulario */
+.contactos-toggle-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-weight: 600;
+  font-size: 0.85rem;
+  padding: 0.5rem 1rem;
+  border-radius: 0.5rem;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: all 0.2s ease;
+}
+
+.contactos-toggle-btn.add-mode {
+  background-color: var(--cnt-primary-dark);
+  color: #ffffff;
+  border: none;
+}
+
+.contactos-toggle-btn.add-mode:hover {
+  background-color: #0f172a;
+}
+
+.contactos-toggle-btn.cancel-mode {
+  background-color: #ffffff;
+  color: var(--cnt-text-dark);
+  border: 1px solid var(--cnt-border-hover);
+}
+
+.contactos-toggle-btn.cancel-mode:hover {
+  background-color: var(--cnt-bg-main);
+}
+
+/* ==========================================================================
+   FORMULARIO
+   ========================================================================== */
+.contactos-form-card {
+  background-color: #ffffff;
+  border-radius: 1rem;
+  padding: 1.5rem;
+  margin-bottom: 1.5rem;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+  animation: fadeInDown 0.3s ease;
+}
+
+@keyframes fadeInDown {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.contactos-form-title {
+  display: block;
+  font-size: 0.65rem;
+  font-weight: 700;
+  color: var(--cnt-text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-bottom: 1rem;
+}
+
+.contactos-form-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 0.75rem;
+}
+
+@media (min-width: 768px) {
+  .contactos-form-grid {
+    grid-template-columns: repeat(12, 1fr);
+  }
+  .contactos-form-grid .contactos-form-group:nth-child(1) { grid-column: span 3; }
+  .contactos-form-grid .contactos-form-group:nth-child(2) { grid-column: span 3; }
+  .contactos-form-grid .contactos-form-group:nth-child(3) { grid-column: span 2; }
+  .contactos-form-grid .contactos-form-group:nth-child(4) { grid-column: span 2; }
+  .contactos-form-grid .contactos-form-submit { grid-column: span 2; }
+}
+
+.contactos-form-group {
+  display: flex;
+  flex-direction: column;
+}
+
+.contactos-label {
+  font-size: 0.65rem;
+  font-weight: 600;
+  color: var(--cnt-text-secondary);
+  margin-bottom: 0.25rem;
+}
+
+.contactos-input,
+.contactos-select {
+  width: 100%;
+  padding: 0.5rem 0.75rem;
+  background-color: var(--cnt-bg-main);
+  border: 1px solid transparent;
+  border-radius: 0.5rem;
+  font-size: 0.85rem;
+  color: var(--cnt-text-dark);
+  outline: none;
+  box-sizing: border-box;
+}
+
+.contactos-input:focus,
+.contactos-select:focus {
+  border-color: var(--cnt-border-hover);
+  background-color: #ffffff;
+}
+
+.contactos-form-submit {
+  justify-content: flex-end;
+}
+
+.contactos-submit-btn {
+  width: 100%;
+  padding: 0.55rem;
+  background-color: var(--cnt-primary-dark);
+  color: #ffffff;
+  border: none;
+  border-radius: 0.5rem;
+  font-weight: 600;
+  font-size: 0.85rem;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.contactos-submit-btn:hover:not(:disabled) {
+  background-color: #0f172a;
+}
+
+.contactos-submit-btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+/* ==========================================================================
+   SECCIONES Y GRILLA DE TARJETAS
+   ========================================================================== */
+.contactos-content {
+  margin-top: 0.5rem;
+}
+
+.contactos-section {
+  margin-bottom: 2rem;
+}
+
+.contactos-section-title {
+  display: block;
+  font-size: 0.65rem;
+  font-weight: 700;
+  color: var(--cnt-text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-bottom: 1rem;
+}
+
+.contactos-section-title.title-favorites {
+  color: var(--cnt-warning-text);
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.contactos-star-icon {
+  color: var(--cnt-warning);
+}
+
+.contactos-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1rem;
+}
+
+@media (min-width: 576px) {
+  .contactos-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (min-width: 768px) {
+  .contactos-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+@media (min-width: 1200px) {
+  .contactos-grid {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
+/* Estado Vacío */
+.contactos-empty-state {
+  width: 100%;
+  text-align: center;
+  padding: 3rem 1rem;
+  background-color: #ffffff;
+  border-radius: 1rem;
+  border: 2px dashed var(--cnt-border-hover);
+  box-sizing: border-box;
+}
+
+.contactos-empty-text {
+  color: var(--cnt-text-muted);
+  font-size: 0.85rem;
+  margin: 0;
+}
+
+/* ==========================================================================
+   TARJETA DE CONTACTO (ContactCard)
+   ========================================================================== */
+.contact-card {
+  height: 100%;
+  background-color: var(--cnt-card-bg);
+  border-radius: 1rem;
+  position: relative;
+  overflow: hidden;
+  border: 1px solid var(--cnt-border) !important;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.02);
+  transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+  box-sizing: border-box;
+}
+
+.contact-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(15, 23, 42, 0.04) !important;
+  border-color: var(--cnt-border-hover) !important;
+}
+
+.contact-card-body {
+  padding: 1.25rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 100%;
+  box-sizing: border-box;
+}
+
+.contact-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 0.85rem;
+}
+
+/* Badges según categoría */
+.contact-card-badge {
+  padding: 0.35rem 0.6rem;
+  border-radius: 0.375rem;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  font-size: 0.68rem;
+}
+
+.badge-medico {
+  background-color: #f0f9ff;
+  color: #0284c7;
+}
+
+.badge-cama {
+  background-color: #ecfdf5;
+  color: #10b981;
+}
+
+.badge-sala {
+  background-color: #f5f3ff;
+  color: #6366f1;
+}
+
+/* Favorito Botón */
+.contact-card-fav-btn {
+  background: transparent;
+  border: none;
+  padding: 0.35rem;
+  border-radius: 50%;
+  cursor: pointer;
+  color: var(--cnt-text-muted);
+  opacity: 0.3;
+  transition: all 0.2s ease;
+}
+
+.contact-card-fav-btn:hover {
+  opacity: 0.8;
+}
+
+.contact-card-fav-btn.is-fav {
+  opacity: 1;
+  color: var(--cnt-warning);
+}
+
+/* Nombre de contacto */
+.contact-card-name {
+  font-weight: 700;
+  color: var(--cnt-text-dark);
+  font-size: 0.92rem;
+  margin: 0 0 1rem 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* Pie de la tarjeta */
+.contact-card-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-top: 1px solid var(--cnt-border);
+  padding-top: 0.75rem;
+  margin-top: auto;
+}
+
+.contact-card-label {
+  display: block;
+  color: var(--cnt-text-muted);
+  text-transform: uppercase;
+  font-weight: 700;
+  opacity: 0.6;
+  font-size: 8px;
+  letter-spacing: 0.3px;
+}
+
+.contact-card-phone-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+  margin-top: 0.25rem;
+}
+
+.contact-card-phone-icon {
+  color: var(--cnt-text-secondary);
+  opacity: 0.5;
+}
+
+.contact-card-phone-number {
+  font-weight: 700;
+  color: var(--cnt-text-dark);
+  font-size: 1.25rem;
+  margin: 0;
+}
+
+/* Botón Eliminar */
+.contact-card-delete-btn {
+  background: transparent;
+  border: none;
+  color: var(--cnt-danger);
+  padding: 0.35rem;
+  cursor: pointer;
+  opacity: 0;
+  transition: opacity 0.2s ease;
+}
+
+.contact-card:hover .contact-card-delete-btn {
+  opacity: 0.6;
+}
+
+.contact-card:hover .contact-card-delete-btn:hover {
+  opacity: 1;
+}
+
+/* ==========================================================================
+   FOOTER (BOTÓN REGRESAR)
+   ========================================================================== */
+.contactos-footer {
+  display: flex;
+  justify-content: center;
+  margin-top: 3rem;
+}
+
+.contactos-back-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  text-decoration: none;
+  color: var(--cnt-text-muted);
+  font-size: 0.85rem;
+  font-weight: 500;
+  transition: color 0.2s ease;
+}
+
+.contactos-back-link:hover {
+  color: var(--cnt-text-dark);
+}

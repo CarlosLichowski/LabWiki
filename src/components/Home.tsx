@@ -50,7 +50,7 @@ const Home: React.FC = () => {
                             
                             <h2 className="card-title fw-bold text-info">Área Personal</h2>
                             <p className="card-text text-muted mb-4 flex-grow-1">
-                                Este es el acceso exclusivo para el personal del laboratorio. Aquí podrás gestionar manuales de equipos, acceder a procedimientos operativos, analizar la documentación de ateneos y revisar tu actividad interna.
+                                acceso exclusivo para el personal del laboratorio. Gestionar manuales de equipos, acceder a procedimientos operativos, analizar la documentación de ateneos y revisar tu actividad interna.
                             </p>
                             
                             <Link 

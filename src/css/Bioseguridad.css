@@ -1,0 +1,448 @@
+/* ==========================================================================
+   VARIABLES Y ESTILOS GENERALES
+   ========================================================================== */
+:root {
+  --bs-primary: #2563eb;
+  --bs-primary-hover: #1d4ed8;
+  --bs-primary-subtle: #dbeafe;
+  --bs-danger: #ef4444;
+  --bs-warning: #f59e0b;
+  --bs-warning-bg: #fef3c7;
+  --bs-success: #10b981;
+  --bs-dark: #1e293b;
+  --bs-gray-bg: #f8fafc;
+  --bs-card-bg: #ffffff;
+  --bs-border-color: #e2e8f0;
+  --bs-text-primary: #0f172a;
+  --bs-text-muted: #64748b;
+}
+
+.bioseguridad-container {
+  padding: 1rem;
+  max-width: 1200px;
+  margin: 0 auto;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  box-sizing: border-box;
+}
+
+@media (min-width: 576px) {
+  .bioseguridad-container {
+    padding: 1.5rem;
+  }
+}
+
+/* Utilitarios para iconos y colores */
+.icon-shrink-0 {
+  flex-shrink: 0;
+}
+
+.text-primary { color: var(--bs-primary); }
+.text-danger { color: var(--bs-danger); }
+.text-warning { color: var(--bs-warning); }
+.text-success { color: var(--bs-success); }
+.text-dark { color: var(--bs-dark); }
+
+/* ==========================================================================
+   HEADER
+   ========================================================================== */
+.bioseguridad-header {
+  background-color: var(--bs-primary);
+  color: #ffffff;
+  padding: 1rem;
+  border-radius: 1rem;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+  margin-bottom: 1rem;
+}
+
+@media (min-width: 576px) {
+  .bioseguridad-header {
+    padding: 1.5rem;
+    margin-bottom: 1.5rem;
+  }
+}
+
+.bioseguridad-header-content {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 0.5rem;
+}
+
+@media (min-width: 576px) {
+  .bioseguridad-header-content {
+    flex-direction: row;
+    align-items: center;
+  }
+}
+
+.bioseguridad-title {
+  font-size: 1.25rem;
+  font-weight: 700;
+  margin: 0;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+@media (min-width: 576px) {
+  .bioseguridad-title {
+    font-size: 1.5rem;
+  }
+}
+
+.bioseguridad-subtitle {
+  margin: 0;
+  opacity: 0.85;
+  font-size: 0.875rem;
+}
+
+.bioseguridad-badge {
+  background-color: #ffffff;
+  color: var(--bs-primary);
+  padding: 0.4rem 0.85rem;
+  border-radius: 0.5rem;
+  font-weight: 700;
+  font-size: 0.8rem;
+}
+
+/* ==========================================================================
+   NAVEGACIÓN INTERNA (MOBILE FIRST)
+   ========================================================================== */
+.bioseguridad-nav {
+  background-color: var(--bs-card-bg);
+  padding: 0.35rem;
+  border-radius: 1rem;
+  border: 1px solid var(--bs-border-color);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.03);
+  margin-bottom: 1.5rem;
+}
+
+.bioseguridad-nav-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0.25rem;
+  text-align: center;
+}
+
+.bioseguridad-nav-tab {
+  width: 100%;
+  padding: 0.5rem 0.25rem;
+  font-size: 0.8rem;
+  font-weight: 700;
+  border-radius: 0.5rem;
+  border: none;
+  background-color: var(--bs-gray-bg);
+  color: var(--bs-text-muted);
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.bioseguridad-nav-tab.active {
+  background-color: var(--bs-primary);
+  color: #ffffff;
+  box-shadow: 0 2px 4px rgba(37, 99, 235, 0.2);
+}
+
+/* ==========================================================================
+   ESTRUCTURA Y GRILLAS
+   ========================================================================== */
+.bioseguridad-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1rem;
+}
+
+@media (min-width: 768px) {
+  .bioseguridad-grid {
+    grid-template-columns: repeat(12, 1fr);
+    gap: 1.25rem;
+  }
+
+  .bioseguridad-grid-col-full { grid-column: span 12; }
+  .bioseguridad-grid-col-half { grid-column: span 6; }
+  .bioseguridad-grid-col-third { grid-column: span 4; }
+}
+
+/* ==========================================================================
+   TARJETAS Y COMPONENTES REUTILIZABLES
+   ========================================================================== */
+.bioseguridad-card {
+  background: var(--bs-card-bg);
+  border-radius: 1rem;
+  padding: 1rem;
+  border: 1px solid var(--bs-border-color);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+  height: 100%;
+  box-sizing: border-box;
+}
+
+@media (min-width: 768px) {
+  .bioseguridad-card {
+    padding: 1.5rem;
+  }
+}
+
+.bioseguridad-card.overflow-hidden { overflow: hidden; }
+.bioseguridad-card.padding-0 { padding: 0; }
+.bioseguridad-card.border-warning { border-color: var(--bs-warning); }
+
+.bioseguridad-card-title {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--bs-text-primary);
+  margin: 0 0 0.75rem 0;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.bioseguridad-card-title.underline {
+  border-bottom: 1px solid var(--bs-border-color);
+  padding-bottom: 0.5rem;
+}
+
+.bioseguridad-card-description {
+  font-size: 0.85rem;
+  color: var(--bs-text-muted);
+  margin-top: 0;
+  margin-bottom: 0.75rem;
+}
+
+/* Pasos del lavado de manos */
+.bioseguridad-steps-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 0.5rem;
+}
+
+@media (min-width: 768px) {
+  .bioseguridad-steps-grid {
+    grid-template-columns: repeat(5, 1fr);
+  }
+}
+
+.bioseguridad-step-item {
+  background-color: var(--bs-gray-bg);
+  padding: 0.6rem;
+  border-radius: 0.5rem;
+  border: 1px solid var(--bs-border-color);
+  font-size: 0.8rem;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+@media (min-width: 768px) {
+  .bioseguridad-step-item {
+    justify-content: center;
+    text-align: center;
+  }
+}
+
+.bioseguridad-step-number {
+  background-color: var(--bs-primary-subtle);
+  color: var(--bs-primary);
+  border-radius: 50%;
+  width: 22px;
+  height: 22px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.75rem;
+  flex-shrink: 0;
+}
+
+/* Listas de Barreras (EPP) */
+.bioseguridad-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.bioseguridad-list-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.5rem;
+  padding: 0.4rem 0;
+  font-size: 0.85rem;
+}
+
+.bioseguridad-list-item strong {
+  color: var(--bs-text-primary);
+}
+
+/* Caja de advertencia de Punzocortantes */
+.card-warning-subtle {
+  background-color: var(--bs-warning-bg);
+  border-color: #fde68a;
+}
+
+.bioseguridad-highlight-box {
+  background-color: #ffffff;
+  border-radius: 0.5rem;
+  padding: 0.85rem;
+  border: 1px solid var(--bs-border-color);
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.02);
+}
+
+.bioseguridad-highlight-box.border-warning {
+  border-color: var(--bs-warning);
+}
+
+.bioseguridad-highlight-text {
+  font-size: 0.85rem;
+  margin: 0;
+  color: var(--bs-text-muted);
+}
+
+/* ==========================================================================
+   PESTAÑA DE RESIDUOS
+   ========================================================================== */
+.bioseguridad-residuo-banner {
+  padding: 0.6rem;
+  color: #ffffff;
+  text-align: center;
+  font-weight: 700;
+  font-size: 0.8rem;
+}
+
+.bioseguridad-residuo-banner.bg-danger { background-color: var(--bs-danger); }
+.bioseguridad-residuo-banner.bg-dark { background-color: var(--bs-dark); }
+.bioseguridad-residuo-banner.bg-warning { background-color: var(--bs-warning); color: var(--bs-text-primary); }
+
+.bioseguridad-residuo-body {
+  padding: 1rem;
+  text-align: center;
+}
+
+.bioseguridad-residuo-title {
+  font-weight: 700;
+  font-size: 0.95rem;
+  margin: 0 0 0.25rem 0;
+  color: var(--bs-text-primary);
+}
+
+.bioseguridad-residuo-desc {
+  font-size: 0.8rem;
+  color: var(--bs-text-muted);
+  margin: 0;
+}
+
+.margin-b-2 { margin-bottom: 0.5rem; }
+.margin-b-3 { margin-bottom: 0.85rem; }
+
+/* ==========================================================================
+   PESTAÑA DE ACCIDENTES Y FOOTER DE ALERTA
+   ========================================================================== */
+.card-accidentes {
+  background-color: var(--bs-gray-bg);
+  border-left: 5px solid var(--bs-danger);
+}
+
+.bioseguridad-accidentes-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1rem;
+}
+
+@media (min-width: 768px) {
+  .bioseguridad-accidentes-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+  
+  .bioseguridad-accidente-step:first-child {
+    border-right: 1px solid var(--bs-border-color);
+    padding-right: 1rem;
+  }
+}
+
+.bioseguridad-accidente-heading {
+  font-weight: 700;
+  margin: 0 0 0.25rem 0;
+  font-size: 0.9rem;
+}
+
+.bioseguridad-accidente-text {
+  font-size: 0.8rem;
+  color: var(--bs-text-muted);
+  margin: 0 0 0.25rem 0;
+}
+
+.bioseguridad-footer-alert {
+  margin-top: 1rem;
+  padding: 0.85rem;
+  background-color: #ffffff;
+  border-radius: 0.5rem;
+  border: 1px solid var(--bs-border-color);
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+@media (min-width: 576px) {
+  .bioseguridad-footer-alert {
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+  }
+}
+
+.bioseguridad-alert-info {
+  font-size: 0.8rem;
+  color: var(--bs-text-muted);
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.bioseguridad-external-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.25rem;
+  padding: 0.4rem 0.85rem;
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--bs-primary);
+  border: 1px solid var(--bs-primary);
+  border-radius: 2rem;
+  text-decoration: none;
+  white-space: nowrap;
+  transition: all 0.2s ease;
+}
+
+.bioseguridad-external-btn:hover {
+  background-color: var(--bs-primary);
+  color: #ffffff;
+}
+
+/* ==========================================================================
+   BOTÓN NAVEGACIÓN INFERIOR (VOLVER AL INICIO)
+   ========================================================================== */
+.bioseguridad-back-wrapper {
+  display: flex;
+  justify-content: center;
+  margin-top: 2rem;
+}
+
+.bioseguridad-back-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  background-color: #e2e8f0;
+  color: var(--bs-text-primary);
+  border: 1px solid var(--bs-border-color);
+  padding: 0.5rem 1.25rem;
+  border-radius: 0.5rem;
+  font-weight: 700;
+  font-size: 0.875rem;
+  text-decoration: none;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+  transition: all 0.2s ease;
+}
+
+.bioseguridad-back-btn:hover {
+  background-color: #cbd5e1;
+}

@@ -1,0 +1,112 @@
+/* src/Pages/Personal/Inicio/Inicio.css */
+
+.inicio-wrapper {
+    background-color: #fafafa;
+}
+
+.inicio-title-container {
+    letter-spacing: -0.5px;
+}
+
+.inicio-container {
+    max-width: 1140px;
+}
+
+.extra-small { 
+    font-size: 0.72rem; 
+}
+
+.tracking-tight { 
+    letter-spacing: -0.025em; 
+}
+
+.card-hover-effect { 
+    transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1); 
+}
+
+.card-hover-effect .card { 
+    border-color: #f1f5f9 !important; 
+    box-shadow: 0 1px 3px rgba(0,0,0,0.02) !important; 
+}
+
+.arrow-icon { 
+    transition: transform 0.2s ease; 
+}
+
+.icon-box {
+    width: 48px;
+    height: 48px;
+}
+
+.card-title {
+    letter-spacing: -0.2px;
+}
+
+.card-description {
+    font-size: 0.85rem;
+    color: #64748b;
+}
+
+.inicio-footer {
+    font-size: 0.75rem;
+    letter-spacing: 0.5px;
+}
+
+.footer-status-dot {
+    width: 6px;
+    height: 6px;
+}
+
+/* Mapeo Cromático Soft UI (SaaS Clean) */
+.bg-indigo-subtle { background-color: #f5f3ff !important; }
+.text-indigo-saas { color: #6366f1 !important; }
+
+.bg-emerald-subtle { background-color: #ecfdf5 !important; }
+.text-emerald-saas { color: #10b981 !important; }
+
+.bg-sky-subtle { background-color: #f0f9ff !important; }
+.text-sky-saas { color: #0284c7 !important; }
+
+.bg-violet-subtle { background-color: #faf5ff !important; }
+.text-violet-saas { color: #8b5cf6 !important; }
+
+.bg-rose-subtle { background-color: #fff1f2 !important; }
+.text-rose-saas { color: #f43f5e !important; }
+
+.bg-amber-subtle { background-color: #fffbeb !important; }
+.text-amber-saas { color: #d97706 !important; }
+
+.bg-slate-subtle { background-color: #f8fafc !important; }
+.text-slate-saas { color: #475569 !important; }
+
+/* Animaciones de Interacción */
+.card-hover-effect:hover { 
+    transform: translateY(-3px); 
+}
+
+.card-hover-effect:hover .card { 
+    border-color: #e2e8f0 !important; 
+    box-shadow: 0 10px 20px rgba(0,0,0,0.04) !important; 
+}
+
+.card-hover-effect:hover .arrow-icon { 
+    transform: translateX(3px); 
+}
+
+.card-hover-effect:active { 
+    transform: translateY(-1px); 
+}
+
+@keyframes pulse {
+    0% { transform: scale(0.9); opacity: 0.5; }
+    50% { transform: scale(1.1); opacity: 1; }
+    100% { transform: scale(0.9); opacity: 0.5; }
+}
+
+.animate-pulse { 
+    animation: pulse 2s infinite ease-in-out; 
+}
+
+.mb-3\.5 { 
+    margin-bottom: 0.85rem !important; 
+}

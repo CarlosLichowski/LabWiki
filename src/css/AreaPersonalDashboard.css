@@ -1,0 +1,371 @@
+/* AreaPersonalDashboard.css */
+
+/* Variables base para mantener la estética limpia y el verde LabWiki */
+:root {
+  --dash-bg-main: #f8f9fa;
+  --dash-bg-white: #ffffff;
+  --dash-text-main: #212529;
+  --dash-text-muted: #6c757d;
+  --dash-brand-color: #198754;
+  --dash-brand-light: #e8f5e9;
+  --dash-border-color: #e3e8ed;
+  --dash-hover-color: #f1f3f5;
+  --dash-danger: #dc3545;
+  --dash-danger-light: #fdf2f2;
+  --sidebar-width: 280px;
+}
+
+/* Estructura general */
+.dash-container {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  background-color: var(--dash-bg-main);
+  font-family: system-ui, -apple-system, sans-serif;
+  color: var(--dash-text-main);
+}
+
+.dash-loading-screen {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  font-weight: 500;
+  color: var(--dash-text-muted);
+}
+
+/* Banner de Modo Demo */
+.dash-banner-demo {
+  background-color: #fff3cd;
+  color: #664d03;
+  text-align: center;
+  padding: 6px 12px;
+  font-size: 13px;
+  font-weight: 600;
+  border-bottom: 1px solid #ffe69c;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  position: sticky;
+  top: 0;
+  z-index: 1050;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+  transition: padding-left 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Ajuste dinámico del banner demo en PC según estado del sidebar */
+@media (min-width: 992px) {
+  .sidebar-open .dash-banner-demo {
+    padding-left: calc(var(--sidebar-width) + 16px);
+  }
+  .sidebar-closed .dash-banner-demo {
+    padding-left: 16px;
+  }
+}
+
+/* Navbar superior */
+.dash-topbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background-color: var(--dash-bg-white);
+  border-bottom: 1px solid var(--dash-border-color);
+  padding: 8px 16px;
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  height: 56px;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.04);
+}
+
+.dash-topbar-left, .dash-topbar-right {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+/* Botón de hamburguesa siempre visible */
+.dash-menu-toggle {
+  display: flex !important;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border: none;
+  background: transparent;
+  border-radius: 50%;
+  cursor: pointer;
+  color: var(--dash-text-main);
+  transition: background-color 0.2s;
+}
+
+.dash-menu-toggle:hover {
+  background-color: var(--dash-hover-color);
+}
+
+.dash-brand {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: var(--dash-brand-color);
+  text-decoration: none;
+}
+
+.dash-user-name {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--dash-text-muted);
+}
+
+@media (max-width: 576px) {
+  .dash-user-name {
+    display: none;
+  }
+}
+
+.dash-logout-btn {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  background: transparent;
+  border: 1px solid transparent;
+  color: var(--dash-danger);
+  padding: 6px 14px;
+  font-size: 13px;
+  font-weight: 600;
+  border-radius: 20px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.dash-logout-btn:hover {
+  background-color: var(--dash-danger-light);
+  border-color: #f8b9be;
+}
+
+/* Contenedor del Layout inferior */
+.dash-layout-body {
+  display: flex;
+  flex: 1;
+  position: relative;
+  height: calc(100vh - 56px);
+}
+
+/* Cortina oscura (Backdrop) uniforme para mobile y escritorio */
+.dash-sidebar-backdrop {
+  position: fixed;
+  top: 56px;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.4);
+  z-index: 1040;
+}
+
+/* Barra lateral inicializada oculta a la izquierda */
+.dash-sidebar {
+  position: fixed;
+  top: 56px;
+  left: calc(var(--sidebar-width) * -1);
+  bottom: 0;
+  width: var(--sidebar-width);
+  background-color: var(--dash-bg-white);
+  border-right: 1px solid var(--dash-border-color);
+  display: flex;
+  flex-direction: column;
+  z-index: 1045;
+  transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 2px 0 8px rgba(0,0,0,0.05);
+}
+
+.dash-sidebar.open {
+  transform: translateX(var(--sidebar-width));
+}
+
+/* Cabecera del Sidebar */
+.dash-sidebar-header {
+  padding: 14px 16px;
+  border-bottom: 1px solid var(--dash-border-color);
+  background-color: var(--dash-bg-main);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.dash-profile-title {
+  margin: 0;
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--dash-brand-color);
+}
+
+.dash-profile-subtitle {
+  color: var(--dash-text-muted);
+  font-size: 11px;
+}
+
+.dash-sidebar-close {
+  background: transparent;
+  border: none;
+  color: var(--dash-text-muted);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 4px;
+  border-radius: 4px;
+}
+
+.dash-sidebar-close:hover {
+  background-color: var(--dash-hover-color);
+}
+
+/* Cuerpo navegable del Sidebar */
+.dash-sidebar-body {
+  flex: 1;
+  overflow-y: auto;
+  background-color: var(--dash-bg-white);
+}
+
+.dash-sidebar-body::-webkit-scrollbar {
+  width: 5px;
+}
+.dash-sidebar-body::-webkit-scrollbar-thumb {
+  background: #e2e8f0;
+  border-radius: 10px;
+}
+
+/* Listados internos de enlaces */
+.dash-nav-list {
+  padding: 8px;
+  display: flex;
+  flex-direction: column;
+}
+
+.dash-nav-section-title {
+  font-size: 10.5px;
+  text-transform: uppercase;
+  font-weight: 700;
+  color: #a0aec0;
+  padding: 12px 12px 4px 12px;
+  letter-spacing: 0.5px;
+}
+
+.dash-nav-link, .dash-nav-dropdown-btn {
+  display: flex;
+  align-items: center;
+  padding: 8px 12px;
+  color: #4a5568;
+  font-size: 13.5px;
+  font-weight: 500;
+  text-decoration: none;
+  border-radius: 6px;
+  margin-bottom: 2px;
+  border: none;
+  background: transparent;
+  width: 100%;
+  text-align: left;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.dash-nav-link:hover, .dash-nav-dropdown-btn:hover {
+  background-color: var(--dash-hover-color);
+  color: var(--dash-text-main);
+}
+
+.dash-nav-link.active {
+  background-color: var(--dash-brand-light);
+  color: var(--dash-brand-color);
+  font-weight: 700;
+  border-right: 4px solid var(--dash-brand-color);
+}
+
+.dash-nav-icon {
+  margin-right: 10px;
+  flex-shrink: 0;
+  color: #718096;
+}
+
+.dash-nav-link.active .dash-nav-icon {
+  color: var(--dash-brand-color);
+}
+
+.icon-primary { color: #3182ce; }
+.icon-success { color: #38a169; }
+
+/* Submenús */
+.dash-arrow-icon {
+  margin-left: auto;
+  transition: transform 0.2s ease;
+  color: #a0aec0;
+}
+
+.rotate-180 {
+  transform: rotate(180deg);
+}
+
+.dash-nav-submenu {
+  margin-left: 18px;
+  padding-left: 10px;
+  border-left: 1px solid var(--dash-border-color);
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  margin-top: 2px;
+  margin-bottom: 6px;
+}
+
+.dash-nav-submenu .dash-nav-link {
+  font-size: 12.5px;
+  padding: 6px 10px;
+}
+
+.dash-submenu-dot {
+  margin-right: 6px;
+  color: #cbd5e0;
+}
+
+/* Pie del Sidebar */
+.dash-sidebar-footer {
+  padding: 10px;
+  border-top: 1px solid var(--dash-border-color);
+  background-color: var(--dash-bg-main);
+  text-align: center;
+  font-size: 11px;
+  color: var(--dash-text-muted);
+  font-weight: 500;
+}
+
+/* Contenido Principal con Margen Adaptativo y fluido */
+.dash-main-content {
+  flex: 1;
+  overflow-y: auto;
+  overflow-x: hidden;
+  padding: 20px;
+  background-color: var(--dash-bg-main);
+  transition: margin-left 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  margin-left: 0;
+}
+
+/* COMPORTAMIENTO EXCLUSIVO DE ESCRITORIO (Apertura superpuesta estilo Overlay) */
+@media (min-width: 992px) {
+  .dash-sidebar {
+    left: calc(var(--sidebar-width) * -1);
+  }
+  
+  /* Deslizar barra al abrir en PC sin empujar el contenido fijo del fondo */
+  .sidebar-open .dash-sidebar {
+    transform: translateX(var(--sidebar-width));
+  }
+  
+  .sidebar-closed .dash-sidebar {
+    transform: translateX(0);
+  }
+
+  /* Mantener el panel ocupando el 100% de la pantalla para evitar saltos visuales bruscos */
+  .sidebar-open .dash-main-content,
+  .sidebar-closed .dash-main-content {
+    margin-left: 0;
+  }
+}

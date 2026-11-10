@@ -1,0 +1,367 @@
+/* PlanillaConsumoReactivos.css */
+
+@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700;800&family=Inter:wght@400;600;700&display=swap');
+
+/* Contenedor principal expandido casi al 100% */
+.planillas-wrapper {
+  width: 100%;
+  max-width: 96%; /* Aumentado de 1200px a 96% para ocupar casi todo el ancho disponible */
+  margin: 0 auto;
+  padding: 16px;
+  background-color: #e2e8f0;
+  min-height: 100vh;
+  font-family: 'Inter', sans-serif;
+  color: #0f172a;
+  box-sizing: border-box;
+}
+
+/* Switch de Planillas (Planta vs Guardia) */
+.view-switch-container {
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+  background-color: #cbd5e1;
+  padding: 6px;
+  border-radius: 8px;
+  margin-bottom: 16px;
+  border: 1px solid #94a3b8;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.switch-btn {
+  flex: 1;
+  max-width: 400px;
+  padding: 10px 16px;
+  background-color: transparent;
+  border: none;
+  border-radius: 6px;
+  font-family: 'Inter', sans-serif;
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: #475569;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.switch-btn:hover {
+  color: #0f172a;
+}
+
+.switch-btn.active {
+  background-color: #0f172a;
+  color: #ffffff;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.15);
+}
+
+/* Banner de administración */
+.admin-toolbar {
+  margin-bottom: 16px;
+  padding: 12px 16px;
+  background-color: #fef3c7;
+  border: 1px solid #fde68a;
+  border-radius: 6px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.admin-toolbar-text {
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: #78350f;
+}
+
+.btn-migrar {
+  padding: 8px 16px;
+  background-color: #d97706;
+  color: #ffffff;
+  font-weight: 700;
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.15s ease;
+}
+
+.btn-migrar:hover {
+  background-color: #b45309;
+}
+
+/* Hoja de Reporte Cobas impreso */
+.cobas-report-sheet {
+  width: 100%;
+  background-color: #ffffff;
+  border: 2px solid #0f172a;
+  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1);
+  padding: 24px;
+  font-family: 'JetBrains Mono', monospace;
+  box-sizing: border-box;
+}
+
+/* Header estilo Roche / Hitachi */
+.cobas-header-main {
+  border-bottom: 2px solid #0f172a;
+  padding-bottom: 16px;
+  margin-bottom: 24px;
+  width: 100%;
+}
+
+.brand-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+
+.cobas-title-main {
+  font-size: 1.5rem;
+  font-weight: 800;
+  color: #000000;
+  text-transform: uppercase;
+  letter-spacing: -0.5px;
+  margin: 0;
+}
+
+.cobas-subtitle {
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: #334155;
+  margin: 2px 0 0 0;
+}
+
+.brand-logo-container {
+  text-align: right;
+}
+
+.roche-text {
+  font-size: 1.3rem;
+  font-weight: 900;
+  color: #000000;
+  display: block;
+}
+
+.hitachi-sub {
+  font-size: 0.65rem;
+  font-weight: 700;
+  color: #64748b;
+  letter-spacing: 1px;
+}
+
+/* Metadatos del informe (Fecha, sistema, horas) */
+.cobas-meta-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 12px;
+  font-size: 0.75rem;
+  margin-top: 16px;
+  padding-top: 12px;
+  border-top: 1px solid #cbd5e1;
+}
+
+.meta-item span {
+  font-weight: 700;
+  color: #0f172a;
+}
+
+/* Contenedores de Sección (c5-1 / ISE1) */
+.section-block {
+  width: 100%;
+  margin-bottom: 32px;
+  background-color: #ffffff;
+  border: 2px solid #0f172a;
+  padding: 16px;
+  box-sizing: border-box;
+}
+
+.section-header-banner {
+  border-bottom: 2px solid #0f172a;
+  padding: 8px 12px;
+  margin-bottom: 12px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #f1f5f9;
+}
+
+.unit-title {
+  font-size: 0.85rem;
+  font-weight: 800;
+  color: #000000;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin: 0;
+}
+
+.unit-sub {
+  font-size: 0.7rem;
+  font-weight: 600;
+  color: #475569;
+}
+
+/* Tabla Estilo Impresión Matricial Expandida */
+.cobas-table-wrapper {
+  width: 100%;
+  overflow-x: auto;
+}
+
+.cobas-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.72rem;
+  table-layout: auto;
+}
+
+.cobas-table th {
+  border-top: 2px solid #0f172a;
+  border-bottom: 2px solid #0f172a;
+  background-color: #f8fafc;
+  color: #000000;
+  font-weight: 800;
+  text-transform: uppercase;
+  padding: 8px 10px;
+  border-right: 1px solid #cbd5e1;
+}
+
+.cobas-table td {
+  border-bottom: 1px solid #e2e8f0;
+  border-right: 1px solid #cbd5e1;
+  padding: 6px 8px;
+  vertical-align: middle;
+}
+
+.cobas-table tr:hover {
+  background-color: #f8fafc;
+}
+
+/* Celdas especiales */
+.cell-prueba {
+  font-weight: 800;
+  color: #000000;
+  white-space: nowrap;
+  min-width: 180px;
+}
+
+.prueba-nombre-sub {
+  font-family: 'Inter', sans-serif;
+  font-weight: 400;
+  font-size: 0.68rem;
+  color: #64748b;
+  margin-left: 6px;
+}
+
+/* Entradas numéricas */
+.input-cobas-number {
+  width: 100%;
+  text-align: right;
+  padding: 4px 6px;
+  background: transparent;
+  border: 1px solid transparent;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.75rem;
+  outline: none;
+  box-sizing: border-box;
+}
+
+.input-cobas-number:hover {
+  border-color: #94a3b8;
+}
+
+.input-cobas-number:focus {
+  background-color: #ffffff;
+  border-color: #000000;
+  font-weight: 700;
+}
+
+.input-total-impreso {
+  background-color: #f1f5f9;
+  font-weight: 800;
+  color: #000000;
+  border: none;
+}
+
+/* Celda y campo para la Lapicera Azul */
+.cell-manual-blue {
+  background-color: rgba(239, 246, 255, 0.6);
+  border-left: 2px solid #2563eb !important;
+  font-family: 'Inter', sans-serif;
+  min-width: 220px;
+}
+
+.input-manual-pen {
+  width: 100%;
+  text-align: center;
+  padding: 4px 8px;
+  border: 1px solid #93c5fd;
+  border-radius: 4px;
+  font-weight: 800;
+  color: #1e3a8a;
+  background-color: #eff6ff;
+  font-size: 0.8rem;
+  outline: none;
+  box-sizing: border-box;
+}
+
+.input-manual-pen:focus {
+  background-color: #ffffff;
+  border-color: #2563eb;
+  box-shadow: 0 0 0 2px rgba(37, 99, 235, 0.2);
+}
+
+/* Pie de página y Observaciones */
+.cobas-footer-form {
+  margin-top: 24px;
+  padding-top: 16px;
+  border-top: 2px solid #0f172a;
+  font-family: 'Inter', sans-serif;
+  width: 100%;
+}
+
+.label-obs {
+  display: block;
+  font-size: 0.72rem;
+  font-weight: 800;
+  color: #0f172a;
+  text-transform: uppercase;
+  margin-bottom: 6px;
+}
+
+.textarea-obs {
+  width: 100%;
+  font-size: 0.8rem;
+  padding: 10px;
+  border: 1px solid #cbd5e1;
+  border-radius: 4px;
+  font-family: inherit;
+  box-sizing: border-box;
+  outline: none;
+}
+
+.textarea-obs:focus {
+  border-color: #0f172a;
+  box-shadow: 0 0 0 2px rgba(15, 23, 42, 0.1);
+}
+
+.btn-guardar-cierre {
+  width: 100%;
+  margin-top: 16px;
+  padding: 14px;
+  background-color: #0f172a;
+  color: #ffffff;
+  font-weight: 800;
+  font-size: 0.78rem;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.15s ease;
+}
+
+.btn-guardar-cierre:hover {
+  background-color: #1e293b;
+}

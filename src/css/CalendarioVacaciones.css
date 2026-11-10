@@ -1,0 +1,530 @@
+/* src/components/Calendario/CalendarioGeneral.css */
+
+:root {
+  --fc-border-color: #f1f5f9 !important;
+  --fc-today-bg-color: #ffffff !important;
+}
+
+/* Base global de la vista */
+.calendario-page-container {
+  padding: 2.5rem 1.5rem;
+  background-color: #f8fafc;
+  min-height: 100vh;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  box-sizing: border-box;
+}
+
+.calendario-main-wrapper {
+  max-width: 1000px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+/* ==========================================================================
+   1. CABECERA PRINCIPAL Y BOTÓN ACCIÓN
+   ========================================================================== */
+.cal-top-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 1rem;
+}
+
+.cal-main-title {
+  font-size: 1.75rem;
+  font-weight: 800;
+  color: #0f172a;
+  margin: 0;
+  letter-spacing: -0.02em;
+}
+
+.cal-main-subtitle {
+  color: #64748b;
+  font-size: 0.9rem;
+  margin: 0.35rem 0 0 0;
+}
+
+.btn-asignar-guardia {
+  background-color: #0a1128;
+  color: #ffffff;
+  border: none;
+  padding: 0.65rem 1.25rem;
+  border-radius: 0.5rem;
+  font-weight: 600;
+  font-size: 0.875rem;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  cursor: pointer;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.08);
+  transition: all 0.2s ease;
+  white-space: nowrap;
+}
+
+.btn-asignar-guardia:hover {
+  background-color: #1e293b;
+  transform: translateY(-1px);
+}
+
+/* ==========================================================================
+   2. TARJETA CONTENEDORA DE FILTROS Y TABS
+   ========================================================================== */
+.cal-controls-card {
+  background: #ffffff;
+  border-radius: 0.75rem;
+  padding: 1.25rem 1.5rem;
+  border: 1px solid #e2e8f0;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.02);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1.5rem;
+}
+
+.select-servicio-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  width: 100%;
+  max-width: 320px;
+}
+
+.select-servicio-label {
+  font-size: 0.7rem;
+  font-weight: 700;
+  color: #94a3b8;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+}
+
+.select-servicio-wrapper {
+  position: relative;
+  width: 100%;
+}
+
+.select-servicio-soft {
+  width: 100%;
+  background-color: #f1f5f9;
+  border: 1px solid #e2e8f0;
+  color: #1e293b;
+  font-size: 0.875rem;
+  font-weight: 600;
+  padding: 0.6rem 2.25rem 0.6rem 1rem;
+  border-radius: 0.5rem;
+  cursor: pointer;
+  outline: none;
+  transition: all 0.2s ease;
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%23475569'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2.5' d='M19 9l-7 7-7-7'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 0.85rem center;
+  background-size: 0.85rem;
+  box-sizing: border-box;
+}
+
+.select-servicio-soft:focus {
+  border-color: #cbd5e1;
+  background-color: #e2e8f0;
+}
+
+/* Tabs */
+.cal-tabs-group {
+  display: flex;
+  background-color: #f1f5f9;
+  padding: 0.25rem;
+  border-radius: 0.5rem;
+  border: 1px solid #e2e8f0;
+}
+
+.cal-tab-btn {
+  background: transparent;
+  border: none;
+  padding: 0.5rem 1.5rem;
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: #64748b;
+  border-radius: 0.375rem;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.cal-tab-btn.active {
+  background-color: #ffffff;
+  color: #0f172a;
+  font-weight: 700;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06);
+}
+
+/* ==========================================================================
+   3. ESTILOS FULLCALENDAR (IGUAL A LA IMAGEN)
+   ========================================================================== */
+.calendar-container {
+  background: #ffffff;
+  border-radius: 0.75rem;
+  padding: 1.5rem;
+  border: 1px solid #e2e8f0;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.02);
+}
+
+.fc {
+  font-family: inherit;
+}
+
+/* Header toolbar del Calendario */
+.fc .fc-toolbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.5rem !important;
+}
+
+.fc .fc-toolbar-title {
+  font-size: 1.5rem !important;
+  font-weight: 800 !important;
+  color: #0a1128 !important;
+  text-transform: capitalize;
+}
+
+/* Botones HOY, Prev, Next */
+.fc .fc-today-button {
+  background-color: #ffffff !important;
+  border: 1px solid #e2e8f0 !important;
+  color: #64748b !important;
+  font-size: 0.7rem !important;
+  font-weight: 700 !important;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  padding: 6px 14px !important;
+  border-radius: 0.375rem !important;
+  opacity: 1 !important;
+  margin-right: 0.5rem !important;
+}
+
+.fc .fc-button-group {
+  display: inline-flex;
+  gap: 2px;
+}
+
+.fc .fc-button-group .fc-button {
+  background-color: #ffffff !important;
+  border: 1px solid #e2e8f0 !important;
+  color: #334155 !important;
+  padding: 6px 10px !important;
+  font-size: 0.85rem !important;
+  border-radius: 0.375rem !important;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.fc .fc-button-group .fc-button:hover {
+  background-color: #f8fafc !important;
+}
+
+/* Grid & Días de la semana */
+.fc-scrollgrid {
+  border: 1px solid #f1f5f9 !important;
+  border-radius: 0.5rem;
+  overflow: hidden;
+}
+
+.fc .fc-col-header-cell {
+  padding: 12px 0 !important;
+  font-weight: 700 !important;
+  font-size: 0.85rem;
+  color: #6366f1 !important; /* Azul violáceo idéntico a la imagen */
+  background-color: #ffffff;
+  text-transform: lowercase;
+  border-bottom: 1px solid #f1f5f9 !important;
+}
+
+.fc .fc-daygrid-day-number {
+  font-size: 0.8rem !important;
+  font-weight: 600;
+  color: #64748b !important;
+  padding: 8px 10px !important;
+}
+
+/* Eventos estilo Píldora Oscura */
+.fc-v-event, .fc-h-event {
+  background-color: #0a1128 !important;
+  border: none !important;
+  padding: 3px 8px !important;
+  margin: 2px 4px !important;
+  border-radius: 12px !important; /* Bordes totalmente redondeados tipo cápsula */
+}
+
+.fc-event-title {
+  font-size: 0.68rem !important;
+  font-weight: 600 !important;
+  color: #ffffff !important;
+}
+
+.opacity-40 {
+  opacity: 0.4;
+  background-color: #fafafa;
+}
+
+/* ==========================================================================
+   4. MODALES & ELEMENTOS SECUNDARIOS
+   ========================================================================== */
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background-color: rgba(15, 23, 42, 0.4);
+  backdrop-filter: blur(4px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 2000;
+  padding: 1rem;
+}
+
+.modal-sheet {
+  background: #ffffff;
+  border-radius: 1rem;
+  width: 100%;
+  max-width: 420px;
+  padding: 1.5rem;
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+  box-sizing: border-box;
+}
+
+.modal-sheet-compact {
+  max-width: 340px;
+  text-align: center;
+}
+
+.modal-header-custom {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 1.25rem;
+}
+
+.modal-tag-subtitle {
+  font-size: 0.65rem;
+  text-transform: uppercase;
+  font-weight: 700;
+  color: #94a3b8;
+  letter-spacing: 0.05em;
+}
+
+.modal-service-name {
+  color: #4f46e5;
+  font-weight: 600;
+  font-size: 0.85rem;
+  margin-top: 0.15rem;
+}
+
+.modal-close-btn {
+  background: transparent;
+  border: none;
+  font-size: 1.25rem;
+  cursor: pointer;
+  color: #94a3b8;
+}
+
+.form-group {
+  margin-bottom: 1rem;
+}
+
+.mb-1-5 {
+  margin-bottom: 1.5rem;
+}
+
+.form-label-custom {
+  display: block;
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: #475569;
+  margin-bottom: 0.35rem;
+}
+
+.form-control-custom {
+  width: 100%;
+  background-color: #f8fafc;
+  border: 1px solid #e2e8f0;
+  border-radius: 0.5rem;
+  padding: 0.6rem 0.75rem;
+  font-size: 0.875rem;
+  color: #0f172a;
+  box-sizing: border-box;
+  outline: none;
+}
+
+.form-control-custom:focus {
+  border-color: #cbd5e1;
+}
+
+.form-row-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.75rem;
+}
+
+.color-picker-grid {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.color-circle-btn {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  border: 2px solid #ffffff;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 0 0 1px #e2e8f0;
+  transition: transform 0.1s ease;
+}
+
+.color-circle-btn.selected {
+  transform: scale(1.1);
+  box-shadow: 0 0 0 2px #0f172a;
+}
+
+.check-icon-white {
+  color: #ffffff;
+}
+
+.modal-actions-layout {
+  display: flex;
+  gap: 0.75rem;
+  margin-top: 1.5rem;
+}
+
+.btn-custom {
+  flex: 1;
+  padding: 0.65rem;
+  border-radius: 0.5rem;
+  font-size: 0.85rem;
+  font-weight: 600;
+  cursor: pointer;
+  border: none;
+  text-align: center;
+}
+
+.btn-custom-light {
+  background-color: #ffffff;
+  border: 1px solid #e2e8f0;
+  color: #64748b;
+}
+
+.btn-custom-dark {
+  background-color: #0f172a;
+  color: #ffffff;
+}
+
+.btn-custom-danger {
+  background-color: #ef4444;
+  color: #ffffff;
+}
+
+.delete-icon-wrapper {
+  color: #ef4444;
+  margin-bottom: 0.5rem;
+}
+
+.delete-modal-title {
+  margin: 0 0 0.25rem 0;
+  font-weight: 700;
+  color: #0f172a;
+  font-size: 1rem;
+}
+
+.delete-modal-desc {
+  color: #64748b;
+  font-size: 0.85rem;
+  margin: 0 0 1.5rem 0;
+  line-height: 1.4;
+}
+
+.footer-navigation-area {
+  display: flex;
+  justify-content: center;
+  margin-top: 1rem;
+}
+
+.btn-nav-link {
+  background: transparent;
+  border: none;
+  color: #64748b;
+  font-size: 0.85rem;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  cursor: pointer;
+}
+
+.btn-nav-link:hover {
+  color: #0f172a;
+}
+
+/* Spinner de carga */
+.spinner-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 3rem;
+  background: white;
+  border-radius: 1rem;
+  min-height: 250px;
+}
+
+.spinner-element {
+  width: 1.75rem;
+  height: 1.75rem;
+  border: 3px solid #e2e8f0;
+  border-top-color: #64748b;
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+/* ==========================================================================
+   5. RESPONSIVO (MÓVIL)
+   ========================================================================== */
+@media (max-width: 768px) {
+  .calendario-page-container {
+    padding: 1rem 0.5rem;
+  }
+
+  .cal-top-header {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .btn-asignar-guardia {
+    justify-content: center;
+  }
+
+  .cal-controls-card {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 1rem;
+  }
+
+  .select-servicio-group {
+    max-width: 100%;
+  }
+
+  .cal-tabs-group {
+    width: 100%;
+    box-sizing: border-box;
+  }
+
+  .cal-tab-btn {
+    flex: 1;
+    text-align: center;
+  }
+}

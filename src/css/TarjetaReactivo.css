@@ -1,0 +1,242 @@
+/* ==========================================================================
+   TARJETA REACTIVO COMPONENTE
+   ========================================================================== */
+.tr-card {
+    background-color: #ffffff;
+    border: 1px solid #e2e8f0;
+    border-radius: 0.75rem;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    height: 100%;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.tr-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 16px -4px rgba(0, 0, 0, 0.08);
+}
+
+/* Banner superior */
+.tr-provider-banner {
+    width: 100%;
+    padding: 0.4rem 0.75rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    font-size: 0.75rem;
+    font-weight: 800;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    font-family: monospace;
+}
+
+.tr-status-bar {
+    height: 3px;
+    width: 100%;
+}
+
+/* Cuerpo */
+.tr-body {
+    padding: 1rem 1.15rem 0.5rem 1.15rem;
+    flex: 1;
+}
+
+.tr-badges-row {
+    margin-bottom: 0.5rem;
+}
+
+.tr-status-badge {
+    display: inline-block;
+    border-radius: 9999px;
+    font-size: 0.7rem;
+    font-weight: 700;
+    padding: 0.25rem 0.65rem;
+}
+
+.tr-title-wrapper {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 0.75rem;
+    margin-bottom: 0.5rem;
+}
+
+.tr-title {
+    font-size: 1.25rem;
+    font-weight: 800;
+    margin: 0;
+    line-height: 1.25;
+    letter-spacing: -0.02em;
+}
+
+.tr-image {
+    width: 42px;
+    height: 42px;
+    object-fit: contain;
+    border-radius: 0.375rem;
+    border: 1px solid #e2e8f0;
+    background-color: #f8fafc;
+    padding: 0.15rem;
+}
+
+/* Códigos */
+.tr-codes-list {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 0.35rem;
+    margin-bottom: 0.75rem;
+}
+
+.tr-tag-icon {
+    color: #94a3b8;
+}
+
+.tr-code-chip {
+    font-family: monospace;
+    font-size: 0.725rem;
+    font-weight: 700;
+    background-color: #f1f5f9;
+    color: #334155;
+    padding: 0.15rem 0.45rem;
+    border-radius: 0.25rem;
+    border: 1px solid #cbd5e1;
+}
+
+.tr-no-code {
+    font-size: 0.725rem;
+    color: #94a3b8;
+}
+
+.tr-description {
+    font-size: 0.825rem;
+    color: #64748b;
+    line-height: 1.4;
+    margin: 0 0 1rem 0;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+/* Footer / Control bar */
+.tr-footer {
+    padding: 0 1.15rem 1.15rem 1.15rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+}
+
+.tr-controls-box {
+    border-radius: 0.5rem;
+    border: 1px solid #e2e8f0;
+    overflow: hidden;
+}
+
+.tr-status-toggle-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0.5rem 0.75rem;
+    color: #ffffff;
+    font-size: 0.775rem;
+    font-weight: 600;
+    transition: opacity 0.2s ease;
+}
+
+.tr-status-info {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+}
+
+.tr-btn-toggle {
+    background-color: #ffffff;
+    color: #0f172a;
+    border: none;
+    padding: 0.2rem 0.55rem;
+    border-radius: 0.25rem;
+    font-size: 0.7rem;
+    font-weight: 700;
+    cursor: pointer;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+    transition: background-color 0.15s ease;
+}
+
+.tr-btn-toggle:hover {
+    background-color: #f1f5f9;
+}
+
+.tr-area-selector-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0.4rem 0.75rem;
+    background-color: #f8fafc;
+    border-top: 1px solid #e2e8f0;
+}
+
+.tr-area-label {
+    display: flex;
+    align-items: center;
+    gap: 0.35rem;
+    font-size: 0.75rem;
+    color: #64748b;
+    font-weight: 500;
+}
+
+.tr-area-select {
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: #0f172a;
+    background-color: #ffffff;
+    border: 1px solid #cbd5e1;
+    border-radius: 0.25rem;
+    padding: 0.2rem 0.4rem;
+    outline: none;
+    cursor: pointer;
+}
+
+.tr-btn-doc {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    width: 100%;
+    padding: 0.55rem;
+    background-color: #f1f5f9;
+    color: #334155;
+    border: 1px solid #cbd5e1;
+    border-radius: 0.5rem;
+    font-size: 0.8rem;
+    font-weight: 600;
+    text-decoration: none;
+    transition: all 0.15s ease;
+    box-sizing: border-box;
+}
+
+.tr-btn-doc:hover:not(.disabled) {
+    background-color: #e2e8f0;
+    color: #0f172a;
+}
+
+.tr-btn-doc.disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    background-color: #f8fafc;
+    border-color: #e2e8f0;
+    color: #94a3b8;
+}
+
+.tr-spin {
+    animation: trSpin 1s linear infinite;
+}
+
+@keyframes trSpin {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+}

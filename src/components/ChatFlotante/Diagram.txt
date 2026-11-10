@@ -1,0 +1,35 @@
+                   Usuario
+                      │
+             Escribe un mensaje
+                      │
+                      ▼
+              ChatWindow.tsx
+                      │
+             onEnviar(handleEnviar)
+                      │
+                      ▼
+            ChatFlotante.tsx
+                      │
+          Decide si es Global o Privado
+                      │
+          ┌───────────┴────────────┐
+          ▼                        ▼
+chat_laboratorio          chat_privado
+(Firestore)               (Firestore)
+          ▲                        ▲
+          │                        │
+          └────────────┬───────────┘
+                       │
+                useChatData()
+                       │
+              escucha onSnapshot
+                       │
+                       ▼
+            React vuelve a renderizar
+
+
+            El componente principal
+
+Todo gira alrededor de
+
+ChatFlotante.tsx

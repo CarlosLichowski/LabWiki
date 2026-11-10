@@ -1,0 +1,198 @@
+/* src/css/RegistroOculto.css */
+
+/* --- Variables de Diseño MedTech --- */
+:root {
+  --primary-color: #0d6efd;
+  --primary-hover: #0b5ed7;
+  --success-color: #198754;
+  --success-hover: #157347;
+  --danger-color: #dc3545;
+  --light-bg: #f8f9fa;
+  --dark-color: #212529;
+  --muted-color: #6c757d;
+  --border-color: #dee2e6;
+  --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -4px rgba(0, 0, 0, 0.1);
+  --radius-lg: 15px;
+  --radius-md: 8px;
+  --transition: all 0.2s ease-in-out;
+}
+
+/* --- Contenedor Principal (Pantalla Completa) --- */
+.login-screen {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  min-height: 100dvh; /* 🟢 Calcula dinámicamente el alto real en navegadores móviles considerando la barra de navegación */
+  background-color: var(--light-bg);
+  background-image: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+  font-family: system-ui, -apple-system, sans-serif;
+  padding: 1.5rem; /* Margen de seguridad para que la tarjeta no pegue contra los bordes */
+  box-sizing: border-box;
+  width: 100%;
+  overflow-y: auto; /* Permite scroll si el teclado virtual reduce mucho el espacio */
+}
+
+/* --- Tarjeta del Formulario de Registro --- */
+.login-card {
+  background: white;
+  max-width: 440px; /* Un toque más ancho para contener cómodamente los campos del registro */
+  width: 100%;
+  padding: 2.25rem 2rem;
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-lg);
+  box-sizing: border-box;
+  transition: var(--transition);
+}
+
+.login-card-content {
+  display: flex;
+  flex-direction: column;
+}
+
+/* --- Tipografía --- */
+.login-title {
+  text-align: center;
+  color: var(--primary-color);
+  font-weight: 700;
+  margin: 0 0 0.5rem 0;
+  font-size: 1.6rem;
+  line-height: 1.25;
+  letter-spacing: -0.02em;
+}
+
+.login-subtitle {
+  text-align: center;
+  color: var(--muted-color);
+  font-size: 0.85rem;
+  margin: 0 0 1.5rem 0;
+  line-height: 1.4;
+}
+
+/* --- Alertas de error de Firebase --- */
+.alert-error {
+  background-color: #f8d7da;
+  color: var(--danger-color);
+  border: 1px solid #f5c2c7;
+  padding: 0.65rem 1rem;
+  border-radius: var(--radius-md);
+  text-align: center;
+  font-size: 0.875rem;
+  margin-bottom: 1.25rem;
+  font-weight: 500;
+}
+
+/* --- Grupos de Formulario (Labels e Inputs) --- */
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  margin-bottom: 1.15rem;
+}
+
+.form-label {
+  font-weight: 600;
+  font-size: 0.85rem;
+  color: var(--dark-color);
+}
+
+.form-input {
+  width: 100%;
+  padding: 0.75rem 0.85rem; /* Área táctil cómoda para celulares */
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+  font-size: 16px; /* 🟢 Clave en iOS: previene el zoom automático molesto al enfocar el input */
+  transition: var(--transition);
+  box-sizing: border-box;
+  background-color: white;
+  color: var(--dark-color);
+  -webkit-appearance: none; /* Desactiva estilos heredados nativos en Safari Mobile */
+}
+
+/* Customización del dropdown select en mobile */
+select.form-input {
+  padding-right: 2rem;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%236c757d' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 0.75rem center;
+  background-size: 16px;
+  cursor: pointer;
+}
+
+.form-input:focus {
+  outline: none;
+  border-color: var(--primary-color);
+  box-shadow: 0 0 0 3px rgba(13, 110, 253, 0.15);
+}
+
+.form-input:disabled {
+  background-color: #e9ecef;
+  color: var(--muted-color);
+  cursor: not-allowed;
+}
+
+/* --- Botón de Envío (Verde de Registro) --- */
+.btn-submit {
+  width: 100%;
+  background-color: var(--success-color); /* Asigna directamente el verde de éxito */
+  color: white;
+  border: none;
+  padding: 0.85rem;
+  border-radius: var(--radius-md);
+  font-weight: 700;
+  font-size: 1rem;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  transition: var(--transition);
+  box-shadow: 0 2px 4px rgba(25, 135, 84, 0.15);
+  margin-top: 1.5rem;
+}
+
+.btn-submit:hover:not(:disabled) {
+  background-color: var(--success-hover);
+  filter: brightness(0.92);
+}
+
+.btn-submit:disabled {
+  opacity: 0.65;
+  cursor: not-allowed;
+  box-shadow: none;
+}
+
+/* --- 📱 RESPONSIVE MEDIA QUERY PARA CELULARES PANTALLA CHICA (< 440px) --- */
+@media (max-width: 440px) {
+  .login-screen {
+    padding: 0.75rem; /* Reduce los márgenes externos en pantallas compactas */
+  }
+
+  .login-card {
+    padding: 1.75rem 1.15rem; /* Ajusta el aire interno de la tarjeta para optimizar el espacio */
+    border-radius: 12px;
+  }
+
+  .login-title {
+    font-size: 1.4rem; /* Achica un toque el título para evitar saltos de línea bruscos */
+  }
+
+  .login-subtitle {
+    font-size: 0.8rem;
+    margin-bottom: 1.25rem;
+  }
+
+  .form-group {
+    margin-bottom: 0.95rem; /* Compacta los campos verticalmente */
+  }
+
+  .form-input {
+    padding: 0.65rem 0.75rem; /* Reduce sutilmente el padding interno sin perder tamaño de fuente */
+  }
+
+  .btn-submit {
+    padding: 0.75rem;
+    font-size: 0.95rem;
+    margin-top: 1.25rem;
+  }
+}

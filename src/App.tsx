@@ -1,39 +1,57 @@
-// src/App.tsx
+// App.tsx
+import { Suspense, lazy } from 'react';
 import { Routes, Route, Navigate } from 'react-router-dom';
 import { AuthProvider } from './Context/AuthContext'; 
-import { ChatProvider } from "./Context/ChatContext"; // 🌟 Asegurate de importar el Provider del chat
-import LoginPresentacional from './components/Login';
-import ChatFlotante from "./components/ChatFlotante/ChatFlotante"; // 🌟 Importamos el componente visual
-
+import { ChatProvider } from "./Context/ChatContext"; 
+import ChatFlotante from './components/ChatFlotante/ChatFlotante';
 import ProtectedRoute from './components/Routing/ProtectedRoute';
 import ProtectedDashboardLayout from './components/Routing/ProtectedDashboardLayout';
+import { UserDataChecking } from './components/UserDataCheck/UserDataCheck'; // Importación del validador
+
+// 🟢 Carga perezosa (Lazy loading): Solo descarga el JS de estas vistas al navegar a sus URLs
+const LoginPresentacional = lazy(() => import('./Pages/Login'));
+const RegistroOculto = lazy(() => import('./Pages/RegistroOculto'));
+
+// Loader minimalista para la transición de carga de fragmentos de JS (Mantiene el FCP bajo)
+const PageLoader = () => (
+    <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', minHeight: '100vh', fontFamily: 'sans-serif', color: '#6c757d' }}>
+        <span>Cargando sistema...</span>
+    </div>
+);
 
 function App() {
     return (
         <AuthProvider>
-            <ChatProvider> {/* 🧠 La lógica del chat tiene acceso a los datos de Auth */}
+            <ChatProvider>
                 
-                <Routes>
-                    {/* 🔑 RUTA PÚBLICA DE ACCESO */}
-                    <Route path="/login" element={<LoginPresentacional />} />
-                    
-                    {/* 🔒 PORTAL PERSONAL COMPLETO */}
-                    <Route 
-                        path="/*" 
-                        element={
-                            <ProtectedRoute>
-                                <ProtectedDashboardLayout />
-                            </ProtectedRoute>
-                        } 
-                    />
+                
+                {/* 🟢 Suspense intercepta las cargas asíncronas de los componentes perezosos */}
+                <Suspense fallback={<PageLoader />}>
+                    <Routes>
+                        {/* RUTA PÚBLICA DE ACCESO */}
+                        <Route path="/login" element={<LoginPresentacional />} />
+                        
+                        {/* RUTA PRIVADA DE REGISTRO */}
+                        <Route path="/labramosregistro" element={<RegistroOculto />} />
+                        
+                        {/* PERSONAL / PANEL INTERNO (Protegido con RouteGuard y el validador de datos) */}
+                        <Route 
+                            path="/*" 
+                            element={
+                                <ProtectedRoute>
+                                    <UserDataChecking>
+                                        <ProtectedDashboardLayout />
+                                    </UserDataChecking>
+                                </ProtectedRoute>
+                            } 
+                        />
 
-                    {/* 🚫 CAPTURA CUALQUIER OTRA RUTA ANÓMALA */}
-                    <Route path="*" element={<Navigate to="/" replace />} />
-                </Routes>
+                        {/* Redirección por defecto a raíz */}
+                        <Route path="*" element={<Navigate to="/" replace />} />
+                    </Routes>
+                </Suspense>
 
-                {/* 👀 El componente visual vive de forma global pero respeta el contexto */}
-                <ChatFlotante /> 
-
+                 <ChatFlotante /> 
             </ChatProvider>
         </AuthProvider>
     );

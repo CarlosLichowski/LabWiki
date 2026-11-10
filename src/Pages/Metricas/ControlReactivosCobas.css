@@ -1,0 +1,694 @@
+/* ControlReactivosCobas.css */
+@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700;800&family=Inter:wght@400;500;600;700;800&display=swap');
+
+.cobas-main-container {
+  width: 100%;
+  max-width: 1440px;
+  margin: 0 auto;
+  padding: 16px 20px 40px;
+  background-color: #f1f5f9;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  color: #0f172a;
+  box-sizing: border-box;
+}
+
+/* 1. Header General Superior Roche Cobas */
+.cobas-app-header {
+  background: #ffffff;
+  border: 1px solid #cbd5e1;
+  border-top: 4px solid #1e3a8a;
+  border-radius: 12px;
+  padding: 16px 24px;
+  margin-bottom: 20px;
+  box-shadow: 0 2px 6px rgba(15, 23, 42, 0.05);
+}
+
+.cobas-brand-bar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 16px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid #e2e8f0;
+}
+
+.cobas-title-group {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.cobas-icon-badge {
+  background: #1e3a8a;
+  color: #ffffff;
+  padding: 10px;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.cobas-main-heading {
+  margin: 0;
+  font-size: 1.35rem;
+  font-weight: 800;
+  color: #0f172a;
+  letter-spacing: -0.3px;
+}
+
+.cobas-system-sub {
+  margin: 2px 0 0 0;
+  font-size: 0.8rem;
+  color: #64748b;
+  font-family: 'JetBrains Mono', monospace;
+  font-weight: 600;
+}
+
+.roche-hitachi-badge {
+  text-align: right;
+  line-height: 1.1;
+}
+
+.roche-logo-text {
+  font-size: 1.4rem;
+  font-weight: 900;
+  color: #000000;
+  letter-spacing: -0.5px;
+}
+
+.hitachi-logo-sub {
+  font-size: 0.65rem;
+  font-weight: 800;
+  color: #475569;
+  letter-spacing: 1.5px;
+  display: block;
+}
+
+/* 2. Barra de Estado y Tabs Principales */
+.cobas-nav-tabs-wrapper {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-top: 14px;
+}
+
+.cobas-tabs-container {
+  display: flex;
+  background-color: #e2e8f0;
+  padding: 4px;
+  border-radius: 10px;
+  gap: 4px;
+}
+
+.cobas-tab-btn {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 9px 20px;
+  border: none;
+  border-radius: 8px;
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: #475569;
+  background: transparent;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.cobas-tab-btn:hover {
+  color: #0f172a;
+}
+
+.cobas-tab-btn.active {
+  background-color: #ffffff;
+  color: #1e3a8a;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.08);
+}
+
+.tab-badge {
+  font-size: 0.68rem;
+  padding: 2px 6px;
+  border-radius: 4px;
+  font-weight: 800;
+}
+
+.badge-blue { background-color: #dbeafe; color: #1e40af; }
+.badge-emerald { background-color: #dcfce7; color: #15803d; }
+
+.backend-status-pill {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.75rem;
+  font-weight: 700;
+  padding: 6px 12px;
+  border-radius: 20px;
+  border: 1px solid transparent;
+}
+
+.status-online {
+  background-color: #ecfdf5;
+  color: #065f46;
+  border-color: #a7f3d0;
+}
+
+.status-offline {
+  background-color: #fffbeb;
+  color: #92400e;
+  border-color: #fde68a;
+}
+
+.pulse-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background-color: #10b981;
+  box-shadow: 0 0 0 2px rgba(16, 185, 129, 0.3);
+}
+
+.pulse-dot.warning {
+  background-color: #f59e0b;
+  box-shadow: 0 0 0 2px rgba(245, 158, 11, 0.3);
+}
+
+/* 3. Subtoolbar de Filtros y Módulos */
+.cobas-subtoolbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 12px;
+  background: #ffffff;
+  padding: 12px 18px;
+  border-radius: 10px;
+  border: 1px solid #e2e8f0;
+  margin-bottom: 20px;
+}
+
+.unit-filters {
+  display: flex;
+  gap: 6px;
+}
+
+.unit-btn {
+  padding: 6px 14px;
+  border-radius: 6px;
+  border: 1px solid #cbd5e1;
+  background: #f8fafc;
+  color: #475569;
+  font-size: 0.78rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.unit-btn:hover {
+  background: #f1f5f9;
+  color: #0f172a;
+}
+
+.unit-btn.active {
+  background: #0f172a;
+  color: #ffffff;
+  border-color: #0f172a;
+}
+
+.toolbar-actions-right {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.select-cobas {
+  padding: 6px 12px;
+  border: 1px solid #cbd5e1;
+  border-radius: 6px;
+  background: #ffffff;
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: #334155;
+  outline: none;
+  cursor: pointer;
+}
+
+.btn-cobas-action {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 14px;
+  border-radius: 6px;
+  font-size: 0.78rem;
+  font-weight: 700;
+  cursor: pointer;
+  border: none;
+  transition: all 0.15s ease;
+}
+
+.btn-primary-cobas {
+  background-color: #1e3a8a;
+  color: #ffffff;
+}
+
+.btn-primary-cobas:hover {
+  background-color: #1e40af;
+}
+
+.btn-secondary-cobas {
+  background-color: #f1f5f9;
+  color: #1e293b;
+  border: 1px solid #cbd5e1;
+}
+
+.btn-secondary-cobas:hover {
+  background-color: #e2e8f0;
+}
+
+.btn-success-cobas {
+  background-color: #047857;
+  color: #ffffff;
+}
+
+.btn-success-cobas:hover {
+  background-color: #065f46;
+}
+
+/* 4. Tarjetas KPIs Roche Cobas */
+.kpi-grid-cobas {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 16px;
+  margin-bottom: 24px;
+}
+
+.kpi-card-cobas {
+  background: #ffffff;
+  padding: 16px 20px;
+  border-radius: 12px;
+  border: 1px solid #e2e8f0;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.03);
+  position: relative;
+  overflow: hidden;
+}
+
+.kpi-card-cobas::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 4px;
+  height: 100%;
+}
+
+.card-blue::before { background-color: #2563eb; }
+.card-green::before { background-color: #10b981; }
+.card-amber::before { background-color: #f59e0b; }
+.card-indigo::before { background-color: #6366f1; }
+
+.kpi-header-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 8px;
+}
+
+.kpi-label-title {
+  font-size: 0.72rem;
+  font-weight: 700;
+  color: #64748b;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.kpi-main-number {
+  font-size: 1.85rem;
+  font-weight: 800;
+  color: #0f172a;
+  font-family: 'JetBrains Mono', monospace;
+}
+
+.kpi-unit-tag {
+  font-size: 0.75rem;
+  color: #94a3b8;
+  font-weight: 600;
+  margin-left: 6px;
+}
+
+.kpi-audit-formula {
+  margin-top: 6px;
+  font-size: 0.72rem;
+  font-weight: 600;
+  color: #047857;
+  background: #f0fdf4;
+  padding: 4px 8px;
+  border-radius: 4px;
+  display: inline-block;
+  font-family: 'JetBrains Mono', monospace;
+}
+
+.kpi-footer-cobas {
+  margin-top: 10px;
+  padding-top: 8px;
+  border-top: 1px dashed #f1f5f9;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 0.7rem;
+  color: #64748b;
+}
+
+.status-tag {
+  font-weight: 700;
+  padding: 2px 8px;
+  border-radius: 6px;
+}
+
+.tag-green { background: #dcfce7; color: #15803d; }
+.tag-amber { background: #fef3c7; color: #b45309; }
+.tag-blue { background: #dbeafe; color: #1d4ed8; }
+
+/* 5. Sección de Gráficos (Recharts) */
+.charts-grid-cobas {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  gap: 20px;
+  margin-bottom: 24px;
+}
+
+@media (max-width: 1024px) {
+  .charts-grid-cobas {
+    grid-template-columns: 1fr;
+  }
+}
+
+.chart-card-cobas {
+  background: #ffffff;
+  padding: 20px;
+  border-radius: 12px;
+  border: 1px solid #e2e8f0;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.03);
+}
+
+.chart-header-group {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+}
+
+.chart-heading-text h3 {
+  margin: 0;
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: #0f172a;
+}
+
+.chart-heading-text p {
+  margin: 4px 0 0 0;
+  font-size: 0.75rem;
+  color: #64748b;
+}
+
+/* 6. Hoja de Carga Mensual Estilo Roche Cobas Impreso */
+.cobas-report-sheet {
+  background-color: #ffffff;
+  border: 2px solid #0f172a;
+  border-radius: 8px;
+  padding: 24px;
+  margin-bottom: 24px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+}
+
+.cobas-print-header {
+  border-bottom: 2px solid #0f172a;
+  padding-bottom: 16px;
+  margin-bottom: 20px;
+}
+
+.print-brand-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+
+.print-title {
+  margin: 0;
+  font-size: 1.4rem;
+  font-weight: 800;
+  color: #000000;
+  text-transform: uppercase;
+  font-family: 'JetBrains Mono', monospace;
+}
+
+.print-sub {
+  margin: 4px 0 0 0;
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: #334155;
+  font-family: 'JetBrains Mono', monospace;
+}
+
+.print-meta-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 12px;
+  margin-top: 14px;
+  padding-top: 12px;
+  border-top: 1px solid #cbd5e1;
+  font-size: 0.75rem;
+  font-family: 'JetBrains Mono', monospace;
+}
+
+.print-meta-item strong {
+  color: #0f172a;
+}
+
+.input-date-cobas {
+  border: 1px solid #cbd5e1;
+  border-radius: 4px;
+  padding: 2px 6px;
+  font-family: inherit;
+  font-weight: bold;
+}
+
+/* 7. Planilla Interactiva de Tabla Cobas */
+.cobas-table-container {
+  width: 100%;
+  overflow-x: auto;
+  margin-bottom: 20px;
+}
+
+.cobas-matrix-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.75rem;
+  font-family: 'JetBrains Mono', monospace;
+}
+
+.cobas-matrix-table th {
+  background-color: #f8fafc;
+  border-top: 2px solid #0f172a;
+  border-bottom: 2px solid #0f172a;
+  border-right: 1px solid #cbd5e1;
+  padding: 8px 10px;
+  font-weight: 800;
+  color: #000000;
+  text-transform: uppercase;
+  font-size: 0.7rem;
+}
+
+.cobas-matrix-table td {
+  border-bottom: 1px solid #e2e8f0;
+  border-right: 1px solid #cbd5e1;
+  padding: 6px 8px;
+  vertical-align: middle;
+}
+
+.cobas-matrix-table tr:hover {
+  background-color: #f8fafc;
+}
+
+.th-highlight-prev {
+  background-color: #eff6ff !important;
+  color: #1e40af !important;
+}
+
+.th-highlight-act {
+  background-color: #fefce8 !important;
+  color: #854d0e !important;
+}
+
+.th-highlight-real {
+  background-color: #ecfdf5 !important;
+  color: #065f46 !important;
+  border-left: 2px solid #10b981 !important;
+}
+
+.cell-test-name {
+  min-width: 170px;
+  font-weight: 800;
+  color: #0f172a;
+}
+
+.test-sub-label {
+  display: block;
+  font-size: 0.68rem;
+  font-weight: normal;
+  color: #64748b;
+  font-family: 'Inter', sans-serif;
+}
+
+.cell-acn {
+  text-align: center;
+  font-weight: 700;
+  color: #475569;
+}
+
+.cell-unit {
+  text-align: center;
+  font-weight: 700;
+  font-size: 0.7rem;
+}
+
+.unit-c5 { color: #2563eb; }
+.unit-ise { color: #d97706; }
+
+/* Entradas de Recuentos */
+.input-counter-box {
+  width: 100%;
+  text-align: right;
+  padding: 5px 8px;
+  border: 1px solid #cbd5e1;
+  border-radius: 4px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.78rem;
+  font-weight: 700;
+  background: #ffffff;
+  outline: none;
+  box-sizing: border-box;
+}
+
+.input-counter-box:focus {
+  border-color: #2563eb;
+  box-shadow: 0 0 0 2px rgba(37, 99, 235, 0.15);
+}
+
+.input-counter-actual {
+  background-color: #fefce8;
+  border-color: #fde047;
+  color: #713f12;
+}
+
+.input-counter-actual:focus {
+  background-color: #ffffff;
+  border-color: #ca8a04;
+}
+
+/* Celda de Consumo Real Calculado Automáticamente */
+.cell-consumo-real {
+  text-align: right;
+  font-weight: 800;
+  font-size: 0.85rem;
+  background-color: #f0fdf4;
+  border-left: 2px solid #10b981 !important;
+  min-width: 130px;
+}
+
+.badge-consumo-pos {
+  color: #15803d;
+  background: #dcfce7;
+  padding: 3px 8px;
+  border-radius: 4px;
+  display: inline-block;
+  font-weight: 800;
+}
+
+.badge-consumo-recarga {
+  color: #1d4ed8;
+  background: #dbeafe;
+  padding: 3px 6px;
+  border-radius: 4px;
+  font-size: 0.68rem;
+  font-weight: 700;
+  display: inline-block;
+}
+
+.badge-consumo-cero {
+  color: #64748b;
+  font-size: 0.75rem;
+}
+
+/* 8. Tabla Histórica Estructurada */
+.historico-section-card {
+  background: #ffffff;
+  border-radius: 12px;
+  border: 1px solid #e2e8f0;
+  padding: 20px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.03);
+  margin-top: 24px;
+}
+
+.historico-header-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
+.historico-title-group h3 {
+  margin: 0;
+  font-size: 1rem;
+  font-weight: 700;
+  color: #0f172a;
+}
+
+.historico-title-group p {
+  margin: 4px 0 0 0;
+  font-size: 0.75rem;
+  color: #64748b;
+}
+
+.historico-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.78rem;
+  text-align: left;
+}
+
+.historico-table th {
+  background-color: #f8fafc;
+  color: #475569;
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  padding: 10px 12px;
+  border-bottom: 1px solid #e2e8f0;
+}
+
+.historico-table td {
+  padding: 10px 12px;
+  border-bottom: 1px solid #f1f5f9;
+  vertical-align: middle;
+}
+
+.historico-table tr:hover {
+  background-color: #f8fafc;
+}
+
+.font-mono {
+  font-family: 'JetBrains Mono', monospace;
+}
+
+.badge-periodo {
+  background: #f1f5f9;
+  color: #0f172a;
+  padding: 3px 8px;
+  border-radius: 4px;
+  font-weight: 700;
+  font-size: 0.72rem;
+}

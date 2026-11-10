@@ -1,0 +1,618 @@
+:root {
+  --inno-primary: #0f172a;
+  --inno-accent-blue: #2563eb;
+  --inno-accent-green: #16a34a;
+  --inno-text-dark: #0f172a;
+  --inno-text-muted: #64748b;
+  --inno-border-color: #f1f5f9;
+}
+
+/* Base global */
+.inno-portal-wrapper {
+  background-color: #ffffff;
+  min-height: 100vh;
+  width: 100%;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  color: var(--inno-text-dark);
+}
+
+.inno-fade-in {
+  animation: innoFadeIn 0.3s ease-out;
+}
+
+@keyframes innoFadeIn {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* Spinner de Carga */
+.inno-loading-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 400px;
+}
+
+.inno-spinner {
+  width: 2.5rem;
+  height: 2.5rem;
+  border: 3px solid #2563eb;
+  border-right-color: transparent;
+  border-radius: 50%;
+  animation: spinner-border .75s linear infinite;
+}
+
+@keyframes spinner-border {
+  to { transform: rotate(360deg); }
+}
+
+.inno-loading-text {
+  color: var(--inno-text-muted);
+  margin-top: 12px;
+  font-size: 0.85rem;
+}
+
+/* ==========================================================================
+   1. HERO BANNER
+   ========================================================================== */
+.inno-hero-banner {
+  position: relative;
+  background-image: url('https://okdiario.com/img/2026/03/13/dispositivo-de-mesa-catalan.jpg');
+  background-size: cover;
+  background-position: center;
+  min-height: 380px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #ffffff;
+  overflow: hidden;
+}
+
+.inno-hero-overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(15, 23, 42, 0.78);
+  z-index: 1;
+}
+
+.inno-hero-content {
+  position: relative;
+  z-index: 2;
+  max-width: 820px;
+  width: 100%;
+  padding: 50px 24px;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.inno-hero-title {
+  font-family: Georgia, 'Times New Roman', serif;
+  font-size: 2.6rem;
+  font-weight: 700;
+  line-height: 1.25;
+  margin-bottom: 16px;
+  letter-spacing: -0.5px;
+}
+
+.inno-hero-desc {
+  font-size: 0.95rem;
+  color: #cbd5e1;
+  line-height: 1.6;
+  max-width: 680px;
+  margin: 0 0 24px 0;
+}
+
+.btn-inno-hero-action {
+  background-color: #ffffff;
+  color: #0f172a;
+  border: none;
+  font-weight: 600;
+  font-size: 0.85rem;
+  padding: 10px 24px;
+  border-radius: 50px;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.btn-inno-hero-action:hover {
+  background-color: #f1f5f9;
+  transform: translateY(-2px);
+}
+
+/* ==========================================================================
+   2. CONTENEDOR & GRID
+   ========================================================================== */
+.inno-main-container {
+  width: 100%;
+  max-width: 1140px;
+  margin: 0 auto;
+  padding: 48px 24px;
+}
+
+.inno-grid-layout {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 56px;
+}
+
+@media (min-width: 992px) {
+  .inno-grid-layout {
+    grid-template-columns: 2.3fr 0.9fr;
+  }
+}
+
+/* ==========================================================================
+   3. PUBLICACIONES EN LISTA EDITORIAL (1 POR FILA)
+   ========================================================================== */
+.inno-content-area {
+  display: flex;
+  flex-direction: column;
+}
+
+.inno-content-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  border-top: 2px solid #0f172a;
+  border-bottom: 2px solid #0f172a;
+  padding: 12px 0;
+  margin-bottom: 32px;
+}
+
+.inno-section-title {
+  font-family: Georgia, 'Times New Roman', serif;
+  font-size: 1.9rem;
+  font-weight: 700;
+  color: #0f172a;
+  margin: 0;
+}
+
+.inno-section-subtitle {
+  color: #64748b;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 1.2px;
+}
+
+/* Contenedor de Lista */
+.inno-list-container {
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+}
+
+.inno-list-item {
+  display: flex;
+  flex-direction: column;
+  padding-bottom: 24px;
+  border-bottom: 1px solid var(--inno-border-color);
+  background-color: transparent;
+}
+
+.inno-list-item:last-child {
+  border-bottom: none;
+}
+
+/* Header superior: Categoría + Fecha */
+.inno-item-meta-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 8px;
+}
+
+.inno-type-tag {
+  font-size: 0.68rem;
+  font-weight: 800;
+  letter-spacing: 0.8px;
+  padding-left: 8px;
+}
+
+.tag-det {
+  color: #16a34a;
+  border-left: 2px solid #16a34a;
+}
+
+.tag-tech {
+  color: #2563eb;
+  border-left: 2px solid #2563eb;
+}
+
+.inno-item-date {
+  font-size: 0.72rem;
+  color: #94a3b8;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+}
+
+/* Fila central: Título + Trash Icon */
+.inno-item-middle {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 16px;
+  margin-bottom: 6px;
+}
+
+.inno-item-title {
+  font-family: Georgia, 'Times New Roman', serif;
+  font-size: 1.65rem;
+  font-weight: 700;
+  color: #0f172a;
+  margin: 0;
+  line-height: 1.2;
+}
+
+.btn-inno-delete {
+  background: transparent;
+  border: none;
+  color: #e2e8f0;
+  padding: 2px;
+  cursor: pointer;
+  transition: color 0.15s ease;
+}
+
+.btn-inno-delete:hover {
+  color: #ef4444;
+}
+
+/* Descripción */
+.inno-item-description {
+  font-family: Georgia, 'Times New Roman', serif;
+  font-style: italic;
+  font-size: 0.95rem;
+  color: #64748b;
+  margin: 0 0 16px 0;
+  line-height: 1.4;
+}
+
+/* Pie: Enlace + Autor al lado */
+.inno-item-footer {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+}
+
+.inno-item-link {
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: #0f172a;
+  text-decoration: underline;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  transition: color 0.15s ease;
+}
+
+.inno-link-arrow {
+  font-size: 0.9rem;
+  font-weight: 400;
+  text-decoration: none;
+  display: inline-block;
+}
+
+.inno-item-link:hover {
+  color: #2563eb;
+}
+
+.inno-item-link.disabled {
+  color: #0f172a;
+  cursor: default;
+}
+
+.inno-item-author {
+  font-size: 0.78rem;
+  color: #94a3b8;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-weight: 500;
+}
+
+.inno-author-icon {
+  color: #cbd5e1;
+}
+
+/* ==========================================================================
+   4. SIDEBAR FUENTES DIGITALES
+   ========================================================================== */
+.inno-sidebar-area {
+  display: flex;
+  flex-direction: column;
+}
+
+.inno-sidebar-widget {
+  background-color: #ffffff;
+  border-radius: 4px;
+  border-top: 3px solid #0f172a;
+  padding: 24px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.03);
+}
+
+.inno-sidebar-title {
+  font-family: Georgia, 'Times New Roman', serif;
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: #0f172a;
+  margin: 0 0 20px 0;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.inno-sources-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.inno-sources-list li {
+  margin-bottom: 18px;
+  padding-bottom: 18px;
+  border-bottom: 1px solid var(--inno-border-color);
+}
+
+.inno-sources-list li:last-child {
+  margin-bottom: 0;
+  padding-bottom: 0;
+  border-bottom: none;
+}
+
+.inno-source-link {
+  text-decoration: none;
+}
+
+.inno-source-content h5 {
+  font-size: 0.88rem;
+  font-weight: 700;
+  color: #0f172a;
+  margin: 0 0 4px 0;
+  transition: color 0.15s ease;
+}
+
+.inno-source-link:hover h5 {
+  color: #2563eb;
+}
+
+.inno-source-meta {
+  font-size: 0.68rem;
+  color: #94a3b8;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+}
+
+/* ==========================================================================
+   5. BOTÓN VOLVER & MODAL
+   ========================================================================== */
+.inno-back-wrapper {
+  margin-top: 40px;
+}
+
+.btn-inno-back {
+  background-color: #0f172a;
+  color: #ffffff;
+  border: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px 24px;
+  border-radius: 6px;
+  font-weight: 700;
+  font-size: 0.75rem;
+  letter-spacing: 0.8px;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.btn-inno-back:hover {
+  background-color: #1e293b;
+}
+
+/* Modal Estilo */
+.inno-modal-backdrop {
+  position: fixed;
+  inset: 0;
+  background-color: rgba(15, 23, 42, 0.6);
+  backdrop-filter: blur(4px);
+  z-index: 1050;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+}
+
+.inno-modal-dialog {
+  width: 100%;
+  max-width: 480px;
+}
+
+.inno-modal-content {
+  background-color: #ffffff;
+  border-radius: 12px;
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+  padding: 24px;
+}
+
+.inno-modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.inno-modal-title {
+  font-weight: 700;
+  margin: 0;
+  color: #0f172a;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.inno-modal-title-icon {
+  color: #16a34a;
+}
+
+.btn-inno-close {
+  background-color: #f1f5f9;
+  border: none;
+  border-radius: 50%;
+  width: 28px;
+  height: 28px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+
+.inno-form-group {
+  margin-bottom: 16px;
+}
+
+.inno-form-label {
+  display: block;
+  font-size: 0.7rem;
+  font-weight: 800;
+  letter-spacing: 0.6px;
+  color: var(--inno-text-muted);
+  margin-bottom: 6px;
+}
+
+.inno-type-selector {
+  display: flex;
+  gap: 10px;
+}
+
+.inno-type-btn {
+  flex: 1;
+  border: none;
+  padding: 10px;
+  border-radius: 6px;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  font-size: 0.8rem;
+  cursor: pointer;
+}
+
+.active-tech { background-color: #2563eb; color: #ffffff; }
+.active-det { background-color: #16a34a; color: #ffffff; }
+.inactive { background-color: #f1f5f9; color: #64748b; }
+
+.inno-form-input,
+.inno-form-textarea {
+  width: 100%;
+  background-color: #f8fafc;
+  border: 1px solid #cbd5e1;
+  padding: 10px 12px;
+  border-radius: 6px;
+  color: #0f172a;
+  font-size: 0.875rem;
+  outline: none;
+  box-sizing: border-box;
+}
+
+.inno-input-icon-wrapper {
+  display: flex;
+  align-items: center;
+  background-color: #f8fafc;
+  border: 1px solid #cbd5e1;
+  border-radius: 6px;
+}
+
+.inno-input-icon {
+  padding-left: 10px;
+  color: var(--inno-text-muted);
+}
+
+.inno-form-input.has-icon {
+  border: none;
+  background: transparent;
+}
+
+.btn-inno-submit {
+  width: 100%;
+  background-color: #0f172a;
+  color: #ffffff;
+  border: none;
+  border-radius: 6px;
+  font-weight: 700;
+  padding: 12px;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.btn-inno-submit:hover {
+  background-color: #1e293b;
+}
+
+/* Estado Vacío */
+.inno-vacio-card {
+  background-color: #ffffff;
+  border: 2px dashed #cbd5e1;
+  border-radius: 8px;
+  padding: 40px;
+  text-align: center;
+}
+
+.inno-vacio-icon {
+  color: var(--inno-text-muted);
+  margin-bottom: 12px;
+}
+
+.inno-vacio-text-bold {
+  color: #0f172a;
+  font-weight: 600;
+  margin: 0 0 4px 0;
+}
+
+.inno-vacio-text-light {
+  color: var(--inno-text-muted);
+  font-size: 0.85rem;
+  margin: 0;
+}
+
+/* Acceso restringido */
+.inno-restricted-wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 80px 24px;
+  min-height: 100vh;
+}
+
+.inno-restricted-card {
+  background-color: #ffffff;
+  border-radius: 12px;
+  padding: 40px;
+  text-align: center;
+  max-width: 420px;
+  width: 100%;
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.05);
+}
+
+.inno-restricted-icon {
+  color: #ef4444;
+  margin-bottom: 16px;
+}
+
+.inno-restricted-title {
+  font-weight: 700;
+  color: #0f172a;
+  margin-bottom: 8px;
+}
+
+.inno-restricted-desc {
+  color: var(--inno-text-muted);
+  font-size: 0.875rem;
+  margin: 0;
+}

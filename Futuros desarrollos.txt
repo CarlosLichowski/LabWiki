@@ -1,0 +1,50 @@
+
+
+
+
+📋 Listado de Funciones a Desarrollar (Paso a Paso)
+1. La "Wikipedia" de Determinaciones (Catálogo Técnico Integrado)
+Qué hace: Permite al personal administrativo o bioquímico publicar nuevas prácticas, escribir descripciones operativas ("tips de mesada") y adjuntar el PDF del inserto comercial del fabricante.
+
+Uso: Evita buscar papeles archivados cuando ingresa una técnica nueva o hay dudas con un reactivo.
+
+2. El "Buscador Rápido de Protocolos" (Evita perder tiempo en el cierre)
+Qué hace: Un input persistente en la barra de navegación superior. Al tipear un número de protocolo, el sistema escanea si tiene algún evento registrado en el día.
+
+Uso: Rompe el misterio de la media hora de búsqueda: te avisa al toque si el protocolo está frenado porque fue rechazado o requiere recitado.
+
+3. El "Tablero de Cabos Sueltos" (Control de Cierre de Turno)
+Qué hace: Una pantalla tipo panel (Dashboard) que consolida de forma anónima todas las incidencias pendientes del día (muestras que fallaron, que están en espera de confirmación o que requieren una acción en el sistema viejo del hospital).
+
+Uso: El técnico que cierra el turno entra acá, ve todo en "Verde" (gestionado) y sabe que puede apagar las luces y volverse a su casa tranquilo.
+
+4. Módulo de Registro y Estadísticas de Rechazo Preanalítico
+Qué hace: Una pantalla rápida para registrar fallas en los tubos usando el número de protocolo, seleccionando el motivo (Hemolizada, Coagulada, Volumen Insuficiente, Saliva) y el servicio de origen (Guardia, Piso 3, etc.).
+
+Uso: Alimenta un panel de gráficos estadísticos (sin nombres de pacientes) para que el jefe del laboratorio vea qué sectores del hospital toman mal las muestras.
+
+
+
+
+-Refactorizar
+
+
+
+
+////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////
+
+Un catálogo de reactivos es el lugar perfecto para anexar la información analítica que el bioquímico consulta todos los días antes de validar resultados.
+
+Ficha de Linealidad y Límites de Detección: Agregar campos clave a la tarjeta (o un botón de "Ver más") con:
+
+Límite de detección bajo y límite de linealidad alto (ej: Glucosa: 2 mg/dL - 750 mg/dL).
+
+Efecto Hook (para inmunología, saber a partir de qué valor puede dar un falso negativo).
+Interferencias Comunes: Un apartado rápido que liste si la prueba sufre interferencia por Hemólisis, Ictericia o Lipemia (HIL). Esto es oro puro para el área técnica cuando ven una muestra sucia.
+
+5. Calculadora de Fórmulas Clínicas Automatizada
+Qué hace: Un pequeño módulo de herramientas donde el técnico ingresa los valores crudos obtenidos en la mesada y el sistema calcula automáticamente parámetros complejos como el Aclaramiento de Creatinina o el Colesterol LDL (Friedewald).
+
+Uso: Agiliza la validación técnica y evita errores de tipeo o de cálculo manu

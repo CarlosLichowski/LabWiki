@@ -1,0 +1,478 @@
+/* Components/ChatFlotante/ChatFlotante.css */
+
+:root {
+  --fb-primary: #1e3a8a;
+  --fb-primary-dark: #1e293b;
+  --fb-success: #198754;
+  --fb-success-dark: #146c43;
+  --fb-border: #cbd5e1;
+  --fb-bg-light: #f8fafc;
+}
+
+.fb-chat-wrapper {
+  position: fixed;
+  bottom: 0;
+  right: 0;
+  /* Z-index alto para flotar sobre todo el layout de LabWiki */
+  z-index: 2100; 
+  font-family: system-ui, -apple-system, sans-serif;
+}
+
+/* ==========================================================================
+   1. BARRA INFERIOR (Pestañas Flotantes)
+   ========================================================================== */
+.fb-bottom-bar {
+  position: fixed;
+  bottom: 0;
+  right: 24px;
+  display: flex;
+  flex-direction: row; 
+  align-items: flex-end;
+  gap: 12px;
+  pointer-events: none;
+  z-index: 2101;
+}
+
+.fb-tab-btn {
+  pointer-events: auto;
+  background-color: #ffffff;
+  border: 1px solid var(--fb-border);
+  border-bottom: none;
+  padding: 10px 18px; 
+  font-size: 14.5px;
+  font-weight: 600;
+  color: var(--fb-primary);
+  border-top-left-radius: 8px;
+  border-top-right-radius: 8px;
+  cursor: pointer;
+  box-shadow: 0 -4px 12px rgba(0,0,0,0.12);
+  display: flex;
+  align-items: center;
+  transition: all 0.2s ease;
+}
+
+/* Control del orden de pestañas */
+.fb-tab-btn:first-child {
+  order: 2; 
+}
+
+.fb-tab-btn.private-tab,
+.fb-tab-btn.global-tab {
+  order: 1; 
+}
+
+.fb-tab-btn:hover, .fb-tab-btn.active {
+  background-color: var(--fb-success); 
+  color: #ffffff;
+  border-color: var(--fb-success);
+}
+
+.fb-tab-btn.global-tab {
+  background-color: var(--fb-bg-light);
+  color: #334155;
+}
+
+.fb-tab-btn.global-tab.active {
+  background-color: #3b82f6;
+  color: #ffffff;
+  border-color: #3b82f6;
+}
+
+.fb-tab-btn.private-tab {
+  background-color: var(--fb-success); 
+  color: #ffffff;
+  border-color: var(--fb-success);
+}
+
+.fb-tab-btn.private-tab:hover {
+  background-color: var(--fb-success-dark);
+}
+
+.fb-online-indicator-mini {
+  width: 8px;
+  height: 8px;
+  background-color: #22c55e;
+  border-radius: 50%;
+  display: inline-block;
+  box-shadow: 0 0 4px #22c55e;
+}
+
+/* ==========================================================================
+   2. SIDEBAR DE CONTACTOS
+   ========================================================================== */
+.fb-sidebar {
+  position: fixed;
+  right: 24px;
+  bottom: 50px; 
+  width: 300px; 
+  height: 480px; 
+  background: #ffffff;
+  border: 1px solid var(--fb-border);
+  box-shadow: -4px -4px 20px rgba(0, 0, 0, 0.15);
+  display: flex;
+  flex-direction: column;
+  border-top-left-radius: 8px;
+  border-top-right-radius: 8px;
+  animation: fbSlideUp 0.2s ease-out;
+}
+
+.fb-sidebar-header {
+  background-color: var(--fb-primary-dark);
+  color: #ffffff;
+  padding: 12px 14px;
+  font-size: 14px;
+  font-weight: 600;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-top-left-radius: 7px;
+  border-top-right-radius: 7px;
+}
+
+.fb-sidebar-list {
+  flex: 1;
+  overflow-y: auto;
+  background-color: var(--fb-bg-light);
+}
+
+.fb-sidebar-item {
+  display: flex;
+  align-items: center;
+  padding: 10px 14px;
+  cursor: pointer;
+  border-bottom: 1px solid #f1f5f9;
+  transition: background 0.15s, border-left 0.15s;
+  border-left: 4px solid transparent; 
+}
+
+.fb-sidebar-item:hover, .fb-sidebar-item.selected {
+  background-color: #e2e8f0;
+}
+
+.fb-avatar-placeholder {
+  width: 36px;
+  height: 36px;
+  background-color: #475569;
+  color: #ffffff;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+  font-size: 14px;
+  margin-right: 12px;
+  flex-shrink: 0;
+  transition: background-color 0.2s ease;
+}
+
+.fb-avatar-placeholder.global-avatar { background-color: #3b82f6; }
+
+.fb-item-info {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.fb-user-name {
+  font-size: 13.5px;
+  color: #0f172a;
+}
+
+.fb-user-sub {
+  font-size: 11px;
+  color: #64748b;
+  max-width: 190px; 
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.fb-separator {
+  background-color: #edf2f7;
+  padding: 6px 14px;
+  font-size: 11px;
+  font-weight: 700;
+  color: #4a5568;
+  letter-spacing: 0.5px;
+  border-bottom: 1px solid #e2e8f0;
+}
+
+/* ==========================================================================
+   3. ESTADOS DE MENSAJES PENDIENTES
+   ========================================================================== */
+.fb-sidebar-item.unread-item,
+.fb-sidebar-item.unread-item:hover {
+  background-color: #e8f5e9 !important; 
+  border-left-color: var(--fb-success) !important; 
+}
+
+.fb-sidebar-item.unread-item .fb-user-name {
+  font-weight: 700;
+}
+
+.fb-sidebar-item.unread-item .fb-avatar-placeholder {
+  background-color: var(--fb-success); 
+}
+
+.fb-sidebar-item.unread-item .fb-user-sub {
+  color: var(--fb-success) !important; 
+  font-weight: 700;
+}
+
+.fb-global-unread-badge {
+  position: absolute;
+  top: -8px;
+  right: -8px;
+  background-color: #dc3545; 
+  color: #ffffff;
+  border-radius: 50%;
+  min-width: 20px;
+  height: 20px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 11px;
+  font-weight: bold;
+  line-height: 1;
+  padding: 0 4px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.35);
+  border: 1.5px solid #ffffff; 
+  animation: fb-pulse 2s infinite; 
+  z-index: 10;
+}
+
+@keyframes fb-pulse {
+  0% { box-shadow: 0 0 0 0 rgba(220, 53, 69, 0.7); }
+  70% { box-shadow: 0 0 0 8px rgba(220, 53, 69, 0); }
+  100% { box-shadow: 0 0 0 0 rgba(220, 53, 69, 0); }
+}
+
+/* ==========================================================================
+   4. VENTANA FLOTANTE DEL CHAT 
+   ========================================================================== */
+.fb-chat-window {
+  position: fixed;
+  bottom: 50px;
+  right: 340px; 
+  width: 360px; 
+  height: 460px; 
+  background-color: #ffffff;
+  border: 1px solid var(--fb-border);
+  box-shadow: -4px -4px 25px rgba(0,0,0,0.18);
+  display: flex;
+  flex-direction: column;
+  border-top-left-radius: 8px;
+  border-top-right-radius: 8px;
+  animation: fbSlideUp 0.18s ease-out;
+}
+
+.fb-window-header {
+  background-color: var(--fb-primary);
+  color: #ffffff;
+  padding: 12px;
+  font-size: 14px;
+  font-weight: 600;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.fb-window-messages {
+  flex: 1;
+  overflow-y: auto;
+  padding: 12px;
+  background-color: #f1f5f9;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.fb-msg-row {
+  display: flex;
+  align-items: flex-start;
+  max-width: 88%;
+}
+
+.fb-msg-row.fb-mine {
+  align-self: flex-end;
+}
+
+.fb-msg-avatar {
+  width: 28px;
+  height: 28px;
+  background-color: #cbd5e1;
+  font-size: 11px;
+  font-weight: bold;
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: 8px;
+  margin-top: 14px;
+}
+
+.fb-msg-bubble {
+  background-color: #ffffff;
+  border: 1px solid #e2e8f0;
+  color: #0f172a;
+  padding: 8px 12px;
+  font-size: 13px; 
+  border-radius: 8px;
+  line-height: 1.4;
+  box-shadow: 0 1px 2px rgba(0,0,0,0.05);
+}
+
+.fb-msg-bubble.mine {
+  background-color: #dbeafe; 
+  border-color: #bfdbfe;
+}
+
+.fb-window-input {
+  display: flex;
+  border-top: 1px solid #e2e8f0;
+  padding: 8px;
+  background-color: #ffffff;
+}
+
+.fb-window-input input {
+  flex: 1;
+  border: 1px solid #e2e8f0;
+  border-radius: 20px;
+  font-size: 13px;
+  padding: 8px 14px;
+  outline: none;
+}
+
+.fb-window-input button {
+  background: transparent;
+  border: none;
+  color: #3b82f6;
+  padding: 0 10px;
+  cursor: pointer;
+  font-size: 16px;
+}
+
+@keyframes fbSlideUp {
+  from { transform: translateY(15px); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
+}
+
+/* ==========================================================================
+   5. DISEÑO ADAPTATIVO PARA DISPOSITIVOS MÓVILES (Optimizado para Teclados)
+   ========================================================================== */
+@media (max-width: 768px) {
+  /* Forzar al contenedor global a fijar el Viewport Dinámico en móvil */
+  .fb-chat-wrapper {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    height: 100dvh; /* dvh recalcula la altura real cuando se abre el teclado */
+    pointer-events: none;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+  }
+
+  .fb-bottom-bar {
+    position: absolute;
+    right: 0;
+    left: 0;
+    bottom: 0;
+    padding: 0 8px;
+    display: flex;
+    justify-content: space-between;
+    gap: 6px;
+    z-index: 2101;
+  }
+
+  .fb-tab-btn {
+    flex: 1;
+    justify-content: center;
+    padding: 12px 6px;
+    font-size: 13px;
+    border-radius: 0;
+    border-top-left-radius: 12px;
+    border-top-right-radius: 12px;
+    text-align: center;
+  }
+
+  /* Lista de contactos adaptada a dvh */
+  .fb-sidebar {
+    position: absolute;
+    right: 0;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    height: calc(100dvh - 60px);
+    border-radius: 0;
+    border-top-left-radius: 16px;
+    border-top-right-radius: 16px;
+    box-shadow: 0 -8px 30px rgba(0, 0, 0, 0.25);
+    z-index: 2105;
+    pointer-events: auto;
+  }
+
+  .fb-sidebar-header {
+    padding: 16px;
+    font-size: 15px;
+    border-top-left-radius: 15px;
+    border-top-right-radius: 15px;
+  }
+
+  .fb-user-sub {
+    max-width: 65vw;
+  }
+
+  /* Ventana de chat activa blindada contra el empuje del teclado */
+  .fb-chat-window {
+    position: absolute;
+    right: 0;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: 100%;
+    height: 100dvh; /* Ocupa exactamente el viewport visible */
+    border-radius: 0;
+    box-shadow: none;
+    z-index: 2110;
+    pointer-events: auto;
+  }
+
+  .fb-window-header {
+    padding: 16px;
+    font-size: 15px;
+    flex-shrink: 0; /* Evita que el header se achique si el teclado consume mucho espacio */
+  }
+
+  .fb-window-messages {
+    flex: 1;
+    overflow-y: auto;
+    padding: 16px 12px;
+    -webkit-overflow-scrolling: touch; /* Scroll suave nativo en iOS */
+  }
+
+  .fb-msg-row {
+    max-width: 90%;
+  }
+
+  /* Input clavado abajo permanentemente */
+  .fb-window-input {
+    padding: 12px 8px;
+    flex-shrink: 0; /* Evita colapsos de tamaño */
+    background-color: #ffffff;
+    border-top: 1px solid #e2e8f0;
+    padding-bottom: calc(12px + env(safe-area-inset-bottom, 0px)); 
+  }
+
+  .fb-window-input input {
+    font-size: 16px; /* 16px exactos remueven por completo el zoom automático forzado de iOS */
+    padding: 10px 16px;
+  }
+
+  .fb-window-input button {
+    padding: 0 14px;
+    font-size: 18px;
+  }
+}

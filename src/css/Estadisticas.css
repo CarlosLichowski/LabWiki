@@ -1,0 +1,81 @@
+.estadisticas-container {
+  padding: 2rem;
+  max-width: 800px;
+  margin: 0 auto;
+  text-align: center;
+}
+
+.estadisticas-header h2 {
+  font-size: 1.8rem;
+  font-weight: 700;
+  color: #0f172a;
+  margin-bottom: 0.5rem;
+}
+
+.estadisticas-header p {
+  color: #64748b;
+  margin-bottom: 2rem;
+}
+
+.estadisticas-buttons-wrapper {
+  display: flex;
+  justify-content: center;
+  gap: 1.5rem;
+  flex-wrap: wrap;
+}
+
+.btn-estadistica {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 1rem 1.75rem;
+  background-color: #0f172a;
+  color: #ffffff;
+  text-decoration: none;
+  font-weight: 600;
+  border-radius: 8px;
+  transition: background-color 0.2s ease, transform 0.1s ease;
+}
+
+.btn-estadistica:hover {
+  background-color: #1e293b;
+  transform: translateY(-2px);
+}
+
+/* BTN PLANTA Y GUARDIA */
+
+.btn-estadisticaPlanta {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 1rem 1.75rem;
+  background-color: #128639;
+  color: #ffffff;
+  text-decoration: none;
+  font-weight: 600;
+  border-radius: 8px;
+  transition: background-color 0.2s ease, transform 0.1s ease;
+}
+
+.btn-estadisticaPlanta:hover {
+  background-color: #13ce2c;
+  transform: translateY(-2px);
+}
+
+.btn-estadisticaGuardia {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 1rem 1.75rem;
+  background-color: #ac0808;
+  color: #ffffff;
+  text-decoration: none;
+  font-weight: 600;
+  border-radius: 8px;
+  transition: background-color 0.2s ease, transform 0.1s ease;
+}
+
+.btn-estadisticaGuardia:hover {
+  background-color: #e90b0b;
+  transform: translateY(-2px);
+}

@@ -1,0 +1,431 @@
+/* Entretenimiento.css */
+
+/* --- Variables Generales --- */
+:root {
+  --primary: #4f46e5;
+  --success: #10b981;
+  --success-light: #d1fae5;
+  --danger: #ef4444;
+  --warning: #f59e0b;
+  --dark: #1f2937;
+  --bg-body: #f3f4f6;
+  --border: #e5e7eb;
+  --radius: 16px;
+}
+
+.entertainment-layout {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 24px 16px;
+  font-family: system-ui, -apple-system, sans-serif;
+}
+
+/* --- Header --- */
+.entertainment-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 28px;
+  flex-wrap: wrap;
+  gap: 16px;
+}
+
+.entertainment-header__title {
+  font-size: 1.6rem;
+  font-weight: 800;
+  margin: 0;
+  color: var(--dark);
+}
+
+.entertainment-header__subtitle {
+  margin: 4px 0 0 0;
+  color: #6b7280;
+  font-size: 0.88rem;
+}
+
+.entertainment-header__buttons {
+  display: flex;
+  gap: 10px;
+}
+
+/* Botones Básicos */
+.btn-ent-outline, .btn-ent-success, .btn-ent-dark {
+  border-radius: 50px;
+  padding: 10px 20px;
+  font-weight: 700;
+  font-size: 0.88rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  transition: all 0.2s;
+}
+
+.btn-ent-outline {
+  border: 2px solid var(--primary);
+  background: transparent;
+  color: var(--primary);
+}
+.btn-ent-outline:hover {
+  background: var(--primary);
+  color: #fff;
+}
+
+.btn-ent-success {
+  border: none;
+  background: var(--success);
+  color: #fff;
+  box-shadow: 0 4px 6px rgba(16, 185, 129, 0.2);
+}
+.btn-ent-success:hover { background: #059669; }
+
+.btn-ent-dark {
+  border: none;
+  background: var(--dark);
+  color: #fff;
+  width: 100%;
+  justify-content: center;
+  padding: 12px;
+  border-radius: 8px;
+}
+
+/* --- Tarjeta Contenedora Estándar --- */
+.ent-card {
+  background: #fff;
+  border-radius: var(--radius);
+  box-shadow: 0 10px 15px -3px rgba(0,0,0,0.05);
+  padding: 24px;
+  box-sizing: border-box;
+}
+.max-width-md { max-width: 700px; margin: 0 auto; }
+.max-width-sm { max-width: 550px; margin: 0 auto; }
+
+.ent-card__header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.ent-card__title {
+  font-size: 1.25rem;
+  font-weight: 700;
+  margin: 0;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.title-primary { color: var(--primary); }
+
+.btn-close-circle {
+  border: none;
+  background: #f3f4f6;
+  border-radius: 50%;
+  padding: 6px;
+  cursor: pointer;
+  display: flex;
+}
+
+/* --- Grilla del Menú (Responsive Grid) --- */
+.quiz-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 20px;
+}
+
+.quiz-card-wrapper {
+  text-decoration: none;
+  color: inherit;
+}
+
+.quiz-card {
+  background: #fff;
+  border-radius: var(--radius);
+  border: 1px solid var(--border);
+  padding: 20px;
+  position: relative;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  box-sizing: border-box;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.quiz-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 20px rgba(0,0,0,0.05);
+}
+
+.quiz-card__actions {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  display: flex;
+  gap: 4px;
+}
+
+.btn-action-round {
+  background: #f9fafb;
+  border: 1px solid var(--border);
+  border-radius: 50%;
+  padding: 6px;
+  cursor: pointer;
+  display: flex;
+}
+.btn-action-round:hover { background: #f3f4f6; }
+
+.quiz-card__icon {
+  background: var(--success-light);
+  color: var(--success);
+  padding: 8px;
+  border-radius: 10px;
+  width: fit-content;
+  margin-bottom: 14px;
+  display: flex;
+}
+
+.quiz-card__title {
+  font-size: 1.1rem;
+  font-weight: 700;
+  margin: 0 0 4px 0;
+}
+
+.quiz-card__author {
+  color: #6b7280;
+  font-size: 0.8rem;
+  margin: 0 0 16px 0;
+}
+
+.quiz-card__footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: auto;
+}
+
+.quiz-card__badge {
+  background: #f3f4f6;
+  border: 1px solid var(--border);
+  padding: 4px 10px;
+  border-radius: 6px;
+  font-size: 0.75rem;
+  font-weight: 600;
+}
+
+.quiz-card__streak {
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: var(--warning);
+  display: flex;
+  align-items: center;
+  gap: 3px;
+}
+
+/* --- Tabla de Ranking --- */
+.ent-table-responsive {
+  overflow-x: auto;
+}
+
+.ent-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.ent-table th {
+  background: #f9fafb;
+  padding: 12px;
+  text-align: left;
+  font-size: 0.8rem;
+  color: #6b7280;
+  border-bottom: 2px solid var(--border);
+}
+
+.ent-table td {
+  padding: 14px 12px;
+  border-bottom: 1px solid var(--border);
+  font-size: 0.9rem;
+}
+
+.table-user-cell {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-weight: 700;
+}
+
+.badge-score {
+  background: var(--success-light);
+  color: #065f46;
+  padding: 4px 8px;
+  border-radius: 6px;
+  font-weight: 700;
+  font-size: 0.8rem;
+}
+
+/* --- Creador de Quizzes --- */
+.ent-input-title {
+  width: 100%;
+  padding: 12px;
+  font-size: 1.1rem;
+  font-weight: 700;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  margin-bottom: 20px;
+  box-sizing: border-box;
+}
+
+.creator-box {
+  background: #f9fafb;
+  border: 1px solid var(--border);
+  padding: 16px;
+  border-radius: var(--radius);
+  margin-bottom: 16px;
+}
+
+.ent-input-field {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  box-sizing: border-box;
+}
+
+.options-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  margin-bottom: 14px;
+}
+
+.option-input-group {
+  display: flex;
+  align-items: center;
+  background: #fff;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 6px 12px;
+  gap: 8px;
+}
+.option-input-group--correct {
+  border-color: var(--success);
+  box-shadow: 0 0 0 1px var(--success);
+}
+
+.input-clean {
+  border: none;
+  outline: none;
+  width: 100%;
+  padding: 6px 0;
+}
+
+.preview-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 0;
+  border-bottom: 1px solid var(--border);
+  font-size: 0.85rem;
+}
+
+.btn-text-danger {
+  background: none;
+  border: none;
+  color: var(--danger);
+  cursor: pointer;
+  font-weight: 600;
+}
+
+.btn-submit-quiz {
+  width: 100%;
+  background: var(--success);
+  color: #fff;
+  border: none;
+  padding: 14px;
+  border-radius: 50px;
+  font-weight: 700;
+  font-size: 1rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+}
+.btn-submit-quiz:disabled { background: #a7f3d0; cursor: not-allowed; }
+
+/* --- Mecánica del Juego --- */
+.custom-progress-bar {
+  background: #e5e7eb;
+  height: 8px;
+  border-radius: 10px;
+  margin-bottom: 24px;
+  overflow: hidden;
+}
+.custom-progress-bar__fill {
+  background: var(--success);
+  height: 100%;
+  transition: width 0.3s ease;
+}
+
+.game-question-text {
+  font-size: 1.3rem;
+  font-weight: 700;
+  margin-bottom: 24px;
+}
+
+.game-options-stack {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-bottom: 24px;
+}
+
+.btn-game-option {
+  width: 100%;
+  padding: 14px;
+  text-align: left;
+  background: #fff;
+  border: 2px solid var(--border);
+  border-radius: 10px;
+  font-weight: 700;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background 0.15s;
+}
+.btn-game-option:hover { background: #f9fafb; }
+
+.option-correct { background: var(--success) !important; color: #fff; border-color: var(--success); }
+.option-wrong { background: var(--danger) !important; color: #fff; border-color: var(--danger); }
+.option-disabled { background: #f3f4f6; color: #9ca3af; border-color: var(--border); cursor: not-allowed; }
+
+/* Resultados */
+.results-wrapper {
+  padding: 32px 0;
+}
+.icon-gold { color: var(--warning); }
+.results-title { font-size: 1.75rem; font-weight: 800; margin: 12px 0; }
+.score-display { font-size: 3rem; font-weight: 800; color: var(--success); margin-bottom: 12px; }
+
+/* Animaciones */
+.fade-in { animation: fadeIn 0.25s ease-out; }
+@keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+
+/* ==========================================================================
+   Media Queries para Dispositivos Móviles
+   ========================================================================== */
+@media (max-width: 600px) {
+  .entertainment-header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  .entertainment-header__buttons {
+    width: 100%;
+  }
+  .btn-ent-outline, .btn-ent-success {
+    flex: 1;
+    justify-content: center;
+  }
+  .options-grid {
+    grid-template-columns: 1fr;
+  }
+}

@@ -1,0 +1,244 @@
+/* RegistroIncidencias.css */
+
+.planilla-container {
+  width: 100%;
+  max-width: 96%;
+  margin: 0 auto;
+  padding: 16px;
+  background-color: #f1f5f9;
+  font-family: 'Arial', sans-serif;
+  color: #0f172a;
+  box-sizing: border-box;
+}
+
+/* Encabezado */
+.planilla-header {
+  background: #ffffff;
+  padding: 20px;
+  border: 2px solid #000000;
+  border-bottom: none;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 16px;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.header-titles h1 {
+  font-size: 1.3rem;
+  font-weight: 800;
+  margin: 0;
+  letter-spacing: 0.5px;
+}
+
+.header-titles h2 {
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: #475569;
+  margin: 4px 0 0 0;
+}
+
+.header-inputs {
+  display: flex;
+  gap: 20px;
+}
+
+.field-group {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.9rem;
+  font-weight: bold;
+}
+
+.field-group input {
+  padding: 6px 10px;
+  border: 1px solid #000000;
+  border-radius: 4px;
+  font-weight: normal;
+}
+
+/* Tabla - Estructura y bordes estilo formulario impreso */
+.tabla-papel-wrapper {
+  width: 100%;
+  overflow-x: auto;
+  background: #ffffff;
+  border: 2px solid #000000;
+  box-sizing: border-box;
+}
+
+.tabla-papel {
+  width: 100%;
+  border-collapse: collapse;
+  table-layout: fixed; /* Mantiene proporciones estrictas en pantalla ancha */
+}
+
+.tabla-papel th, 
+.tabla-papel td {
+  border: 1.5px solid #000000;
+  padding: 12px 14px;
+  vertical-align: middle;
+  box-sizing: border-box;
+}
+
+/* Encabezados de Columna (th) */
+.col-header {
+  background-color: #ffffff;
+  text-align: left;
+  font-weight: 800;
+  font-size: 0.85rem;
+  letter-spacing: 0.5px;
+}
+
+/* Distribución y Anchos de Columna */
+.col-num {
+  width: 50px;
+  text-align: center;
+}
+
+.col-protocolo {
+  width: 260px;
+}
+
+.col-tipo {
+  width: 280px;
+}
+
+.col-descripcion {
+  width: auto; /* Absorbe todo el espacio restante disponible */
+}
+
+.col-accion {
+  width: 60px;
+  text-align: center;
+}
+
+/* Celdas e Inputs */
+.cell-number {
+  text-align: center;
+  font-weight: bold;
+  color: #64748b;
+  font-size: 0.85rem;
+}
+
+.input-protocolo {
+  width: 100%;
+  padding: 8px 10px;
+  border: 1px dashed #64748b;
+  border-radius: 4px;
+  font-size: 0.85rem;
+  background-color: #f8fafc;
+  box-sizing: border-box;
+}
+
+.checkbox-group-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px 16px;
+  align-items: center;
+}
+
+.checkbox-item {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.85rem;
+  cursor: pointer;
+  font-weight: 500;
+  white-space: nowrap; /* Previene saltos de línea dentro de los labels de checkbox */
+}
+
+.checkbox-item input[type="checkbox"] {
+  width: 16px;
+  height: 16px;
+  cursor: pointer;
+}
+
+.cell-descripcion {
+  padding: 6px !important;
+}
+
+.textarea-incidencia-row {
+  width: 100%;
+  min-height: 65px;
+  border: none;
+  padding: 8px 10px;
+  font-family: inherit;
+  font-size: 0.85rem;
+  resize: vertical;
+  box-sizing: border-box;
+  outline: none;
+  background: transparent;
+  display: block;
+}
+
+.textarea-incidencia-row:focus {
+  background-color: #fefce8;
+}
+
+/* Acciones por Fila */
+.cell-action {
+  text-align: center;
+}
+
+.btn-delete-row {
+  background: none;
+  border: none;
+  color: #ef4444;
+  cursor: pointer;
+  padding: 6px;
+  border-radius: 4px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: background-color 0.15s ease;
+}
+
+.btn-delete-row:hover {
+  background-color: #fee2e2;
+}
+
+/* Botones Principales de Acción */
+.planilla-actions {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 16px;
+  gap: 12px;
+}
+
+.btn-add {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  background-color: #ffffff;
+  border: 2px solid #000000;
+  padding: 10px 16px;
+  font-weight: bold;
+  cursor: pointer;
+  border-radius: 4px;
+  transition: background-color 0.15s ease;
+}
+
+.btn-add:hover {
+  background-color: #f8fafc;
+}
+
+.btn-save {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  background-color: #0f172a;
+  color: #ffffff;
+  border: none;
+  padding: 10px 24px;
+  font-weight: bold;
+  cursor: pointer;
+  border-radius: 4px;
+  transition: background-color 0.15s ease;
+}
+
+.btn-save:hover {
+  background-color: #1e293b;
+}
