@@ -21,7 +21,6 @@ import {
     X, 
     Save,
     Search,
-    
 } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { TarjetaReactivo } from './TarjetaReactivo/TarjetaReactivo';
@@ -41,7 +40,6 @@ export interface Reactivo {
     creadoPor?: string;
 }
 
-// Opciones para el nuevo filtro de disponibilidad
 type FiltroEstado = 'en_hospital' | 'no_realizados' | 'todos';
 
 const ANALITOS_QUIMICA_STRICT = new Set([
@@ -71,9 +69,7 @@ const Insertos: React.FC = () => {
     const [selectedArea, setSelectedArea] = useState('Todos');
     const [selectedProveedor, setSelectedProveedor] = useState('Todos'); 
     
-    // Nuevo estado de filtro de disponibilidad (Por defecto: 'en_hospital')
     const [filtroEstado, setFiltroEstado] = useState<FiltroEstado>('en_hospital');
-    
     const [updatingId, setUpdatingId] = useState<string | null>(null);
 
     // Estado del usuario actual
@@ -153,7 +149,6 @@ const Insertos: React.FC = () => {
     const filteredReactivos = useMemo(() => {
         const s = searchTerm.toLowerCase().trim();
         return reactivosList.filter(r => {
-            // Lógica del filtro de disponibilidad / realización
             if (filtroEstado === 'en_hospital' && !r.realizado_en_laboratorio) return false;
             if (filtroEstado === 'no_realizados' && r.realizado_en_laboratorio) return false;
 
@@ -173,8 +168,11 @@ const Insertos: React.FC = () => {
         });
     }, [searchTerm, selectedArea, selectedProveedor, reactivosList, filtroEstado]);
 
-    // Abrir Modal para Crear
     const handleOpenCreateModal = () => {
+        if (!currentUserId) {
+            alert("Debes iniciar sesión para registrar un nuevo inserto.");
+            return;
+        }
         setEditingItem(null);
         setFormData({
             analito: '',
@@ -190,7 +188,6 @@ const Insertos: React.FC = () => {
         setShowModal(true);
     };
 
-    // Abrir Modal para Editar
     const handleOpenEditModal = (item: Reactivo) => {
         setEditingItem(item);
         setFormData({
@@ -207,7 +204,6 @@ const Insertos: React.FC = () => {
         setShowModal(true);
     };
 
-    // Guardar (Crear / Actualizar)
     const handleSubmitForm = async (e: React.FormEvent) => {
         e.preventDefault();
         if (!currentUserId) {
@@ -242,11 +238,9 @@ const Insertos: React.FC = () => {
 
         try {
             if (editingItem) {
-                // Actualizar
                 const itemRef = doc(db, 'reactivos', editingItem.id);
                 await updateDoc(itemRef, payload);
             } else {
-                // Crear nuevo
                 await addDoc(collection(db, 'reactivos'), {
                     ...payload,
                     creadoPor: currentUserId,
@@ -262,7 +256,6 @@ const Insertos: React.FC = () => {
         }
     };
 
-    // Eliminar Reactivo
     const handleDeleteItem = async (id: string, analito: string) => {
         if (!window.confirm(`¿Estás seguro de que deseas eliminar "${analito}"?`)) return;
 
@@ -283,7 +276,7 @@ const Insertos: React.FC = () => {
                         <Beaker size={26} className="header-icon" /> Biblioteca de Reactivos & Ensayos
                     </h4>
                     <p className="header-subtitle">
-                         menú de prestaciones multi-proveedor. Filtra, subi o edita tus propios insertos.
+                         Menú de prestaciones multi-proveedor. Consulta rápida de determinaciones e insertos.
                     </p>
                 </div>
                 <div className="header-actions">
@@ -317,7 +310,6 @@ const Insertos: React.FC = () => {
                         />
                     </div>
 
-                    {/* NUEVO FILTRO DE ESTADO / REALIZACIÓN */}
                     <div className="select-wrapper">
                         <select 
                             className="filter-select" 

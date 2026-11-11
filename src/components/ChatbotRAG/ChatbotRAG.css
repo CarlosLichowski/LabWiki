@@ -1,0 +1,959 @@
+/* src/components/ChatbotRAG/ChatbotRAG.css */
+/* Sistema de Diseño Slate Medical Tech (#0f172a, #2563eb) para LabRamos */
+
+:root {
+  --rag-slate-950: #020617;
+  --rag-slate-900: #0f172a;
+  --rag-slate-800: #1e293b;
+  --rag-slate-700: #334155;
+  --rag-slate-600: #475569;
+  --rag-slate-500: #64748b;
+  --rag-slate-400: #94a3b8;
+  --rag-slate-200: #e2e8f0;
+  --rag-slate-50: #f8fafc;
+
+  --rag-blue-700: #1d4ed8;
+  --rag-blue-600: #2563eb;
+  --rag-blue-500: #3b82f6;
+  --rag-blue-400: #60a5fa;
+  --rag-cyan-400: #38bdf8;
+  --rag-emerald-500: #10b981;
+  --rag-amber-500: #f59e0b;
+  --rag-rose-500: #f43f5e;
+  --rag-violet-400: #a78bfa;
+
+  --rag-shadow-drawer: -8px 0 32px rgba(2, 6, 23, 0.65);
+  --rag-shadow-glow: 0 0 20px rgba(37, 99, 235, 0.35);
+  --rag-radius: 14px;
+}
+
+/* ==========================================================================
+   1. BOTÓN FLOTANTE DISPARADOR (FLOATING TRIGGER)
+   ========================================================================== */
+.rag-floating-trigger {
+  position: fixed;
+  bottom: 64px;
+  right: 24px;
+  z-index: 1050;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: linear-gradient(135deg, var(--rag-blue-600) 0%, #1e40af 100%);
+  color: #ffffff;
+  padding: 10px 18px 10px 14px;
+  border-radius: 9999px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  box-shadow: 0 8px 24px rgba(15, 23, 42, 0.4), var(--rag-shadow-glow);
+  cursor: pointer;
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  font-family: system-ui, -apple-system, sans-serif;
+  user-select: none;
+}
+
+.rag-floating-trigger:hover {
+  transform: translateY(-2px) scale(1.02);
+  background: linear-gradient(135deg, var(--rag-blue-500) 0%, var(--rag-blue-700) 100%);
+  box-shadow: 0 12px 28px rgba(15, 23, 42, 0.5), 0 0 24px rgba(37, 99, 235, 0.5);
+}
+
+.rag-trigger-icon-wrap {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.15);
+}
+
+.rag-trigger-pulse {
+  position: absolute;
+  inset: -2px;
+  border-radius: 50%;
+  border: 2px solid var(--rag-cyan-400);
+  animation: ragPulseAnimation 2s infinite;
+  opacity: 0.8;
+}
+
+@keyframes ragPulseAnimation {
+  0% {
+    transform: scale(0.95);
+    opacity: 0.8;
+  }
+  50% {
+    transform: scale(1.3);
+    opacity: 0;
+  }
+  100% {
+    transform: scale(0.95);
+    opacity: 0;
+  }
+}
+
+.rag-trigger-text {
+  display: flex;
+  flex-direction: column;
+  text-align: left;
+}
+
+.rag-trigger-title {
+  font-size: 0.88rem;
+  font-weight: 700;
+  line-height: 1.1;
+  letter-spacing: -0.01em;
+}
+
+.rag-trigger-subtitle {
+  font-size: 0.68rem;
+  opacity: 0.85;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+/* ==========================================================================
+   2. CONTENEDOR DRAWER / CONSOLA PRINCIPAL
+   ========================================================================== */
+.rag-drawer-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(2, 6, 23, 0.4);
+  backdrop-filter: blur(4px);
+  z-index: 1060;
+  animation: ragFadeIn 0.2s ease-out;
+}
+
+.rag-drawer-container {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  width: 520px;
+  max-width: 95vw;
+  background-color: var(--rag-slate-900);
+  color: var(--rag-slate-200);
+  z-index: 1070;
+  display: flex;
+  flex-direction: column;
+  box-shadow: var(--rag-shadow-drawer);
+  border-left: 1px solid var(--rag-slate-700);
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  animation: ragSlideIn 0.28s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.rag-drawer-container.is-expanded {
+  width: 820px;
+}
+
+@keyframes ragFadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes ragSlideIn {
+  from { transform: translateX(100%); }
+  to { transform: translateX(0); }
+}
+
+/* ==========================================================================
+   3. CABECERA DEL CHATBOT
+   ========================================================================== */
+.rag-header {
+  padding: 16px 20px;
+  background: linear-gradient(180deg, var(--rag-slate-950) 0%, var(--rag-slate-900) 100%);
+  border-bottom: 1px solid var(--rag-slate-700);
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.rag-header-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.rag-header-brand {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.rag-brand-icon {
+  width: 40px;
+  height: 40px;
+  border-radius: 10px;
+  background: linear-gradient(135deg, var(--rag-blue-600) 0%, #1e3a8a 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #ffffff;
+  box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+}
+
+.rag-brand-title {
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: var(--rag-slate-50);
+  margin: 0;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.rag-badge-rag {
+  font-size: 0.62rem;
+  font-weight: 800;
+  padding: 2px 6px;
+  border-radius: 4px;
+  background: rgba(56, 189, 248, 0.15);
+  color: var(--rag-cyan-400);
+  border: 1px solid rgba(56, 189, 248, 0.3);
+  letter-spacing: 0.05em;
+}
+
+.rag-brand-status {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.75rem;
+  color: var(--rag-slate-400);
+  margin-top: 2px;
+}
+
+.rag-status-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background-color: var(--rag-emerald-500);
+  box-shadow: 0 0 8px var(--rag-emerald-500);
+}
+
+.rag-header-actions {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.rag-icon-btn {
+  background: transparent;
+  border: none;
+  color: var(--rag-slate-400);
+  width: 32px;
+  height: 32px;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.rag-icon-btn:hover {
+  background: var(--rag-slate-800);
+  color: var(--rag-slate-50);
+}
+
+/* Pestañas de Filtro */
+.rag-filter-tabs {
+  display: flex;
+  gap: 6px;
+  overflow-x: auto;
+  padding-bottom: 2px;
+  scrollbar-width: none;
+}
+
+.rag-filter-tabs::-webkit-scrollbar {
+  display: none;
+}
+
+.rag-tab-pill {
+  background: var(--rag-slate-800);
+  border: 1px solid var(--rag-slate-700);
+  color: var(--rag-slate-400);
+  padding: 5px 12px;
+  border-radius: 9999px;
+  font-size: 0.75rem;
+  font-weight: 500;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.rag-tab-pill:hover {
+  background: var(--rag-slate-700);
+  color: var(--rag-slate-200);
+}
+
+.rag-tab-pill.active {
+  background: var(--rag-blue-600);
+  border-color: var(--rag-blue-500);
+  color: #ffffff;
+  box-shadow: 0 2px 8px rgba(37, 99, 235, 0.35);
+}
+
+/* ==========================================================================
+   4. ÁREA DE MENSAJES Y CONVERSACIÓN
+   ========================================================================== */
+.rag-messages-area {
+  flex: 1;
+  overflow-y: auto;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  scrollbar-width: thin;
+  scrollbar-color: var(--rag-slate-700) transparent;
+}
+
+.rag-messages-area::-webkit-scrollbar {
+  width: 6px;
+}
+
+.rag-messages-area::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.rag-messages-area::-webkit-scrollbar-thumb {
+  background: var(--rag-slate-700);
+  border-radius: 4px;
+}
+
+/* Mensaje del Usuario */
+.rag-message-user {
+  align-self: flex-end;
+  max-width: 85%;
+  background: linear-gradient(135deg, var(--rag-blue-600) 0%, #1e40af 100%);
+  color: #ffffff;
+  padding: 12px 16px;
+  border-radius: 16px 16px 4px 16px;
+  box-shadow: 0 4px 14px rgba(15, 23, 42, 0.25);
+  font-size: 0.92rem;
+  line-height: 1.5;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+}
+
+.rag-user-meta {
+  font-size: 0.68rem;
+  opacity: 0.75;
+  text-align: right;
+  margin-top: 4px;
+}
+
+/* Mensaje del Asistente */
+.rag-message-assistant {
+  align-self: flex-start;
+  max-width: 92%;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.rag-assistant-card {
+  background: var(--rag-slate-800);
+  border: 1px solid var(--rag-slate-700);
+  border-radius: 16px 16px 16px 4px;
+  padding: 16px;
+  box-shadow: 0 4px 16px rgba(2, 6, 23, 0.3);
+  font-size: 0.9rem;
+  line-height: 1.6;
+}
+
+.rag-assistant-card.is-error {
+  border-color: var(--rag-rose-500);
+  background: rgba(244, 63, 94, 0.08);
+}
+
+.rag-assistant-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 12px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.rag-assistant-id {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: var(--rag-cyan-400);
+}
+
+.rag-assistant-timestamp {
+  font-size: 0.7rem;
+  color: var(--rag-slate-400);
+}
+
+/* Fuentes de Atribución */
+.rag-sources-container {
+  margin-top: 14px;
+  padding-top: 12px;
+  border-top: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.rag-sources-label {
+  font-size: 0.72rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--rag-slate-400);
+  margin-bottom: 8px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.rag-sources-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.rag-source-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 10px;
+  border-radius: 6px;
+  font-size: 0.74rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  border: 1px solid transparent;
+  background: var(--rag-slate-900);
+  color: var(--rag-slate-200);
+  text-decoration: none;
+}
+
+.rag-source-badge:hover {
+  transform: translateY(-1px);
+  filter: brightness(1.15);
+}
+
+.badge-inserto {
+  background: rgba(56, 189, 248, 0.1);
+  border-color: rgba(56, 189, 248, 0.3);
+  color: #bae6fd;
+}
+
+.badge-manual {
+  background: rgba(167, 139, 250, 0.1);
+  border-color: rgba(167, 139, 250, 0.3);
+  color: #ddd6fe;
+}
+
+.badge-derivacion {
+  background: rgba(52, 211, 153, 0.1);
+  border-color: rgba(52, 211, 153, 0.3);
+  color: #a7f3d0;
+}
+
+.badge-database {
+  background: rgba(251, 191, 36, 0.1);
+  border-color: rgba(251, 191, 36, 0.3);
+  color: #fde68a;
+}
+
+.badge-prefix {
+  font-size: 0.65rem;
+  opacity: 0.8;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+.badge-filename {
+  max-width: 170px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* Sugerencias de Seguimiento */
+.rag-suggestions-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-top: 4px;
+}
+
+.rag-suggestion-chip {
+  background: rgba(30, 41, 59, 0.8);
+  border: 1px solid var(--rag-slate-700);
+  color: var(--rag-slate-300);
+  padding: 6px 12px;
+  border-radius: 9999px;
+  font-size: 0.74rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.rag-suggestion-chip:hover {
+  background: var(--rag-blue-600);
+  border-color: var(--rag-blue-500);
+  color: #ffffff;
+  transform: translateY(-1px);
+}
+
+/* Metadatos en el footer del mensaje */
+.rag-message-meta-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 0.68rem;
+  color: var(--rag-slate-500);
+  padding: 0 4px;
+}
+
+/* ==========================================================================
+   5. INDICADOR DE ESCRITURA / CARGA (TYPING INDICATOR)
+   ========================================================================== */
+.rag-typing-container {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: var(--rag-slate-800);
+  border: 1px solid var(--rag-slate-700);
+  border-radius: 12px;
+  padding: 10px 16px;
+  max-width: fit-content;
+  color: var(--rag-slate-400);
+  font-size: 0.8rem;
+}
+
+.rag-typing-dots {
+  display: flex;
+  gap: 4px;
+}
+
+.rag-typing-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background-color: var(--rag-cyan-400);
+  animation: ragBlink 1.4s infinite both;
+}
+
+.rag-typing-dot:nth-child(2) {
+  animation-delay: 0.2s;
+}
+
+.rag-typing-dot:nth-child(3) {
+  animation-delay: 0.4s;
+}
+
+@keyframes ragBlink {
+  0%, 80%, 100% {
+    transform: scale(0.6);
+    opacity: 0.4;
+  }
+  40% {
+    transform: scale(1.1);
+    opacity: 1;
+  }
+}
+
+/* ==========================================================================
+   6. BARRA DE ENTRADA (INPUT BAR)
+   ========================================================================== */
+.rag-input-bar-container {
+  padding: 16px 20px;
+  background: var(--rag-slate-950);
+  border-top: 1px solid var(--rag-slate-700);
+}
+
+.rag-input-form {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: var(--rag-slate-800);
+  border: 1px solid var(--rag-slate-700);
+  border-radius: 12px;
+  padding: 6px 8px 6px 14px;
+  transition: all 0.2s ease;
+}
+
+.rag-input-form:focus-within {
+  border-color: var(--rag-blue-500);
+  box-shadow: 0 0 0 2px rgba(37, 99, 235, 0.2);
+}
+
+.rag-input-field {
+  flex: 1;
+  background: transparent;
+  border: none;
+  color: var(--rag-slate-50);
+  font-size: 0.9rem;
+  outline: none;
+}
+
+.rag-input-field::placeholder {
+  color: var(--rag-slate-500);
+}
+
+.rag-send-btn {
+  background: var(--rag-blue-600);
+  border: none;
+  color: #ffffff;
+  width: 36px;
+  height: 36px;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.rag-send-btn:hover:not(:disabled) {
+  background: var(--rag-blue-500);
+  transform: scale(1.04);
+}
+
+.rag-send-btn:disabled {
+  background: var(--rag-slate-700);
+  color: var(--rag-slate-500);
+  cursor: not-allowed;
+}
+
+.rag-input-disclaimer {
+  font-size: 0.66rem;
+  color: var(--rag-slate-500);
+  text-align: center;
+  margin-top: 8px;
+  margin-bottom: 0;
+}
+
+/* ==========================================================================
+   7. FORMATEO MARKDOWN INTERNO
+   ========================================================================== */
+.rag-markdown-container {
+  color: var(--rag-slate-200);
+}
+
+.rag-heading-3 {
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: var(--rag-slate-50);
+  margin-top: 6px;
+  margin-bottom: 10px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.rag-heading-4 {
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: var(--rag-cyan-400);
+  margin-top: 12px;
+  margin-bottom: 6px;
+}
+
+.rag-paragraph {
+  margin-bottom: 10px;
+  font-size: 0.88rem;
+  line-height: 1.6;
+}
+
+.rag-bold {
+  color: #ffffff;
+  font-weight: 700;
+}
+
+.rag-italic {
+  color: var(--rag-slate-300);
+  font-style: italic;
+}
+
+.rag-inline-code {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  font-size: 0.82rem;
+  background: rgba(15, 23, 42, 0.7);
+  color: var(--rag-cyan-400);
+  padding: 2px 5px;
+  border-radius: 4px;
+  border: 1px solid rgba(56, 189, 248, 0.2);
+}
+
+.rag-inline-cite {
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: #93c5fd;
+  background: rgba(37, 99, 235, 0.15);
+  padding: 1px 4px;
+  border-radius: 4px;
+}
+
+.rag-md-list {
+  padding-left: 20px;
+  margin-bottom: 12px;
+}
+
+.rag-list-item {
+  margin-bottom: 5px;
+  font-size: 0.86rem;
+  line-height: 1.5;
+}
+
+.rag-numbered-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  margin-bottom: 6px;
+  font-size: 0.86rem;
+}
+
+.num-badge {
+  background: var(--rag-slate-700);
+  color: var(--rag-cyan-400);
+  font-weight: 700;
+  font-size: 0.7rem;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+
+/* Callouts / Alertas */
+.rag-callout {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  padding: 10px 14px;
+  border-radius: 8px;
+  margin: 12px 0;
+  font-size: 0.82rem;
+  line-height: 1.5;
+  border-left: 4px solid;
+}
+
+.callout-warning {
+  background: rgba(245, 158, 11, 0.1);
+  border-color: var(--rag-amber-500);
+  color: #fef3c7;
+}
+
+.callout-tip {
+  background: rgba(37, 99, 235, 0.1);
+  border-color: var(--rag-blue-500);
+  color: #dbeafe;
+}
+
+.callout-info {
+  background: rgba(56, 189, 248, 0.1);
+  border-color: var(--rag-cyan-400);
+  color: #e0f2fe;
+}
+
+.callout-icon {
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+
+.text-amber { color: var(--rag-amber-500); }
+.text-blue { color: var(--rag-blue-400); }
+.text-cyan { color: var(--rag-cyan-400); }
+
+/* Tablas Markdown */
+.rag-table-wrapper {
+  overflow-x: auto;
+  margin: 12px 0;
+  border-radius: 8px;
+  border: 1px solid var(--rag-slate-700);
+}
+
+.rag-md-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.8rem;
+  text-align: left;
+}
+
+.rag-md-table th {
+  background: var(--rag-slate-950);
+  color: var(--rag-slate-300);
+  padding: 8px 12px;
+  font-weight: 600;
+  border-bottom: 1px solid var(--rag-slate-700);
+}
+
+.rag-md-table td {
+  padding: 8px 12px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  color: var(--rag-slate-200);
+}
+
+.rag-md-table tr:last-child td {
+  border-bottom: none;
+}
+
+/* ==========================================================================
+   8. MODAL DE INSPECCIÓN DE FUENTE CIENTÍFICA
+   ========================================================================== */
+.rag-source-modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(2, 6, 23, 0.7);
+  backdrop-filter: blur(6px);
+  z-index: 1090;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  animation: ragFadeIn 0.2s ease;
+}
+
+.rag-source-modal {
+  width: 580px;
+  max-width: 96vw;
+  background: var(--rag-slate-900);
+  border: 1px solid var(--rag-slate-700);
+  border-radius: 16px;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.6);
+  color: var(--rag-slate-200);
+  overflow: hidden;
+}
+
+.rag-modal-header {
+  padding: 16px 20px;
+  background: var(--rag-slate-950);
+  border-bottom: 1px solid var(--rag-slate-700);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.rag-modal-title {
+  color: #ffffff;
+  font-weight: 700;
+  font-size: 0.95rem;
+}
+
+.rag-modal-subtitle {
+  font-size: 0.74rem;
+  color: var(--rag-slate-400);
+}
+
+.rag-modal-close {
+  background: transparent;
+  border: none;
+  color: var(--rag-slate-400);
+  cursor: pointer;
+  padding: 4px;
+  border-radius: 6px;
+}
+
+.rag-modal-close:hover {
+  background: var(--rag-slate-800);
+  color: #ffffff;
+}
+
+.rag-modal-body {
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.rag-source-meta-item {
+  display: flex;
+  gap: 8px;
+  font-size: 0.82rem;
+}
+
+.meta-label {
+  color: var(--rag-slate-400);
+  font-weight: 600;
+}
+
+.meta-value {
+  color: var(--rag-slate-100);
+}
+
+.rag-source-fragment-box {
+  background: var(--rag-slate-950);
+  border: 1px solid var(--rag-slate-700);
+  border-radius: 10px;
+  padding: 14px;
+  margin-top: 4px;
+}
+
+.fragment-header {
+  font-size: 0.72rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  color: var(--rag-cyan-400);
+  margin-bottom: 8px;
+}
+
+.fragment-content {
+  font-size: 0.84rem;
+  line-height: 1.6;
+  color: var(--rag-slate-200);
+  white-space: pre-line;
+  margin: 0;
+}
+
+.rag-modal-footer {
+  padding: 14px 20px;
+  background: var(--rag-slate-950);
+  border-top: 1px solid var(--rag-slate-700);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.rag-verification-badge {
+  font-size: 0.72rem;
+  color: var(--rag-emerald-500);
+  font-weight: 500;
+}
+
+.rag-btn-secondary {
+  background: var(--rag-slate-800);
+  border: 1px solid var(--rag-slate-700);
+  color: var(--rag-slate-200);
+  padding: 6px 14px;
+  border-radius: 8px;
+  font-size: 0.8rem;
+  cursor: pointer;
+}
+
+.rag-btn-secondary:hover {
+  background: var(--rag-slate-700);
+}
+
+/* ==========================================================================
+   9. RESPONSIVE / MEDIA QUERIES
+   ========================================================================== */
+@media (max-width: 640px) {
+  .rag-drawer-container {
+    width: 100vw;
+    max-width: 100vw;
+    border-left: none;
+  }
+
+  .rag-floating-trigger {
+    bottom: 16px;
+    right: 16px;
+    padding: 8px 14px;
+  }
+
+  .rag-trigger-subtitle {
+    display: none;
+  }
+}

@@ -81,6 +81,24 @@ export const ChatSidebar: React.FC<ChatSidebarProps> = ({
           </div>
         </div>
 
+        {/* CANAL: ASISTENTE CLÍNICO RAG */}
+        <div 
+          className="fb-sidebar-item ai-rag-item"
+          style={{ background: 'rgba(37, 99, 235, 0.08)', borderLeft: '3px solid #2563eb' }}
+          onClick={() => {
+            window.dispatchEvent(new CustomEvent('open-rag-chatbot'));
+            setIsSidebarOpen(false);
+          }}
+        >
+          <div className="fb-avatar-placeholder" style={{ background: '#2563eb', color: '#ffffff' }}>
+            🤖
+          </div>
+          <div className="fb-item-info">
+            <span className="fb-user-name fw-bold" style={{ color: '#2563eb' }}>Copilot Clínico (RAG)</span>
+            <span className="fb-user-sub text-muted">Insertos, Cobas y Métricas</span>
+          </div>
+        </div>
+
         <div className="fb-separator">Personal Registrado</div>
 
         {/* LISTA DE USUARIOS */}

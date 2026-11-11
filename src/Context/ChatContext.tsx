@@ -1,7 +1,8 @@
 // src/Context/ChatContext.tsx
 import React, { createContext, useContext, useState, useEffect } from 'react';
 import { collection, addDoc, query, orderBy, limit, onSnapshot, serverTimestamp, doc, getDoc } from 'firebase/firestore';
-import { db, auth } from '../Credenciales'; // 🌟 CORREGIDO: Un solo salto de carpeta desde src/Context
+import { onAuthStateChanged } from 'firebase/auth';
+import { db, auth } from '../Credenciales';
 
 interface Mensaje {
   id: string;
@@ -25,68 +26,79 @@ export const ChatProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const [isOpen, setIsOpen] = useState(false);
   const [mensajes, setMensajes] = useState<Mensaje[]>([]);
 
-  // Escuchar mensajes en tiempo real (Limitado a los últimos 50 por rendimiento)
+  // Escuchar el estado de autenticación antes de conectar el listener de Firestore
   useEffect(() => {
-    const q = query(
-      collection(db, 'chat_laboratorio'),
-      orderBy('createdAt', 'desc'),
-      limit(50)
-    );
+    let unsubscribeSnapshot: (() => void) | undefined = undefined;
 
-    // Caché local temporal para no hacer peticiones repetidas del mismo usuario
-    const usuariosCache: { [uid: string]: { nombre: string; servicio: string } } = {};
+    const unsubscribeAuth = onAuthStateChanged(auth, (user) => {
+      // Si el usuario no está logueado, limpiamos mensajes y cortamos ejecución para evitar errores de permisos
+      if (!user) {
+        setMensajes([]);
+        if (unsubscribeSnapshot) {
+          unsubscribeSnapshot();
+        }
+        return;
+      }
 
-    const unsubscribe = onSnapshot(q, async (snapshot) => {
-      const docsConDatosPromesas = snapshot.docs.map(async (d) => {
-        const data = d.data();
-        const uid = data.userId;
-        
-        let nombreReal = data.autor || 'Usuario';
-        let servicioReal = 'Sin Sector';
+      // Si está logueado, montamos el listener de la colección de chat
+      const q = query(
+        collection(db, 'chat_laboratorio'),
+        orderBy('createdAt', 'desc'),
+        limit(50)
+      );
 
-        if (uid) {
-          // Si ya lo consultamos antes, lo sacamos de la memoria caché local
-          if (usuariosCache[uid]) {
-            nombreReal = usuariosCache[uid].nombre;
-            servicioReal = usuariosCache[uid].servicio;
-          } else {
-            try {
-              // Si no está en caché, hacemos una única lectura a su documento de usuario
-              const userDocRef = doc(db, 'usuarios', uid);
-              const userDocSnap = await getDoc(userDocRef);
-              
-              if (userDocSnap.exists()) {
-                const userData = userDocSnap.data();
-                nombreReal = userData.nombre || nombreReal;
-                servicioReal = userData.servicio || servicioReal;
+      const usuariosCache: { [uid: string]: { nombre: string; servicio: string } } = {};
+
+      unsubscribeSnapshot = onSnapshot(q, async (snapshot) => {
+        const docsConDatosPromesas = snapshot.docs.map(async (d) => {
+          const data = d.data();
+          const uid = data.userId;
+          
+          let nombreReal = data.autor || 'Usuario';
+          let servicioReal = 'Sin Sector';
+
+          if (uid) {
+            if (usuariosCache[uid]) {
+              nombreReal = usuariosCache[uid].nombre;
+              servicioReal = usuariosCache[uid].servicio;
+            } else {
+              try {
+                const userDocRef = doc(db, 'usuarios', uid);
+                const userDocSnap = await getDoc(userDocRef);
                 
-                // Guardamos en caché para los próximos mensajes de este snapshot
-                usuariosCache[uid] = { nombre: nombreReal, servicio: servicioReal };
+                if (userDocSnap.exists()) {
+                  const userData = userDocSnap.data();
+                  nombreReal = userData.nombre || nombreReal;
+                  servicioReal = userData.servicio || servicioReal;
+                  usuariosCache[uid] = { nombre: nombreReal, servicio: servicioReal };
+                }
+              } catch (err) {
+                console.error("Error al traer datos del usuario del mensaje:", err);
               }
-            } catch (err) {
-              console.error("Error al traer datos del usuario del mensaje:", err);
             }
           }
-        }
 
-        return {
-          id: d.id,
-          texto: data.texto || '',
-          userId: uid || '',
-          createdAt: data.createdAt,
-          autor: nombreReal,
-          servicio: servicioReal
-        } as Mensaje;
+          return {
+            id: d.id,
+            texto: data.texto || '',
+            userId: uid || '',
+            createdAt: data.createdAt,
+            autor: nombreReal,
+            servicio: servicioReal
+          } as Mensaje;
+        });
+
+        const listaMensajes = await Promise.all(docsConDatosPromesas);
+        setMensajes(listaMensajes.reverse());
+      }, (error) => {
+        console.error("Error en el snapshot del chat:", error);
       });
-
-      // Esperamos que se resuelvan todas las lecturas asíncronas de usuarios
-      const listaMensajes = await Promise.all(docsConDatosPromesas);
-      
-      // Los damos vuelta para que el más nuevo quede abajo en la pantalla del chat
-      setMensajes(listaMensajes.reverse());
     });
 
-    return () => unsubscribe();
+    return () => {
+      unsubscribeAuth();
+      if (unsubscribeSnapshot) unsubscribeSnapshot();
+    };
   }, []);
 
   const enviarMensaje = async (texto: string) => {
